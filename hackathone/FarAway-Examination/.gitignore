@@ -1,0 +1,57 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+.venv/
+venv/
+
+# --- Node ---
+node_modules/
+web/dist/
+desktop/dist/
+
+# --- Environment ---
+.env
+.env.local
+.env.*.local
+
+# --- Keys (NEVER commit) ---
+keys/
+*.pem
+*.key
+
+# --- Database ---
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# --- Docker ---
+docker/data/
+
+# --- IDE ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+
+# --- Coverage ---
+.coverage
+htmlcov/
+coverage.xml
+
+# --- Alembic boilerplate ---
+server/alembic/README
+server/alembic/script.py.mako

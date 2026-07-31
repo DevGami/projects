@@ -1,0 +1,353 @@
+﻿[
+    {
+        "project":  "FortisExam Candidate Kiosk",
+        "project_id":  "projects/17817604031732273398",
+        "screen_id":  "projects/17817604031732273398/screens/27b6b5ddcdfb4168b5ac7de77b5abc04",
+        "screen_name":  "General Instructions",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLubXxvgxJAxZ22QrZ4mBaobG20J2xoRaAE_gREzvaG7MXn9tFc5gNeQVkUu2nwwCGZ2i_4WetkWXVB52Ut_EVL6NB0Lyb4UCNj3MISnFHBP8F138MCZkPJuO23ZxYZrznpabbaFdwHFFvWOmVYFuoqWlPu2BOWy0NTy_muEFXjuqraeFCmkPCTuPz5absNoskH4szCSCshqLj-_Nulyzy3OBj1FBPbYVTVZ1vpMpGNjlQP33uEyu-wxQdLR",
+        "width":  1280,
+        "height":  960
+    },
+    {
+        "project":  "FortisExam Candidate Kiosk",
+        "project_id":  "projects/17817604031732273398",
+        "screen_id":  "projects/17817604031732273398/screens/64a4dc1318614e2ea37d37f684a80679",
+        "screen_name":  "Active Exam - Numerical Question",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvnaWqfT67o5HFc2pTSwCC_k-WVc8RiI2IGqU36gz1f4ZIYEmdfkm-CCn-2DiHIZOQAb4jpxnCyrT0ISlMyUyMPUdeROn7IAyG7R7Z5LPUB4R-IY12Enlp70Ex5QwPq26spLGriVx7RphkvbUH6CLjzdXFQ_eM-Q_IFKScl5w2M-rhVFEXcAtDCdM1SPastd06uChVZMIEZK7RU-D3AZ-o53TICwqAy8aA5WttE00sjsNvPvotiBRanNWrW",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Candidate Kiosk",
+        "project_id":  "projects/17817604031732273398",
+        "screen_id":  "projects/17817604031732273398/screens/9fc5c87266ab46a2a5b2791f0cad0210",
+        "screen_name":  "Active Exam - MCQ Question",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLttsS_TD8ZIOd7kN6FKKk2XKfDsgHCj_D6vBA-4v47iUcXc_0tiVELWtauf6UUfuPGXgi2CNn2OlfHDtQm7QU9BO7kJOlXIgbH78DLvrSghXQSUJu5fSwmTVEm_Z2OZ5F10r7lG4IaZATTuIT3sgXdVPBmmKllBo6AwMqOIFZzVRgFTfQ9uACSlBG_8Vfk5WxSKKLVL2XkRLaK-MCConvlRwuUrB-2kqEB1wt7PulZ3rns_upmCt7dNfROW",
+        "width":  1280,
+        "height":  1080
+    },
+    {
+        "project":  "FortisExam Candidate Kiosk",
+        "project_id":  "projects/17817604031732273398",
+        "screen_id":  "projects/17817604031732273398/screens/f37ddafa105b4ba19ab879a911d1d6f1",
+        "screen_name":  "Section Transition",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtba4FZCpo9Bmp2zbOXO0t9GIZumd8U73CMjo8lxeT-ZgL4RKkAbMoeywX-tJb1VjP9kVMFDeseEjKDAx121HMoZDWWx6ZR7o91OYpcU03pghr1N8FomdCUV2TyhaJp4pzczGqPb7NA5lxfW0Ex2Ooi1L4u6pOiKoOVlOvwWHQG6CtNSilQHLBsv5eNacuEoS7ZVX4F3w4Cm3bOwUDVrQo7BIVF-u0PjlV9VAZJWF82-3t42vyHCUdW8Vk",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/18220513383148636895",
+        "screen_id":  "projects/18220513383148636895/screens/16e257603fb548058711c0b1096acc84",
+        "screen_name":  "Session Crash Recovery",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLu_jBZ8zuZLCsSbEJqjn3aag-9IEVq1UlVp-u4NA5J7iPErnAwXLMytEQDOzC1C990TWnrujxTZNMKqNnVzh1RsoW81icQQWUWfULIRoGPdUNdVXYT4eMJpJ7Cuvc_XT6_B2-r_IGpjPUqet96W0nI9JHloVFT18F925XjL6NVT4LEEI8E-k9By29ED03n4NOSY3BZoAqbeUzRtpPEqXBbm0Bab_J7jQ964bEqR9dPSj-tJw-zYK51YIong",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/18220513383148636895",
+        "screen_id":  "projects/18220513383148636895/screens/70b6a7c08d54417e838fe3a2f21902e3",
+        "screen_name":  "Candidate Feedback Form",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvNtzoOEr2KiOA398aaUMQxZ0AedEAwjnKNeOYOl0bhzWEDjU3fjn3IapuWppfudIPzWaRna3sA8mH8It0j51gjt2E0qAyy0BFtUHYGzhBw-fhEDWvM8NROW96XdrL-v6f0m_P61KMt27lDgbt_GrwV64Yt3yxtqe7IxeGPUmQnAQW4bZhojn67oTNv3m8B53EqBSLTpnrEqDDOKYBOpcA1phgEi7pPid4gXlsWiUlSVUBJTu-Ljw8uMcte",
+        "width":  1280,
+        "height":  960
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/18220513383148636895",
+        "screen_id":  "projects/18220513383148636895/screens/7e162449d4d7421e87150be8f231572e",
+        "screen_name":  "Submission Confirmed",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvioBSxTif0vzfkVx5jYZsQ4P2FTr22r5e0sW7WP4UOadpujZa2CoB8IbMixKKhHrPO1nfTm48RzX4oRKt_5hhfcHFEk9n4oxT81zIrWPSm9ALvRsTXMpFk8agPKsm6hl3Z0B_oLL5wYc_5smgDxq7b7uA8IAss6pjIeL6L4NUz3GCBjBX4QnJzd8wWUm7owalcHjL6nJkTxKOXtoUCNxNzrA4dZ6cP8rIahQnJvPwIaIe9kH3Qg4vu9qI0",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/18220513383148636895",
+        "screen_id":  "projects/18220513383148636895/screens/8d5841bbf5a94d718c4f0464d392ffe0",
+        "screen_name":  "Auto-Submit Transition",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLsoTbY1xJxBw9z66T07uZnIGWgPndFIyLZkI1pZy-Cjq-97oO_jLtfKsxuaYRVr-oySKzk9aOHrLdQ8q5ibpZpzlHH2DMGWYtLkRbCisU1iwqMAd--1WSqbn2glEZVcXlQUA8icGd8iowfSyvOcUIYHsOIlD3WFtUkXM_CswEmyRYPvTWEPq99zgHg-fHjvirqklBgQ0Ctjvm-iDOB3W4jSiK8pki5zsnEfg6--fk1ydQtwney62gh-EZsR",
+        "width":  1280,
+        "height":  959
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/18220513383148636895",
+        "screen_id":  "projects/18220513383148636895/screens/e2d849632f1148909879077e3787b00e",
+        "screen_name":  "Official Submission Confirmed",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLsxd6UmJ5eTrItDd1h2k2jsbY-d2sp3rN65d0Y30e4GwkdzK9biQaIHliec5WuA6EzviHAulcguu5uMe8_CN_p8ycMbuXvIWF7FMY8BcanUSdEquhOmPKB5f83AlIuLWy0OvIyyTebSxZd6DRUDPHzy104-VyUK00e0O98cweI60EAElIq5teic86_Vv02hYq6o-ALwvnstog5TvpxLXoA-GR1n8Uq63-80bmQ5XzZ191FY_N4cuMBlMvE",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/8444012187030138194",
+        "screen_id":  "projects/8444012187030138194/screens/2e3f1a6023bd4d3f8cd8b7d6a7b3fb6f",
+        "screen_name":  "Step 2: Face Verification",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLst-1vdJDgACBIVm2xMdRoZTmvk-ZaKcA6wugsbOK6PxyMgL5X0nTbmLVgZ_IPPn4_U8_3J5on7g8wRkBfcKeNO4Snw4C9qdibuscM-fWQvIXo46kqrjP-Bg0ezFVSALjNzWCgaLzw7KvvzFYptSpuhpsTsGskO17Pp-xzzok0fZdFpLxw0Ngd3eAdvzce4tky4A3XwyYFiZglkZ_SnrAH-cd7TOf6a0NlIgVuVjc8KHII5M5AygEwmhA",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/8444012187030138194",
+        "screen_id":  "projects/8444012187030138194/screens/320efbaf0cb44b8bae1d5c282b76c3a5",
+        "screen_name":  "System Ready Splash",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtJ9xSVQ9IZF7eA66abTdJ37TYKUk2kmUJxC-fncrQELHZ4IO_u5i0pXKy51S6U-iO10En6yYw1u8irHz1nOQ5M9hSJkkuWomAArcILTzDgIRy3kI8_qAAW2fameL73JrWNV1-e6XO22YkRBvOKjtKHC8ikKyyAc_WO8PPKJ6hxQu6xc1_od7JMDSrwUQ4J6LlgcIDrHKSeogv1NFfvzNywBjOmyoVTpqdMRvBar1tvtSrsM_sRr8Gj-A",
+        "width":  1280,
+        "height":  960
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/8444012187030138194",
+        "screen_id":  "projects/8444012187030138194/screens/3d4d0c6a2c484740ae0f4abb7ce9265f",
+        "screen_name":  "Step 1: QR Verification",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLv4sDOQyShVg8M8Oo56s5xYKlZnPi1YWamB4MrmbfD-67Ce9laI0lzm8dms_gweivIzAtq2IBKmHPMuBM5RK9uf_jALknpt0a1ZCWSwMFtp2PcTVhRxiuoAHGvSCgadYVZ1a07bgFKdE1caDPidCJrEogBs0yK3DjoyA2Sgn3LXYv0ikJl3YZVXQWew9ZOkEJHkNZUeDywYkMZqxYFtcY4bwd5eYrsywFr9TSlYslvLeSSoW-GC7_LyTmw",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Kiosk Design System",
+        "project_id":  "projects/8444012187030138194",
+        "screen_id":  "projects/8444012187030138194/screens/a62f79ad806d43d299aac1ad4099f23c",
+        "screen_name":  "Step 3: Seat Confirmation",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvmsJVk1_iM23GK3koYEtsirjKtgVBsPPBVhAzhfJyLI_hKvULpVJvIrav0JiT6zXlLcbi706HMOxFGrm_4JDNAdN2F7cRVFJmZ8hhuwJMqjHhb1FQ8-8RYd_vsI6_cgJxK9nw8EM3fUFBo2pta9NpHQJuAlbJ1J4biQYJc2UIQxJIeMq-rCOQrLIg99oB1I2AIiHfWz0G_8i-ncXq1S9pM40AEyqu0cUxNARVSPqyO____v-4sFkiaDug",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Secure Portal",
+        "project_id":  "projects/14992230594034836227",
+        "screen_id":  "projects/14992230594034836227/screens/31f4486ed3ea48239a8ea4160e9b5668",
+        "screen_name":  "Expert - Question Editor \u0026 AI Normalizer",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtlVjPH0K3qH-WalcJ7UWiEMxc6RIwvP3sS8e2Wi5Ait1W2ok4IXyotfBx8swL1MZ9nz3AGic6BWyRFMc_Ikgw8j4hoj5cnhm3evpk02roPGJnjYDED_nQfYt7Z7WTTKuYqsmSMRXe96z5l4uw7P5sQ6JFGIlXjnuz1zVTeOmjZugG3ErnP8-aSGK8pep_38Ds99PN83zxtwqJcGatY0N2_ZrLax35TvQnSbUmcIaudZhtJwJIXbnFAFluq",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Secure Portal",
+        "project_id":  "projects/14992230594034836227",
+        "screen_id":  "projects/14992230594034836227/screens/45eca4cf6e8f476ba2fd5b05816170ce",
+        "screen_name":  "Center Admin - Overview",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLsjpMW8btwRLGAnAj3njYM9WtcLeISCbAUr2UxoFI0eraxx8oyNEMQCm_7uv1M0YRkCbLy-VELddvVWbru4sDbeMXFkmOTjxRX6E3mpSuL6DIxaTz8rhAb83zQUDpeGGOgthTaI7uGUPUMlBhbqk0LtT5wGomorE3RW6Qf2UcGwP03tAbJIiFJuNpuC6bx3H5wHecxGHo7ri3NAXyt36UYUgIr6-Rl_eMbMB0f8y8FtnxbHrAnYAN8h1jQ",
+        "width":  1280,
+        "height":  1522
+    },
+    {
+        "project":  "FortisExam Secure Portal",
+        "project_id":  "projects/14992230594034836227",
+        "screen_id":  "projects/14992230594034836227/screens/68fc7cf9287e4a8fa91f52935ff38e32",
+        "screen_name":  "Expert - My Questions",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLuSXJVZpjbOTeRA6diWr30epCsVbt3hv-6pHZaiB3nOtUFoAZeZWjNlLVxnAfUg5i1y_N4V010qgbbFP7lJS1q4ygYHqXHPSk-u0jy3MJoYL1Il4HQBfwNA3hG1M0Qt0g5GOFi1qvCpSSyEVLgh3PQlyqrdQvY7awHoEXR26W3axV5nff1Iuy2AH9WVhlhCUhphfpdHh11SCP3ZDFtuM6WIMn9eZJjRT4xzz7j2eQ3j4mhEfg2trvsF3ikw",
+        "width":  1280,
+        "height":  1170
+    },
+    {
+        "project":  "FortisExam Secure Portal",
+        "project_id":  "projects/14992230594034836227",
+        "screen_id":  "projects/14992230594034836227/screens/94be3c3e39b447eab4e8ad03d50b8e44",
+        "screen_name":  "Center Admin - Live Monitoring",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtML_jaq3Y8MHSt4sfMYS0ZAapscjzqkIo-9ZG6LJKKYXscej3MvoEnnnsHuyphLP1woL9UFI7AzbUBH2AR-no_9bhk5RW6ayKsIS8CYoSeVVaFUXjm6ACuts9u4nAblug2KFww5CjCMzdhDLsOjJBC6IXhhgFEwK60VdJFlOxfX0fDQtjQ1XCLSCqufvPOfMtoEWWbVMHEBBxh-3Q4PQJ-BY2-3MgLTAX2MFnviCxirRtt0_T7QMt9t5mX",
+        "width":  1280,
+        "height":  1180
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/17a36f2c8a1e4334b2675bce022c0684",
+        "screen_name":  "Audit Explorer - FortisExam",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLuWTF2oCFW6p7eJCubSg8i6plHF4Jd5yeXAznQtzmdYYM6fRx7UDW5afFUlKNKUHF3xfHJ7cUFdqauT6I8gIctyhbh5WXhfqnfK4yez_qVLXxsBoJvI4lcHOjwMyjmehK4pUvww2FoqEHO0OBfzSBC6_EHsBjKms2ugUDEBxglPFMsIxzIfaC8JFbtY7jvWFZiLVkJTl2JNjjY-44Rwy_X1um64LR4LRRY0TtY2Rb78L2wwJT7JfkRU3uY",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/1b7037891a2c4198a451385479cb1da7",
+        "screen_name":  "Export Report - Auditor",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLurObhvnbuyFgc9JuJCrjz3opxc_yq05bOS7Ao6d2NUBkFh0xFst0G2YrSPeQUMWNUumWYiEeumrO38jSqiApchoMubpclyRZUPpxj2pkGxvSqAQJdwDkavtWLv9jpQVecryjJPX5N7ToM8VZV6pBDm0c5aFuUmTUhwNSLK73pV_Sj0QaxhzamuCUKwok9Ja0ImdBSftTXUr2A5lMJz08QjzQKtYvceTlm9K-nwCWXzFfaMJli1ngbn_2U",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/3fbfb2e838044f688309ccce258f0bfa",
+        "screen_name":  "Auth Station - Invigilator",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLubq5H07tiOQj9389YBN1bTvjM70fiL-iOFIO80xoEHzd0thJWqIn3QkfP9G-_91JRHFpTEg9NMQ-42MpVURGrocfUZuwZAeORKfU6kog69rahAmBUabsj5oLr0AdPdQhvmPqLXXEMToalGAWpZ929jqRUIuvZn8ifygS6GvXMH4snwOyV3Br1LDs1ljAnA_UZZIAGtGHNZ7H6V5JPGEKDZZWy7ffu1YM3q5vKGJ6wW9B_FcMw2S1GFnBk",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/764becc1d8604655bc8c20b64465a1ab",
+        "screen_name":  "Supervisor Override Form - Invigilator",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtKb_xQp2DLfN5Afk7hYZ1YtdXhVFZdCtfZ_eqoJzZALatBW9vaoF2gdpD9gdybitWCEzq6soVOaJcNfQlTYa2ndZjUWZs6tcNt35xZFPWTcGr691PZIYT-O2afMEII2EUZiDhK2F2LhJSLei79nUNRnylJJBEJ6Vz0tk7dBhGkmH3J0b0HomCeBXRI0JmE4qFdCIAhZ6BPUD-UY4O5lML9Fb8YCKOi-qe2i8e5h0gzP38O1rI0iP5oLr1l",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/bca5af3b62094e94aeb6b6cb863ac33c",
+        "screen_name":  "Audit Explorer - Auditor",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLukCt1n_V_uA70tKf4Rb_051NSAHfb2-vnac5wTJcQY8jESuDys3OZqCdTWu8u49zzmEI05cwVI1oU5-YUBgKkSXbS72pUCUsPJHDO8Dpj_7KYmyut-6hdkpO3-e1j3e8Gdhe720qIbZ7e_5sGdsS0sMj-VKHHfQYwYIkriST8F8fVY89LWCRafsPon3MYPNVRH_Af-1-e01hNCvEbPlx7UjyhDCipneiCmxk15Qs3m9UxKt36CyaSkAO8",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/bde218c7fc944a06b1b8399c514dacb6",
+        "screen_name":  "Tamper Detection Alert - FortisExam",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvr7NCna7KVECfdP8Hps1Uqy0gnsHvFxefmgSpY4iOqEk5uy3sltKLKa7hQJn3e3l-SGIXBIgyetU1tnHUyLkwNEWCHSRD252Sr7JzrpPj_43T8NZwiKVAYGYde3XhHFpZRCy_AxvsUvLIHCb6Hb-Mc80RDMrtsvUNCBGHnAY9aQjm5AGWqQNLIhWrUr5u-jE3uttQ5UMdwWr_X36-FKl2GXKjySCpzmNAOkULz9WlY5M2L0thAcxZFJpo",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Security Operations Console",
+        "project_id":  "projects/11845015599535963287",
+        "screen_id":  "projects/11845015599535963287/screens/e29a70bc1c8347f88bced3bdd452277c",
+        "screen_name":  "Leak Monitor - FortisExam",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLuDQ0dLC1uRom8XVgaY4ApQ_UPmulpTa4y9aQ0rNaEEmVfI0MRfkqqKpxDv9HfbCLvyWkj-9_d-zFdyVDz-p8sO5ps_f0e0oT2NgWjhIm-z4acdrG1oyhQUDMFT4hbK4KNzK8Z_F1uFVU_atyHztSwCd5sE3iweM8x7W6nFknSPV50wJuw2lIkI7r1LHIsLXluxr3FxAgvGuzlIDxg-OQioS56v9OTWC4ZGP4EikbeJiMWPp_x-JcjO1A34",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/077b97baf6be4e37b58cbb3186184894",
+        "screen_name":  "Exam Status Timeline Modal",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLsCTDzVOv8reye4MYxjtuJRaOl4Uj3zwgQWcfN-bZH1ezpxrWs1hcgAinQAWIHrwHIIErzr0q1Mc2mKRPqVl-V1Aj5PBat1ySHuAh4E8L5XWzuZillk1yK6W_Q0J_kVweA9b9hRkiws4e458JYXuBn2-jY2Sh0A-AZRMy8rSgWMJmPdwFuAM7v4-BRt4LmSF6p5Vquxl8qwcsfXABVc-lrrkwekMK80c53Zb2J79RNoBvYL3cPJjjbI7A",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/44b832abcb0d42c991a2b976f9b2891c",
+        "screen_name":  "AI Normalization Report",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvGv9IFOLUhjJLZtMxxbwimipnhFyGShVg1nRqVtfNXEdnFMgVqB9tEE7K4a9rQVi0vnFPfTiP5jmviVqrr3cSqNeSulDX06o1sHfR8UJiai6zDOaMxrHp71bIRdso14G6g3hlBmn8f9p19FOJ-1MiRq-NIXyKVYqWWl9mag5ejR9h2EzFsb9dwHJwex6NtZ39ExIhN5_-cTpj1pWO2BiqQCwCSXMesd5-wcAouW5rib_k717_MaqiRBw",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/73af486ee8ea42389398486ee1d7bbcd",
+        "screen_name":  "Question Editor",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtOc6umd4539ghUYkyayOh8ZTQjyMh8A8YlZgnrYnV5UD6C8SaZ3iJ1hVo0DmCCiX5cOvKzPQ9Hxg5tjP5yTcCy6lYTPIITEI14ZHh4ubzCb5OGDnxw_mG8f1OGnRrf4uq-_HmegRswCLgFYUAMEWPixWVZWRvoM0vPZr0OwHjageVZMLA4VBwNls-sXxZN3ssaBCj6sa0_t2PcLi6eW7W_tVpHHtKBL3ya_eJdiSGCG9AEEKtswl8rSQ",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/8b59cad087c248249cb0078a9635e525",
+        "screen_name":  "Exam Blueprint Configurator",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLs_bIB4EyGvA_TWIgyRGEQKgUFr8TlrNYtrDrWrUN-L-Naer7s9xPJAuEOCsWv5pt1NSC6UnMGNftJk5ob2vUMXulM1fIeLh59ZW4jteefTMrrBBEtBrGS3KHMAG-1amuizQ354YjqmgX__a9tN4jDrfyKmKBuQt9tEFUi5_MWz_OsNOJxPJAJOHClvpy3iiGk5wxLC-G3vAhytjBQgU7itUSeOC1gS2woOl3wXGLe0GM0Zu1iMPxGEaDU",
+        "width":  1280,
+        "height":  1111
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/8cbb6f7ed25b45ba94042545289cf60c",
+        "screen_name":  "Question Bank List",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLs6iU7vVNo_HnTPguMate7q14YpdTXNRPS0jO9bO34uvNKVO90LRmFiiK4C7aYMI7ObXimQx29pVLEbx_SlDK3ogVBXQOsZWCVTt9dh3wEMoHf7C5n5T_uV7xDHr-Rzl_Ofp2Oi01p3qZgsKkvl4pWMzz1-58QiIWBVTp-34ZRcefGt5S1ewHDds2r24LuxYLrbX1yWB9ckryRHMpMKfJKfevhlJoUnKjBUAFXCSubkXTUyjkCIlBcEIg",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/a9de099f2b0742faa0c2e19cf09c09c1",
+        "screen_name":  "Main Overview Dashboard",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtNde6TlpPXJSYeBqdQPbrXr_voqoiwzbj7i6VQMz17DSSufhV8sWfvTkHW7l-j6O8mZC-DRDBXJmJFOl8xacDFG0D3yJsuvBnVsbxb_Wt_bbxKxhryqarqzsJBujJIVzD7L_TSAGe0BAkhyptlWddWtr5epGQCNqVcY5a1VMam4WQd12n0B-phnRD9CL1n6w1ThmlBIuWpGhcSIuXoqUEmmtjEW1zoOddxy2JG8qhQuPMx9_2Cy-pw0Q",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/bfbeb3ca619c4cf3a2eb1279ab7c5555",
+        "screen_name":  "Center Risk Heatmap Full View",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLsck62Of_weZmvaQEO21Dd2MJSkWRSCAZmyby2QhqX8Ru4USaAxVx3L7-DCh5w2UXcEEupfbIt4LwqbgzrftXRIoMUndxLLIjEAFBLbB_XD9UVKRpfMaYRsVE4LOecVowfblSLPRIIUwQsGLq78_9MwXEETc1X2STjqtc9q-y4rJwor5CIkhPyThfGnn4pznbyD-51LUpdc5wMM_L-7-JfVlfJCEyCjVlPxCH8mjksNh1F0fMthRoDSDw",
+        "width":  1280,
+        "height":  1156
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/e8434cefeb92473f93379872815a4e02",
+        "screen_name":  "Exam List Dashboard",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLuGh4l94_P8a3ucuYgurGAF2JjQtKiny7L-MtNJVHpCB1DtSlOuF-0LJRmlY81X5zwp-Z_hfSZB8p2uV2TRR8Ri8wZC6zL-SEMmTel3MtwUOj4WC98Jhqp8Nea5jsY7LUXCbcIke1zThsfClKjkpXJGewX0GHqmOfb3dcJZUVXAjRKqvop7L8YxnX1ntUUfAzrOpQkyxDpXUtRa23W3qgIn5rbIt_OZqHkY7rQJteTLK5LjAOiXmJhQKnE",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Admin Dashboard",
+        "project_id":  "projects/3566420274227547466",
+        "screen_id":  "projects/3566420274227547466/screens/ead30cc06c924c42a7e09fa9cc8d3134",
+        "screen_name":  "Exam Package Manifest",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLv7hKDwl-n1Y6Ny8V1tsc2STLWu3HqxOQ_OCU1Ur36GS2zskaMElHbfY3g1pbcC48p8IVJ8uZkzeV0JpakMn6FQONTCr9VsnLCuF6M7ve2mUrLbcDenNcYxldC-GWzQZq6uaw4vFDnuiwm5gu4gKkUUwJFZib6c1JVP9CbXqReYfnveGizvhQuYZpJF5xbxCLMCWsynlXwxOEPTaJ49fdH1Wnp6UtaFlYxeleY2ZQb9_VhItsKiL6iklA",
+        "width":  1280,
+        "height":  1042
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/03fae4e750f14b99974f24efd20e3b58",
+        "screen_name":  "Live Monitoring — National Overview",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLttOHHI3FW2_FwxiGzN_FspiLzsndsKtnJ5DswQe7fYnYoUDBXDKUVL0ryKVddnvZCt04E9cLGNxjw7FRdzRsFAkWqoiaAu8CVN_-BD5nQsrugmZJmreSSbAppNi_TopKfblZAU-6E-2MnXjauIv25WzIdM1hy0osZLiKDOhFFvbuxryuV08gUfq8bJd-T2wUTFuht5l4fdvUL6ZWy4OAyoqyZVW6sF5iBsbyEJKsHagPnH5IrkZoddjHE",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/10ed8a7356ae4d108ddb706e4b37a4ca",
+        "screen_name":  "Center Risk Report",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLtLJsOcQQdke7Oye0d_efap_GNU4WjP9XR2wB67mdNWN6YFDJ-Awrxy0yGAthXKL6Bkalozesj4NKSNeOiWCVK7z7IctDsYyih_d2H2ELmBcOmLt0LfAbO6aWwfhSUnZq_8iH7Xl0gJ_R9zeTsztySn66eqfHRd521iYiLEt3-fBEruNNaKjARsel5G670wRVbXjPc0c2m-aJr60e12F_fQ8E_mXUBlymD38su3eFTH30gOzgA5d5s_-rs",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/1c67a52c3fea4f6fbe5c9e9934b3bb18",
+        "screen_name":  "Center Management List",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLs-9qarSZClWIO3HnlnzcPa1f34mhq7U27ZYuC3X7Rxg4xRqxcCG344lZWXvzKB0Fok7HlDqWu8Std5SquYcOygvkI4qGnbyBa1aK9MjzpnM7CkHGrXmkdJJVBgfOIhRKNuvHmhBJARWUn_DbAgHMh7ckeITgqGhVwDznJp4OgdOOWK8YtkwI9a9bqebdJvYAZ3raH-M63LqrGN9CwP-4kJE8tw98m-TaGLHFpaVtz7AS2qd7-VFoydiPY",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/5eff0db203444a10b2307b1b28e98010",
+        "screen_name":  "Center Drill-Down — Live View",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLvbvp8aTwgGNoacNepOZm5WllR6gG-YLjdWUaVXVowG5M2SNeMg1nkeKaIomApSSvr-1mY_k3CuJAdURYEYRjof5xcKAndtEHbjQDMt7QfUrsZ50kB8yhU9dwdRMrZe1Q8GM7ns8GGI9mc1PkcwYDSnuAiDBK6l4woJZXmxU3Zv30Ib-gneiW6K0KKbxQ5poIwGyNnRhQWEvHLlp08WwGtTDVzpF2mhsmWnOasyuzcRP8XKcUY6N3JUd_s",
+        "width":  1280,
+        "height":  1033
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/c914826676f1451182e9bf6fe3fce621",
+        "screen_name":  "Anomaly Detail Drawer",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLui2fFwtBnQPDDDIYsVbcSQmaO6xCrvOuPsm2Ooep9jrkrIMhrM3JVEaA8RcvzJeWLFvLUBOJdDJ9QV6oE5_prF2MdMEped0wr7_iEzdPDLlI1XT8AdGiCGHbpc-KcBw0YqnxYeC4pLQyjVkG82fvwwdbbQaGnUc7fQe2wdPbBgtLJF4d767RKaakctKms308fabPkZdXyIqBYX2BpKph6wQ9k5Lhz9lnvSam_2WaidhnxlK4ZgQtpPdho",
+        "width":  1280,
+        "height":  1024
+    },
+    {
+        "project":  "FortisExam Center Management Platform",
+        "project_id":  "projects/7086732234025588543",
+        "screen_id":  "projects/7086732234025588543/screens/e8734105bf4f42669c15bcad00dba601",
+        "screen_name":  "Center Detail \u0026 Seating Builder",
+        "thumbnail_url":  "https://lh3.googleusercontent.com/aida/AP1WRLurBSr-Pm6NqAIwBW8fzfXpatWXgF9ZJxBJtm2iX4FE0oeOBYKXv8DIkvqVvi2LKDemEYpYztm8Z0ePjfQaCk0E9cZAinNup6kD0MLgtYFCtwSsedIY-rem9H3KOdGfyrG4J6IK7J2081QzUsunN9NMjp_Hmpnv3x2pKcovrW22gKAuuzw2UU8rY0aHCYuEnZOR56ovp-ZmZU181PZ5Sx1Typ2THL3VvJaWeZ3kUrRq5FLvS_UCz8yPBwI",
+        "width":  1280,
+        "height":  1126
+    }
+]

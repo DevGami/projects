@@ -1,0 +1,32 @@
+# FortisExam Server — Python Dependencies
+# Mode-switchable FastAPI app (cloud | edge)
+
+# --- Core ---
+fastapi==0.115.0
+uvicorn[standard]==0.30.0
+pydantic==2.9.0
+pydantic-settings==2.5.0
+
+# --- Database ---
+sqlalchemy[asyncio]==2.0.35
+asyncpg==0.30.0          # PostgreSQL async driver (cloud mode)
+aiosqlite==0.20.0        # SQLite async driver (edge mode)
+alembic==1.13.0
+
+# --- Auth ---
+pyjwt[crypto]==2.9.0     # Edge JWT (RSA signing)
+httpx==0.27.0            # Clerk JWKS fetching (cloud mode)
+
+# --- Crypto ---
+cryptography==43.0.0     # AES-256-GCM, RSA-2048, SHA-256
+
+# --- Graph ---
+networkx==3.4.0          # Graph coloring (cloud mode only)
+
+# --- Face Verification ---
+opencv-python-headless==4.10.0.84  # Image processing (edge mode)
+numpy==2.1.0                     # Embedding similarity
+
+# --- Utilities ---
+python-multipart==0.0.12  # File uploads
+structlog==24.4.0          # Structured logging

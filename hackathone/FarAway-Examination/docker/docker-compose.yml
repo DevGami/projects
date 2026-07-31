@@ -1,0 +1,70 @@
+# FortisExam — Docker Compose
+# 3 containers: cloud-server, edge-server, postgres
+
+services:
+  # --- PostgreSQL (Cloud Database) ---
+  postgres:
+    image: postgres:15-alpine
+    container_name: fortis-postgres
+    environment:
+      POSTGRES_DB: fortisexam
+      POSTGRES_USER: fortis
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fortis -d fortisexam"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # --- Cloud Server (FastAPI --mode cloud) ---
+  cloud-server:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    container_name: fortis-cloud-server
+    environment:
+      SERVER_MODE: cloud
+      DATABASE_URL: postgresql+asyncpg://fortis:${POSTGRES_PASSWORD:-password}@postgres:5432/fortisexam
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
+      CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY}
+      RSA_PRIVATE_KEY_PATH: /app/keys/cloud_private.pem
+      RSA_PUBLIC_KEY_PATH: /app/keys/cloud_public.pem
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../keys:/app/keys:ro
+      - ../server:/app/server
+      - ../shared:/app/shared
+    command: ["uvicorn", "server.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # --- Edge Server (FastAPI --mode edge) ---
+  edge-server:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    container_name: fortis-edge-server
+    environment:
+      SERVER_MODE: edge
+      DATABASE_URL: sqlite+aiosqlite:///./data/edge.db
+      RSA_PRIVATE_KEY_PATH: /app/keys/edge_private.pem
+      RSA_PUBLIC_KEY_PATH: /app/keys/cloud_public.pem
+      FACE_SIMILARITY_THRESHOLD: 0.6
+    ports:
+      - "8001:8000"
+    volumes:
+      - ../keys:/app/keys:ro
+      - edge_data:/app/data
+      - ../server:/app/server
+      - ../shared:/app/shared
+    command: ["uvicorn", "server.app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+volumes:
+  postgres_data:
+  edge_data:

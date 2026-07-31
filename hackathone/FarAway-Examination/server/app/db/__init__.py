@@ -1,0 +1,1 @@
+"""FortisExam — Database package."""

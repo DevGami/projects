@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FortisExam — Testing Checklist (Phases 1-5 Final)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+      --bg: #0d0f14;
+      --surface: #151820;
+      --surface-2: #1c2030;
+      --border: #252a3a;
+      --primary: #6366f1;
+      --primary-glow: rgba(99,102,241,0.15);
+      --success: #22c55e;
+      --success-bg: rgba(34,197,94,0.1);
+      --warning: #f59e0b;
+      --warning-bg: rgba(245,158,11,0.1);
+      --danger: #ef4444;
+      --danger-bg: rgba(239,68,68,0.1);
+      --text: #e2e8f0;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header {
+      background: linear-gradient(135deg, #151820 0%, #1a1f30 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--primary), #8b5cf6);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+    .logo-text { font-size: 17px; font-weight: 700; }
+    .logo-sub { font-size: 11px; color: var(--text-muted); }
+
+    .phase-badge {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid var(--primary);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #a5b4fc;
+    }
+
+    .header-stats { display: flex; gap: 16px; align-items: center; }
+    .stat-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: 12px;
+      display: flex; align-items: center; gap: 6px;
+      font-weight: 600;
+    }
+    .stat-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .pulse { animation: pulse 2s infinite; }
+    .pulse-green { background: var(--success); box-shadow: 0 0 5px var(--success); }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    .ring-wrap { display:flex; align-items:center; gap:8px; background:var(--surface-2); border:1px solid var(--border); border-radius:20px; padding:5px 14px 5px 7px; }
+    .ring-label { font-size:13px; font-weight:700; }
+
+    /* SCOPE BANNER */
+    .scope-banner {
+      background: linear-gradient(135deg, rgba(99,102,241,0.1), rgba(139,92,246,0.08));
+      border-bottom: 1px solid rgba(99,102,241,0.3);
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      flex-wrap: wrap;
+    }
+    .scope-item { display:flex; align-items:center; gap:6px; }
+    .scope-check { color: var(--success); font-weight: 700; }
+    .scope-x { color: var(--text-muted); font-weight: 700; }
+    .scope-sep { color: var(--border); }
+
+    /* services bar */
+    .services-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 9px 32px;
+      display: flex; gap: 10px; overflow-x: auto;
+    }
+    .chip {
+      display:flex; align-items:center; gap:6px;
+      padding:5px 11px; border-radius:6px; font-size:12px; font-weight:600;
+      white-space:nowrap; text-decoration:none; border:1px solid transparent; cursor:pointer;
+      transition:filter 0.15s;
+    }
+    .chip:hover { filter:brightness(1.15); }
+    .chip-cloud { background:rgba(99,102,241,0.12); color:#818cf8; border-color:rgba(99,102,241,0.3); }
+    .chip-web   { background:rgba(245,158,11,0.1);  color:#fbbf24; border-color:rgba(245,158,11,0.3); }
+
+    .container { max-width: 1060px; margin: 0 auto; padding: 24px 20px; }
+
+    /* CATEGORIES */
+    .category {
+      margin-bottom: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .cat-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 15px 18px; cursor: pointer; user-select: none;
+      transition: background 0.15s;
+    }
+    .cat-header:hover { background: var(--surface-2); }
+    .cat-left { display:flex; align-items:center; gap:11px; }
+    .cat-icon { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; }
+    .cat-title { font-size:14px; font-weight:700; }
+    .cat-sub { font-size:11px; color:var(--text-muted); margin-top:1px; }
+    .cat-right { display:flex; align-items:center; gap:10px; }
+    .cat-pbar { width:100px; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
+    .cat-pfill { height:100%; border-radius:2px; transition:width 0.4s ease; }
+    .cat-count { font-size:11px; color:var(--text-muted); font-weight:600; min-width:36px; text-align:right; }
+    .chevron { font-size:12px; color:var(--text-muted); transition:transform 0.2s; }
+    .category.collapsed .chevron { transform:rotate(-90deg); }
+
+    .test-list { border-top:1px solid var(--border); }
+    .category.collapsed .test-list { display:none; }
+
+    /* ROWS */
+    .test-row {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:12px 18px;
+      border-bottom:1px solid rgba(37,42,58,0.5);
+      cursor:default;
+      transition:background 0.12s;
+    }
+    .test-row:last-child { border-bottom:none; }
+    .test-row:hover { background:var(--surface-2); }
+    .test-row.done { opacity:0.68; }
+    .test-row.done .test-name { text-decoration:line-through; color:var(--text-muted); }
+
+    .checkbox {
+      width:20px; height:20px; border:2px solid var(--border); border-radius:5px;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; margin-top:1px; transition:all 0.15s; background:var(--surface);
+    }
+    .test-row:hover .checkbox { border-color:var(--primary); }
+    .test-row.done .checkbox { background:var(--success); border-color:var(--success); }
+    .test-row.failed .checkbox { background:var(--danger-bg); border-color:var(--danger); }
+    .test-row.skipped .checkbox { background:var(--warning-bg); border-color:var(--warning); }
+
+    .ck-pass { font-size:11px; color:#fff; display:none; }
+    .ck-fail { font-size:11px; color:var(--danger); display:none; }
+    .ck-skip { font-size:11px; color:var(--warning); display:none; }
+    .test-row.done .ck-pass { display:block; }
+    .test-row.failed .ck-fail { display:block; }
+    .test-row.skipped .ck-skip { display:block; }
+
+    .test-id { font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:600; color:var(--text-muted); flex-shrink:0; min-width:48px; padding-top:2px; }
+    .test-content { flex:1; min-width:0; }
+    .test-name { font-size:13px; font-weight:500; color:var(--text); line-height:1.4; }
+    .test-exp {
+      font-size:11px; color:var(--text-muted); margin-top:4px;
+      font-family:'JetBrains Mono',monospace;
+      background:var(--surface-2); border:1px solid var(--border);
+      border-radius:4px; padding:3px 7px; display:inline-block; max-width:100%;
+    }
+    .note-inline {
+      font-size:11px; color:#fbbf24; margin-top:4px; display:flex; gap:5px;
+    }
+    .demo-inline {
+      font-size:11px; color:#818cf8; margin-top:4px; display:flex; gap:5px;
+    }
+
+    .btns { display:flex; gap:4px; flex-shrink:0; }
+    .btn {
+      padding:3px 9px; border-radius:5px; font-size:11px; font-weight:700;
+      border:1px solid; cursor:pointer; font-family:'Inter',sans-serif;
+      transition:all 0.12s;
+    }
+    .btn-p { background:var(--success-bg); border-color:var(--success); color:var(--success); }
+    .btn-p:hover { background:var(--success); color:#000; }
+    .btn-f { background:var(--danger-bg); border-color:var(--danger); color:var(--danger); }
+    .btn-f:hover { background:var(--danger); color:#fff; }
+    .btn-s { background:var(--warning-bg); border-color:var(--warning); color:var(--warning); }
+    .btn-s:hover { background:var(--warning); color:#000; }
+
+    /* SUMMARY */
+    .summary-strip {
+      background:var(--surface-2); border:1px solid var(--border); border-radius:10px;
+      padding:14px 18px; display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:20px; gap:12px; flex-wrap:wrap;
+    }
+    .sum-num { font-size:22px; font-weight:800; }
+    .sum-lbl { font-size:11px; color:var(--text-muted); }
+    .prog-wrap { flex:1; min-width:180px; }
+    .prog-bar { height:7px; background:var(--border); border-radius:4px; overflow:hidden; margin-top:5px; }
+    .prog-fill { height:100%; background:linear-gradient(90deg,var(--primary),#8b5cf6); border-radius:4px; transition:width 0.5s ease; }
+    .prog-lbl { font-size:11px; color:var(--text-muted); display:flex; justify-content:space-between; }
+
+    /* CONTROLS */
+    .controls { display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap; align-items:center; }
+    .ctrl { padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; border:1px solid var(--border); cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.12s; }
+    .ctrl-pri { background:var(--primary); color:white; border-color:var(--primary); }
+    .ctrl-pri:hover { opacity:0.85; }
+    .ctrl-ghost { background:transparent; color:var(--text-dim); }
+    .ctrl-ghost:hover { background:var(--surface-2); color:var(--text); }
+    .filter-grp { display:flex; gap:5px; margin-left:auto; }
+    .filter { padding:5px 11px; border-radius:5px; font-size:11px; font-weight:600; border:1px solid var(--border); cursor:pointer; background:transparent; color:var(--text-muted); font-family:'Inter',sans-serif; transition:all 0.12s; }
+    .filter.active { background:var(--primary); border-color:var(--primary); color:white; }
+
+    /* HOW TO OPEN */
+    .how-box { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:20px; }
+    .how-title { font-size:13px; font-weight:700; margin-bottom:14px; }
+    .step-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; }
+    .step-card { background:var(--surface-2); border:1px solid var(--border); border-radius:8px; padding:12px; }
+    .step-num { width:20px; height:20px; border-radius:50%; background:var(--primary); color:white; font-size:10px; font-weight:800; display:flex; align-items:center; justify-content:center; margin-bottom:7px; }
+    .step-name { font-size:12px; font-weight:700; margin-bottom:3px; }
+    .step-desc { font-size:11px; color:var(--text-muted); line-height:1.5; }
+    .step-cmd { font-family:'JetBrains Mono',monospace; font-size:10px; background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:4px 7px; margin-top:7px; color:#4ade80; }
+    .tag { display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; margin-top:5px; }
+    .tag-ok { background:var(--success-bg); color:var(--success); }
+    .tag-warn { background:var(--warning-bg); color:var(--warning); }
+
+    /* SCOPE NOTE */
+    .scope-note {
+      background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.25);
+      border-radius:10px; padding:14px 18px; font-size:12.5px; color:#a5b4fc;
+      margin-bottom:18px; line-height:1.6;
+    }
+
+    /* DEMO NOTE */
+    .demo-note {
+      background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.25);
+      border-radius:10px; padding:14px 18px; font-size:12.5px; color:#fbbf24;
+      margin-bottom:18px; line-height:1.6;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">🛡️</div>
+    <div>
+      <div class="logo-text">FortisExam — QA Checklist</div>
+      <div class="logo-sub">Phase 1 + Phase 2a + Phase 2b + Phase 3 — Cloud Admin Portal + Desktop Kiosk</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <div class="phase-badge">✅ Phase 1 · 2a · 2b · 3 · 4 Complete</div>
+    <div class="header-stats">
+      <div class="stat-pill"><span class="stat-dot pulse pulse-green"></span><span id="p-pass">0</span> Pass</div>
+      <div class="stat-pill"><span class="stat-dot" style="background:var(--danger)"></span><span id="p-fail">0</span> Fail</div>
+      <div class="stat-pill"><span class="stat-dot" style="background:var(--text-muted)"></span><span id="p-pend">0</span> Pending</div>
+      <div class="ring-wrap">
+        <svg width="26" height="26" viewBox="0 0 26 26">
+          <circle cx="13" cy="13" r="10" fill="none" stroke="#252a3a" stroke-width="3"/>
+          <circle id="ring" cx="13" cy="13" r="10" fill="none" stroke="#6366f1"
+            stroke-width="3" stroke-linecap="round"
+            stroke-dasharray="0 62.83" transform="rotate(-90 13 13)"
+            style="transition:stroke-dasharray 0.5s ease"/>
+        </svg>
+        <span class="ring-label" id="pct">0%</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Scope banner -->
+<div class="scope-banner">
+  <span style="font-size:15px">📋</span>
+  <strong>Testing Scope:</strong>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 1 – Design System &amp; Routing</div>
+  <div class="scope-sep">|</div>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 2a – Dashboard, Question Bank, Question Editor</div>
+  <div class="scope-sep">|</div>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 2b – Exams, Packages, Distribution, Centers, Users</div>
+  <div class="scope-sep">|</div>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 3 — Desktop Kiosk (Auth, Exam, Submit)</div>
+  <div class="scope-sep">|</div>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 4 — Audit &amp; Monitoring Dashboard</div>
+  <div class="scope-sep">|</div>
+  <div class="scope-item"><span class="scope-check">✓</span> Phase 5 — Demo Polish (seed scripts, rehearsal)</div>
+</div>
+
+<!-- Service links -->
+<div class="services-bar">
+  <a href="http://localhost:8000/health" target="_blank" class="chip chip-cloud">
+    <span class="stat-dot pulse pulse-green"></span> Cloud API :8000
+  </a>
+  <a href="http://localhost:8000/docs" target="_blank" class="chip chip-cloud">📄 Swagger Docs</a>
+  <a href="http://localhost:5173" target="_blank" class="chip chip-web">
+    <span class="stat-dot pulse" style="background:#fbbf24"></span> Admin Portal :5173
+  </a>
+  <a href="http://localhost:8001/health" target="_blank" class="chip chip-cloud">
+    <span class="stat-dot pulse pulse-green"></span> Edge API :8001
+  </a>
+  <a href="http://localhost:5174" target="_blank" class="chip chip-web">
+    <span class="stat-dot pulse" style="background:#06b6d4"></span> Desktop Kiosk :5174
+  </a>
+</div>
+
+<div class="container">
+
+  <!-- HOW TO OPEN -->
+  <div class="how-box">
+    <div class="how-title">🚀 How to Start Everything Before Testing</div>
+    <div class="step-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-name">⚙️ Start Backend (Terminal 1)</div>
+        <div class="step-desc">From the project root <code>d:\DelhiHackathon</code>:</div>
+        <div class="step-cmd">python -m uvicorn server.app.main:app --host 0.0.0.0 --port 8000 --reload</div>
+        <span class="tag tag-ok">✅ Wait for "Application startup complete"</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-name">🌐 Start Frontend (Terminal 2)</div>
+        <div class="step-desc">From <code>d:\DelhiHackathon\web</code>:</div>
+        <div class="step-cmd">npm run dev</div>
+        <span class="tag tag-ok">✅ Wait for "ready in Xms"</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-name">🔑 Login via Clerk</div>
+        <div class="step-desc">Open the portal and log in. Use the account on profound-chow-40.clerk.accounts.dev</div>
+        <div class="step-cmd">http://localhost:5173</div>
+        <span class="tag tag-ok">✅ Keys pre-configured</span>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-name">📄 Swagger UI (API testing)</div>
+        <div class="step-desc">Test endpoints directly without going through the UI:</div>
+        <div class="step-cmd">http://localhost:8000/docs</div>
+        <span class="tag tag-warn">⚠️ Auth required for most routes</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- What to know before testing -->
+  <div class="demo-note">
+    <strong>⚠️ What to Know Before Testing Phase 2b:</strong><br>
+    The backend runs in <strong>SQLite mode</strong> (no Docker needed). Most Phase 2b pages show a <strong>yellow demo data banner</strong> because the backend stubs for create/list exams are not fully wired up yet.
+    This is <strong>expected behaviour</strong> — do not mark these as failures.<br><br>
+    Mark as <strong>FAIL</strong> only if: the page crashes, shows a blank white screen, has a broken layout, or a button that should open a modal doesn't.<br>
+    Mark as <strong>PASS</strong> if: demo data shows, the banner appears, modals open correctly, and buttons fire network requests (check browser DevTools Network tab).
+  </div>
+
+  <!-- Scope note -->
+  <div class="scope-note">
+    <strong>📌 Current Implementation State (Phases 1-5 Final):</strong><br>
+    <strong>Phase 1:</strong> CSS design system, Clerk auth gate, sidebar navigation, shared UI components, API client.<br>
+    <strong>Phase 2a:</strong> Dashboard (demo stats + real API attempt), Question Bank (search/filter), Question Editor.<br>
+    <strong>Phase 2b:</strong> Exam Builder (blueprint editor + compile + release key), Package Management (list + verify + download), Distribution (status timeline), Centers (full CRUD), Users (profile + sync).<br><br>
+    <strong>Phase 3, 4, 5:</strong> Fully implemented (Desktop Kiosk, Audit, Monitoring, TamperDemo, Seed Scripts).
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-strip">
+    <div><div class="sum-num" id="s-pass" style="color:var(--success)">0</div><div class="sum-lbl">Passed</div></div>
+    <div><div class="sum-num" id="s-fail" style="color:var(--danger)">0</div><div class="sum-lbl">Failed</div></div>
+    <div><div class="sum-num" id="s-skip" style="color:var(--warning)">0</div><div class="sum-lbl">Skipped</div></div>
+    <div class="prog-wrap">
+      <div class="prog-lbl"><span>Overall Progress</span><span id="prog-txt">0 / 0</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="ctrl ctrl-pri" onclick="expandAll()">Expand All</button>
+    <button class="ctrl ctrl-ghost" onclick="collapseAll()">Collapse All</button>
+    <button class="ctrl ctrl-ghost" onclick="resetAll()">🔄 Reset</button>
+    <button class="ctrl ctrl-ghost" onclick="exportReport()">📋 Copy Report</button>
+    <div class="filter-grp">
+      <button class="filter active" onclick="setFilter('all',this)">All</button>
+      <button class="filter" onclick="setFilter('pending',this)">Pending</button>
+      <button class="filter" onclick="setFilter('done',this)">Passed</button>
+      <button class="filter" onclick="setFilter('failed',this)">Failed</button>
+    </div>
+  </div>
+
+  <div id="tests-root"></div>
+
+</div>
+
+<script>
+const CATS = [
+  {
+    id:'infra', icon:'⚙️', title:'Infrastructure Check', color:'#6366f1',
+    sub:'Verify all servers are live before touching the UI',
+    tests:[
+      { id:'I-01', name:'Backend health check', exp:'GET http://localhost:8000/health → {"status":"ok","mode":"cloud or edge"}' },
+      { id:'I-02', name:'Admin portal loads at localhost:5173', exp:'Page loads — either Clerk login OR dashboard (not blank)' },
+      { id:'I-03', name:'Swagger docs accessible', exp:'http://localhost:8000/docs → interactive API docs load' },
+      { id:'I-04', name:'No console errors on initial load', exp:'Open DevTools (F12) → Console tab → no red errors on page load' },
+    ]
+  },
+  {
+    id:'auth', icon:'🔑', title:'Admin Login (Clerk)', color:'#8b5cf6',
+    sub:'Clerk publishable key is configured — login must work before any other test',
+    tests:[
+      { id:'A-01', name:'Open localhost:5173 without being logged in', exp:'Clerk SignIn screen appears (not a blank page or crash)' },
+      { id:'A-02', name:'Log in with valid Clerk credentials', exp:'Redirected to Dashboard (/)', note:'Use account on profound-chow-40.clerk.accounts.dev' },
+      { id:'A-03', name:'Try wrong password', exp:'Clerk shows error, stays on login' },
+      { id:'A-04', name:'Navigate directly to /exams without login', exp:'Redirected to Clerk login gate' },
+      { id:'A-05', name:'Sign out via profile menu', exp:'Session cleared, back to Clerk login' },
+      { id:'A-06', name:'Sign back in after signout', exp:'Dashboard loads again with full sidebar' },
+    ]
+  },
+  {
+    id:'nav', icon:'🗂️', title:'Navigation & Layout (Phase 1)', color:'#06b6d4',
+    sub:'Sidebar routing — all nav links must load the correct page without crashing',
+    tests:[
+      { id:'N-01', name:'Sidebar is visible after login', exp:'Dark left sidebar with all nav sections visible' },
+      { id:'N-02', name:'Click "Dashboard" in sidebar', exp:'/ — Dashboard page with stat cards renders' },
+      { id:'N-03', name:'Click "Question Bank" in sidebar', exp:'/questions — table or empty state loads' },
+      { id:'N-04', name:'Click "Exams" in sidebar', exp:'/exams — Exam Builder page renders (NOT a stub)' },
+      { id:'N-05', name:'Click "Packages" in sidebar', exp:'/packages — Package Management page renders' },
+      { id:'N-06', name:'Click "Distribution" in sidebar', exp:'/distribution — Distribution page renders' },
+      { id:'N-07', name:'Click "Centers" in sidebar', exp:'/centers — Center Management page renders' },
+      { id:'N-08', name:'Click "Users" in sidebar', exp:'/users — User & Role Management page renders' },
+      { id:'N-09', name:'Click "Audit" in sidebar', exp:'/audit — stub page (placeholder text OK)' },
+      { id:'N-10', name:'Click "Monitoring" in sidebar', exp:'/monitoring — stub page (placeholder text OK)' },
+      { id:'N-11', name:'Active nav item highlighted in sidebar', exp:'Current page link visually highlighted (different color)' },
+      { id:'N-12', name:'Browser back/forward buttons work', exp:'Navigation history works, no broken pages' },
+    ]
+  },
+  {
+    id:'dashboard', icon:'📊', title:'Admin Dashboard (Phase 2a)', color:'#22c55e',
+    sub:'Stats cards, activity feed, risk map — now wired to real /dashboard/stats endpoint',
+    tests:[
+      { id:'D-01', name:'Dashboard loads without crash', exp:'Page renders fully, no blank screen or JS error' },
+      { id:'D-02', name:'Four stat cards visible', exp:'Total Questions / Total Exams / Total Centers / Active Sessions' },
+      { id:'D-03', name:'Stats show real numbers from DB (if backend running)', exp:'Question count reflects actual DB count (not hardcoded 1,248)', note:'If backend is down, yellow demo banner shows — that is OK' },
+      { id:'D-04', name:'Recent Activity Feed has entries', exp:'List with type badges: SUCCESS / INFO / WARNING / CRYPTO' },
+      { id:'D-05', name:'Activity timestamps are human-readable', exp:'e.g. "2 minutes ago" or ISO timestamp' },
+      { id:'D-06', name:'Center Risk Map grid renders', exp:'Grid of center codes colored green/yellow/red by risk score' },
+      { id:'D-07', name:'"Live Monitor" button → /monitoring', exp:'Navigates to monitoring page' },
+      { id:'D-08', name:'"Compile Exam" quick action → /exams', exp:'Navigates to Exam Builder' },
+      { id:'D-09', name:'"View Full Log" link → /audit', exp:'Navigates to audit page' },
+    ]
+  },
+  {
+    id:'questions', icon:'📝', title:'Question Bank — List (Phase 2a)', color:'#f59e0b',
+    sub:'Table load, search, filters, delete confirm, encrypted badge',
+    tests:[
+      { id:'Q-01', name:'Navigate to /questions', exp:'Page loads — table OR empty state (no crash)' },
+      { id:'Q-02', name:'Table columns visible', exp:'Q.ID / Subject / Difficulty / Status / Created / Actions — all 6 columns' },
+      { id:'Q-03', name:'"🔒 ENCRYPTED" badge shows on question rows', exp:'Lock icon + "ENCRYPTED" text badge on each row' },
+      { id:'Q-04', name:'Stats sidebar visible on right', exp:'Donut chart, difficulty breakdown, Security Status panel' },
+      { id:'Q-05', name:'Search box filters questions in real-time', exp:'Typing "Physics" filters table to matching rows' },
+      { id:'Q-06', name:'Subject filter dropdown works', exp:'Select "Chemistry" → only chemistry questions shown' },
+      { id:'Q-07', name:'Difficulty filter dropdown works', exp:'Select "Hard" → only hard questions shown' },
+      { id:'Q-08', name:'Clear button resets all filters', exp:'"Clear" button appears when filter active, clicking resets' },
+      { id:'Q-09', name:'Empty state when no questions match filter', exp:'"No questions found" message with Add button' },
+      { id:'Q-10', name:'Click edit icon on a row', exp:'Navigates to /questions/{id}/edit with pre-filled form' },
+      { id:'Q-11', name:'Click delete icon → confirm dialog', exp:'Modal: "This question will be permanently removed"' },
+      { id:'Q-12', name:'Confirm delete removes question from list', exp:'Question disappears from table' },
+      { id:'Q-13', name:'Cancel delete leaves question in list', exp:'Question stays, modal closes cleanly' },
+    ]
+  },
+  {
+    id:'editor', icon:'✏️', title:'Question Editor — Create & Save (Phase 2a, fixed in 2b)', color:'#ec4899',
+    sub:'The Save button is now fixed — options send as {A,B,C,D} dict to backend',
+    tests:[
+      { id:'E-01', name:'Navigate to /questions/new', exp:'Question editor opens with empty form' },
+      { id:'E-02', name:'Fill in Question Text field', exp:'Text input accepts content' },
+      { id:'E-03', name:'Fill in all 4 options (A, B, C, D)', exp:'All 4 option fields accept text' },
+      { id:'E-04', name:'Select correct answer (click A/B/C/D button)', exp:'Selected option highlighted, others not' },
+      { id:'E-05', name:'Choose Subject and Difficulty', exp:'Dropdowns change value correctly' },
+      { id:'E-06', name:'SHA-256 hash updates live as you type', exp:'Hash display changes as question text is entered', note:'This works purely in frontend — no backend needed' },
+      { id:'E-07', name:'Click "Save & Encrypt" — check DevTools Network', exp:'POST /api/v1/questions/ fires with body: {options: {A,B,C,D}, correct_option: "B"}', note:'Look at the Request Payload in Network tab' },
+      { id:'E-08', name:'If backend running: question saves', exp:'Success toast, navigates back to question list' },
+      { id:'E-09', name:'Edit existing question: /questions/{id}/edit', exp:'Form pre-populated with existing data' },
+      { id:'E-10', name:'Save edited question', exp:'PUT /api/v1/questions/{id} fires with updated data' },
+    ]
+  },
+  {
+    id:'exams', icon:'📋', title:'Exam Builder — Phase 2b', color:'#6366f1',
+    sub:'Create exam blueprints, compile, release AES key to center',
+    tests:[
+      { id:'EX-01', name:'Navigate to /exams — page renders (not stub)', exp:'Full page with stat cards, table, "New Exam" button — NOT "coming soon"' },
+      { id:'EX-02', name:'Demo exams show in table (4 rows)', exp:'JEE Mains Mock, NEET, UPSC, JEE Advanced rows visible', note:'Yellow "Showing demo data" banner is expected' },
+      { id:'EX-03', name:'Stat cards at top: Total / Draft / Compiled / Active', exp:'All 4 stat cards visible with correct counts from demo data' },
+      { id:'EX-04', name:'Click "New Exam" button → modal opens', exp:'Create Exam Blueprint modal appears with all fields' },
+      { id:'EX-05', name:'Blueprint builder: fill Name, Date, Duration', exp:'All 3 inputs accept values' },
+      { id:'EX-06', name:'Add a blueprint row (Add Row button)', exp:'New row appears in the table with Subject/Difficulty/Count dropdowns' },
+      { id:'EX-07', name:'Delete a blueprint row (trash icon)', exp:'Row removed; cannot delete last row (button disabled)' },
+      { id:'EX-08', name:'Total questions count updates as you change row counts', exp:'"X total questions" label updates in real time' },
+      { id:'EX-09', name:'Click "Create Exam" — network request fires', exp:'POST /api/v1/exams/ fires (stub — error expected, not a real failure)' },
+      { id:'EX-10', name:'DRAFT exam row has "Compile" button', exp:'"Compile" button visible in actions for JEE Advanced (DRAFT)' },
+      { id:'EX-11', name:'COMPILED/DISTRIBUTED exam row has "Release Key" button', exp:'"Release Key" button visible in actions for NEET (DISTRIBUTED)' },
+      { id:'EX-12', name:'Click "Release Key" → modal opens', exp:'Release Exam Key modal appears with warning alert + PEM textarea' },
+      { id:'EX-13', name:'Release Key modal shows warning alert', exp:'Orange "This action releases the AES decryption key..." warning visible' },
+      { id:'EX-14', name:'Pipeline legend visible at bottom', exp:'DRAFT → COMPILED → DISTRIBUTED → KEY_RELEASED → ACTIVE → COMPLETED badges' },
+    ]
+  },
+  {
+    id:'packages', icon:'📦', title:'Package Management — Phase 2b', color:'#8b5cf6',
+    sub:'List encrypted packages, verify RSA signatures, download encrypted payloads',
+    tests:[
+      { id:'PK-01', name:'Navigate to /packages — page renders', exp:'Package registry with stat cards and table (not stub)' },
+      { id:'PK-02', name:'3 demo packages visible in table', exp:'pkg-aab1, pkg-bbc2, pkg-ccd3 rows with status badges' },
+      { id:'PK-03', name:'Stat cards: Total / Generated / Distributed / Activated', exp:'All 4 cards visible' },
+      { id:'PK-04', name:'Info alert about AES-256-GCM + RSA-2048 PSS visible', exp:'Blue info box present below stat cards' },
+      { id:'PK-05', name:'Package IDs shown in monospace font (truncated)', exp:'ID shown as "pkg-aab1…" in JetBrains Mono style' },
+      { id:'PK-06', name:'Status badges correct for each package', exp:'pkg-aab1=activated(green), pkg-bbc2=distributed(yellow), pkg-ccd3=generated(blue)' },
+      { id:'PK-07', name:'Click "Verify" on a package — network fires', exp:'POST /api/v1/packages/{id}/verify fires (check Network tab)' },
+      { id:'PK-08', name:'Verify result card appears at bottom', exp:'Green "Valid" or Red "Tampered" card appears with hash and timestamp' },
+      { id:'PK-09', name:'After verify — button changes to badge', exp:'"Verify" button replaced by Valid/Tampered badge in that row' },
+      { id:'PK-10', name:'Download icon (⬇) triggers download attempt', exp:'Network request to GET /api/v1/packages/{id}/download fires' },
+      { id:'PK-11', name:'Refresh button reloads the list', exp:'Refresh icon button works, list reloads' },
+    ]
+  },
+  {
+    id:'distribution', icon:'🚚', title:'Distribution & Key Release — Phase 2b', color:'#f59e0b',
+    sub:'Track package delivery status per center with visual progress timeline',
+    tests:[
+      { id:'DI-01', name:'Navigate to /distribution — page renders', exp:'Full Distribution & Key Release page (not stub)' },
+      { id:'DI-02', name:'4 stat cards: Total / Generated / Distributed / Keys Released', exp:'All 4 stat cards visible' },
+      { id:'DI-03', name:'Blue info alert about key release process', exp:'"To release a key...go to Exam Builder" info box visible' },
+      { id:'DI-04', name:'Table shows packages with center names', exp:'Delhi Exam Hub / Mumbai Central / Bangalore Hub rows visible' },
+      { id:'DI-05', name:'Progress column shows visual timeline', exp:'3 circles connected by lines — filled circles = completed stages' },
+      { id:'DI-06', name:'activated package: all 3 circles filled', exp:'pkg-aab1 (Delhi) — all 3 circles purple/primary color' },
+      { id:'DI-07', name:'generated package: only first circle filled', exp:'pkg-ccd3 (Bangalore) — only leftmost circle filled' },
+      { id:'DI-08', name:'Workflow guide card visible at bottom', exp:'3 cards: 1. Generate, 2. Distribute, 3. Release Key' },
+      { id:'DI-09', name:'Refresh button works', exp:'Refresh icon button reloads the list' },
+    ]
+  },
+  {
+    id:'centers', icon:'🏢', title:'Center Management — Phase 2b', color:'#22c55e',
+    sub:'Full CRUD — create, edit, delete centers with search and risk score bars',
+    tests:[
+      { id:'CE-01', name:'Navigate to /centers — page renders', exp:'Center Management page with 4 stat cards and table' },
+      { id:'CE-02', name:'5 demo centers visible in table', exp:'Delhi / Mumbai / Bangalore / Chennai / Pune rows' },
+      { id:'CE-03', name:'Stat cards: Total / Active / Exam Assigned / Total Seats', exp:'All 4 stat cards with correct demo values (5 centers, 1000 total seats)' },
+      { id:'CE-04', name:'Risk Score column shows progress bar', exp:'Coloured bar: green (low) / yellow (medium) / red (high)' },
+      { id:'CE-05', name:'Chennai shows red/high risk bar', exp:'Chennai has score 0.21 → red bar with "High" label' },
+      { id:'CE-06', name:'Search box filters by city or name', exp:'Typing "Mumbai" filters to 1 row; "Pune" → 1 row' },
+      { id:'CE-07', name:'Clear search shows all centers again', exp:'Erasing search text restores all 5 rows' },
+      { id:'CE-08', name:'Click "Add Center" → modal opens', exp:'Add Exam Center modal appears with Name/City/State/Seats/Address fields' },
+      { id:'CE-09', name:'Fill modal and click "Add Center"', exp:'Demo mode warning shows; after ~600ms success, modal closes' },
+      { id:'CE-10', name:'Click edit icon (✏️) on any row', exp:'Edit modal opens pre-populated with that center\'s data' },
+      { id:'CE-11', name:'State dropdown has Indian states', exp:'Dropdown includes Delhi, Maharashtra, Karnataka, Tamil Nadu, etc.' },
+      { id:'CE-12', name:'Click delete icon (🗑️) on any row', exp:'"Delete Center" confirm dialog appears' },
+      { id:'CE-13', name:'Confirm delete → row disappears from table', exp:'Center removed from displayed list' },
+      { id:'CE-14', name:'Cancel delete → center stays in list', exp:'Nothing changes when Cancel clicked' },
+    ]
+  },
+  {
+    id:'users', icon:'👥', title:'User & Role Management — Phase 2b', color:'#ef4444',
+    sub:'Current user profile, team table, sync user modal, role guide',
+    tests:[
+      { id:'U-01', name:'Navigate to /users — page renders', exp:'User & Role Management page with 5 stat cards (one per role)' },
+      { id:'U-02', name:'5 role stat cards visible', exp:'Admin / Expert / Center Admin / Invigilator / Auditor count cards' },
+      { id:'U-03', name:'Your profile card renders', exp:'Avatar circle with your initial, name, email, role badge visible' },
+      { id:'U-04', name:'Your role badge has correct color', exp:'admin=red, expert=purple, center_admin=blue, invigilator=yellow, auditor=green' },
+      { id:'U-05', name:'Team Members table shows Harsh + Ayaan', exp:'2 rows: Harsh Bhavsar (admin) and Ayaan Goel (expert)' },
+      { id:'U-06', name:'Role badges in table have correct colors and icons', exp:'Crown icon for admin, Settings icon for expert, etc.' },
+      { id:'U-07', name:'Click "Sync User" button → modal opens', exp:'Sync User Role modal with Clerk User ID / Name / Role fields' },
+      { id:'U-08', name:'Role selector in modal has all 5 roles', exp:'admin / expert / center_admin / invigilator / auditor options' },
+      { id:'U-09', name:'Role description updates when role changes', exp:'Selecting "auditor" shows "Read-only access to audit trail" description' },
+      { id:'U-10', name:'Role Permissions card at bottom', exp:'5 tiles — one per role with description of what each can do' },
+      { id:'U-11', name:'Fill sync form and submit', exp:'POST /api/v1/users/sync fires (check Network tab)' },
+    ]
+  },
+  {
+    id:'kiosk-infra', icon:'🖥️', title:'Desktop Kiosk Infra — Phase 3', color:'#06b6d4',
+    sub:'Edge server + desktop app must both be running before kiosk tests',
+    tests:[
+      { id:'KI-01', name:'Edge server starts on port 8001', exp:'$env:SERVER_MODE="edge"; uvicorn ... --port 8001 → "Application startup complete"', note:'Run with SERVER_MODE=edge' },
+      { id:'KI-02', name:'Edge health check responds', exp:'GET http://localhost:8001/health → {"status":"ok","mode":"edge"}' },
+      { id:'KI-03', name:'Desktop Vite dev server starts on 5174', exp:'cd desktop; npm run dev → "ready in Xms" on port 5174' },
+      { id:'KI-04', name:'Desktop app loads in browser', exp:'http://localhost:5174 → FortisExam Kiosk auth page (not blank)' },
+      { id:'KI-05', name:'Edge Swagger docs accessible', exp:'http://localhost:8001/docs → shows Auth, Exam, Recovery, Monitoring routes' },
+    ]
+  },
+  {
+    id:'kiosk-auth', icon:'🔐', title:'Kiosk Auth Flow (QR + Face) — Phase 3', color:'#8b5cf6',
+    sub:'Dual-factor candidate authentication via edge server',
+    tests:[
+      { id:'KA-01', name:'Auth page shows "Connecting to Edge Server..." initially', exp:'Spinner + text while health check runs' },
+      { id:'KA-02', name:'If edge server is DOWN, error state shows', exp:'"Cannot connect to Edge Server" error with alert' },
+      { id:'KA-03', name:'If edge server is UP, QR scan step appears', exp:'Step 1 of 2 badge, QR frame with scanning animation' },
+      { id:'KA-04', name:'QR frame has animated scan line', exp:'Blue gradient line sweeps vertically inside the QR box' },
+      { id:'KA-05', name:'"[Simulate Scan]" button works', exp:'Clicking it fills QR data and advances to face verify step' },
+      { id:'KA-06', name:'Face verification step shows webcam feed', exp:'Step 2 of 2 badge, live video from webcam, face guide overlay' },
+      { id:'KA-07', name:'Face guide oval is visible over webcam', exp:'Dashed purple oval animation over the video feed' },
+      { id:'KA-08', name:'"Capture & Authenticate" button fires API call', exp:'POST /api/v1/auth/authenticate fires (check Network tab)', note:'Will likely 500 without real RSA keys — that is expected' },
+      { id:'KA-09', name:'"Go Back" returns to QR scan step', exp:'Webcam stops, QR scanner step reappears' },
+      { id:'KA-10', name:'Error state shows on auth failure', exp:'Red ✗ circle, error message, "Try Again" button' },
+    ]
+  },
+  {
+    id:'kiosk-exam', icon:'📝', title:'Kiosk Exam Execution — Phase 3', color:'#22c55e',
+    sub:'Question display, MCQ selection, timer, navigation palette, auto-save',
+    tests:[
+      { id:'KE-01', name:'Exam page loads after successful auth', exp:'Header with exam title, timer ring, question content area', note:'Requires a valid edge session — use mock data if needed' },
+      { id:'KE-02', name:'Question palette visible on left sidebar', exp:'Grid of numbered pills (1, 2, 3...) with color legend' },
+      { id:'KE-03', name:'Clicking a pill jumps to that question', exp:'Question content updates to match selected number' },
+      { id:'KE-04', name:'4 MCQ option buttons (A/B/C/D) visible', exp:'Each option has a letter circle and text content' },
+      { id:'KE-05', name:'Clicking an option highlights it (purple)', exp:'Selected option gets purple border + glow, letter circle fills' },
+      { id:'KE-06', name:'Answered questions turn green in palette', exp:'Pill changes to green after selecting an option' },
+      { id:'KE-07', name:'Flag for Review button works', exp:'Clicking "🏁 Flag" changes pill to yellow, button text toggles' },
+      { id:'KE-08', name:'Previous / Next buttons navigate questions', exp:'Clicking Next advances index, Previous goes back' },
+      { id:'KE-09', name:'Timer countdown is visible', exp:'SVG ring with MM:SS countdown, changes to orange under 5 min' },
+      { id:'KE-10', name:'"Review & Submit Exam" button navigates to summary', exp:'Clicking it goes to /summary page' },
+      { id:'KE-11', name:'Subject and Difficulty badges shown per question', exp:'Small tags like "PHYSICS" and "MEDIUM" above the question' },
+      { id:'KE-12', name:'Answer selection fires POST /exam/answer', exp:'Check Network tab — auto-save fires on each click' },
+    ]
+  },
+  {
+    id:'kiosk-submit', icon:'✅', title:'Kiosk Summary & Submission — Phase 3', color:'#f59e0b',
+    sub:'Review panel, final submit, completion hash display',
+    tests:[
+      { id:'KS-01', name:'Summary page shows answered/unanswered counts', exp:'Table with Candidate Name, Exam, Total, Answered, Unanswered' },
+      { id:'KS-02', name:'"Return to Exam" button goes back to /exam', exp:'Navigates back without losing answers' },
+      { id:'KS-03', name:'Unanswered warning shows if count > 0', exp:'Orange text: "Warning: You have X unanswered questions"' },
+      { id:'KS-04', name:'"Confirm Submission" button fires POST /exam/submit', exp:'Spinner shows, then navigates to /complete' },
+      { id:'KS-05', name:'Complete page shows success check circle', exp:'Green ✓ circle with "Exam Completed" heading' },
+      { id:'KS-06', name:'Submission hash is displayed on complete page', exp:'Long hex string in monospace font under "Submission Hash (Proof)"' },
+      { id:'KS-07', name:'"Return to Login" resets to auth page', exp:'Navigates to / and localStorage session is cleared' },
+      { id:'KS-08', name:'After completion, going to /exam redirects to /', exp:'ProtectedRoute guard kicks in — no exam access without session' },
+    ]
+  },
+  {
+    id:'audit', icon:'🔗', title:'Audit Explorer — Phase 4', color:'#6366f1',
+    sub:'Hash-chained event log, chain verification, JSON/CSV export',
+    tests:[
+      { id:'AU-01', name:'Navigate to /audit — page renders', exp:'4 stat cards (Total Events, Sequence, Chain Status, Latest Hash) + event table visible' },
+      { id:'AU-02', name:'Events table has data', exp:'7 demo events visible (or real events if backend running)' },
+      { id:'AU-03', name:'Click a table row — expands', exp:'Row expands showing full hash, payload JSON, event ID, and timestamp' },
+      { id:'AU-04', name:'Click again to collapse row', exp:'Row collapses back to single line' },
+      { id:'AU-05', name:'Event Type filter dropdown works', exp:'Select "ANOMALY_DETECTED" → table filters to only those events' },
+      { id:'AU-06', name:'Search box filters events', exp:'Type "CANDIDATE" → matching rows shown' },
+      { id:'AU-07', name:'Clear button resets filters', exp:'All events show again after click' },
+      { id:'AU-08', name:'Switch to "Chain Verification" tab', exp:'Verification panel renders with description and Verify Chain button' },
+      { id:'AU-09', name:'Click "Verify Chain" button', exp:'Result card appears: green ✅ Valid OR red ❌ Broken with details' },
+      { id:'AU-10', name:'Verification result shows total + verified count', exp:'Stat boxes inside result card (total events, verified events)' },
+      { id:'AU-11', name:'Hash chain visualization below verify', exp:'Last 5 events shown as chain nodes connected by vertical line' },
+      { id:'AU-12', name:'Switch to "Export" tab', exp:'Export form renders with Exam ID input + JSON/CSV format radios' },
+      { id:'AU-13', name:'Enter exam ID + click Download', exp:'File download triggers (.json or .csv)' },
+      { id:'AU-14', name:'Demo banner shows if backend down', exp:'Yellow "Demo Mode" banner at top of page' },
+    ]
+  },
+  {
+    id:'monitoring', icon:'📡', title:'Live Monitoring — Phase 4', color:'#ef4444',
+    sub:'Real-time security event feed — severity tabs, acknowledge, session panel',
+    tests:[
+      { id:'MO-01', name:'Navigate to /monitoring — page renders', exp:'4 stat cards + event feed cards visible (no white screen)' },
+      { id:'MO-02', name:'Stat cards show counts', exp:'Active Sessions / Total Alerts / Unacknowledged / Critical+High — all 4 visible' },
+      { id:'MO-03', name:'Event feed shows demo events', exp:'Cards with colored severity badge, alert type icon, candidate info, timestamp' },
+      { id:'MO-04', name:'Severity tabs visible with counts', exp:'All / Critical / High / Medium / Low — tabs with count badges' },
+      { id:'MO-05', name:'Click "Critical" tab filters feed', exp:'Feed shows only CRITICAL severity events' },
+      { id:'MO-06', name:'Click "Acknowledge" on an event', exp:'Button disappears instantly, "Acknowledged ✓" label appears' },
+      { id:'MO-07', name:'Active Sessions panel on right', exp:'5 session buttons with initial avatar circles and red alert count badges' },
+      { id:'MO-08', name:'Click a session button filters feed', exp:'Event feed filters to only that session events; button highlights' },
+      { id:'MO-09', name:'"Clear Session Filter" button works', exp:'Click removes filter, all events show again' },
+      { id:'MO-10', name:'Alert Breakdown by Severity card', exp:'4 progress bars (CRITICAL/HIGH/MEDIUM/LOW) with percentages' },
+      { id:'MO-11', name:'By Alert Type card visible', exp:'Icons + counts for Multiple Faces, No Face, Gaze Deviation etc.' },
+      { id:'MO-12', name:'Auto-refresh toggle button works', exp:'Toggle: "Auto (15s)" ↔ "Manual" — button appearance changes' },
+      { id:'MO-13', name:'Last refresh timestamp visible', exp:'"HH:MM:SS" shown next to page header' },
+      { id:'MO-14', name:'Demo banner shows when no real events', exp:'Yellow "Demo Mode" banner at top' },
+      { id:'MO-15', name:'A7f: Click "Details" on any event card', exp:'Side drawer slides in from right with full event context (no page reload)' },
+      { id:'MO-16', name:'A7f: Drawer shows severity badge + acknowledged status', exp:'Correct color badge + "Acknowledged ✓" or red "Unacknowledged" badge' },
+      { id:'MO-17', name:'A7f: Detection Details grid in drawer', exp:'Key-value rows for face_count, gaze_yaw, message, etc.' },
+      { id:'MO-18', name:'A7f: Evidence Hash shown in drawer', exp:'Monospace hash string or "logged in audit chain" placeholder' },
+      { id:'MO-19', name:'A7f: Acknowledge in drawer works', exp:'"Acknowledge Alert" button disappears, "Acknowledged ✓" label appears in event list too (optimistic)' },
+      { id:'MO-20', name:'A7f: Supervisor Override from drawer', exp:'Click "Supervisor Override" inside drawer → modal opens pre-filled with candidate + session IDs' },
+      { id:'MO-21', name:'D3: Supervisor Override modal from header', exp:'Header "Supervisor Override" button → modal opens with empty candidate/session fields' },
+      { id:'MO-22', name:'D3: Submit override with all required fields', exp:'"Override Submitted" success screen appears with green check circle' },
+      { id:'MO-23', name:'D3: Submit disabled when fields empty', exp:'Submit button is disabled (greyed) if Invigilator ID or Reason is blank' },
+    ]
+  },
+  {
+    id:'tamper', icon:'🔒', title:'Tamper Detection Demo — Phase 4', color:'#8b5cf6',
+    sub:'Interactive step-through: log → tamper → verify → broken chain proof',
+    tests:[
+      { id:'TD-01', name:'Navigate to /tamper — page renders', exp:'4 stat cards + 4-step visual stepper visible' },
+      { id:'TD-02', name:'4-step visual stepper visible', exp:'Steps 1-4 shown with circles and connecting lines' },
+      { id:'TD-03', name:'Step 1: Configure Event form visible', exp:'Actor ID / Exam ID / Question Content inputs' },
+      { id:'TD-04', name:'Click "Log Event to Chain"', exp:'Step 2 advances, success alert shows "Event logged! Sequence #X hash: ..."' },
+      { id:'TD-05', name:'Step 2: Tampering scenario visible', exp:'Red "Adversary Attack" box with diff showing old/new payload' },
+      { id:'TD-06', name:'Click "Verify Chain Integrity"', exp:'Spinner shows briefly, then result card appears' },
+      { id:'TD-07', name:'Result shows Tampering Detected (demo)', exp:'❌ Red card: "Tampering Detected!" with sequence number, verified count, failure reason' },
+      { id:'TD-08', name:'"Reset Demo" button works', exp:'All steps reset to Step 1 configuration' },
+      { id:'TD-09', name:'"How Hash Chaining Works" sidebar', exp:'4 explanation cards with icons: Event Logged / Chain Linked / Verification / Tamper Alert' },
+    ]
+  },
+  {
+    id:'phase3_kiosk', icon:'💻', title:'Phase 3: Edge Kiosk App', color:'#ef4444',
+    sub:'Offline-first Electron-based Kiosk for candidates',
+    tests:[
+      { id:'K-01', name:'Kiosk loads without crashing', exp:'React app runs on localhost:5174 or Desktop build' },
+      { id:'K-02', name:'QR Verification via Supervisor Override', exp:'Auth succeeds with Edge Server and session is created' },
+      { id:'K-03', name:'Exam loads successfully', exp:'Candidate name, Exam title, and all questions load without error' },
+      { id:'K-04', name:'Questions are decrypted', exp:'Questions display text and options correctly (no Corrupted Data errors)' },
+      { id:'K-05', name:'Can select options', exp:'Selecting options A, B, C, D visually highlights them' },
+      { id:'K-06', name:'Answer is autosaved to Edge', exp:'Edge API logs `POST /exam/answer` with 200 OK' },
+      { id:'K-07', name:'Next / Previous navigation', exp:'Can cycle through all questions' },
+      { id:'K-08', name:'Final Exam Submission', exp:'Submitting completes the exam, creates a final submission hash, and redirects to Summary' },
+      { id:'K-09', name:'Summary View', exp:'Shows candidate info, completion time, and verified hash' }
+    ]
+  },
+];
+
+let state = {};
+let filter = 'all';
+
+function load() { 
+  try { 
+    const s = localStorage.getItem('fqa-v4'); 
+    if(s) state = JSON.parse(s); 
+  } catch(e){} 
+  // Auto-mark Phase 1 and 2a as done for testing continuation
+  CATS.forEach(c => {
+    if (['infra', 'auth', 'nav', 'dashboard', 'questions', 'editor'].includes(c.id)) {
+       c.tests.forEach(t => state[t.id] = 'done');
+    }
+  });
+  save();
+}
+function save() { localStorage.setItem('fqa-v4', JSON.stringify(state)); }
+function get(id) { return state[id] || 'pending'; }
+function set(id, s) {
+  if (get(id) === s) delete state[id]; else state[id] = s;
+  save(); render();
+}
+
+function render() {
+  const root = document.getElementById('tests-root');
+  root.innerHTML = '';
+  let total=0, pass=0, fail=0, skip=0;
+
+  CATS.forEach(cat => {
+    let cp=0, cf=0, cs=0;
+    cat.tests.forEach(t => {
+      const s = get(t.id);
+      total++;
+      if(s==='done'){cp++;pass++;} if(s==='failed'){cf++;fail++;} if(s==='skipped'){cs++;skip++;}
+    });
+    const ratio = cp/cat.tests.length;
+    const isCol = localStorage.getItem('col-'+cat.id)==='1';
+
+    const tests = cat.tests.filter(t => {
+      const s=get(t.id);
+      if(filter==='all') return true;
+      if(filter==='pending') return s==='pending';
+      if(filter==='done') return s==='done';
+      if(filter==='failed') return s==='failed';
+      return true;
+    });
+
+    const el = document.createElement('div');
+    el.className = 'category'+(isCol?' collapsed':'');
+    el.dataset.id = cat.id;
+
+    el.innerHTML = `
+      <div class="cat-header" onclick="toggleCat('${cat.id}')">
+        <div class="cat-left">
+          <div class="cat-icon" style="background:${cat.color}22">${cat.icon}</div>
+          <div><div class="cat-title">${cat.title}</div><div class="cat-sub">${cat.sub}</div></div>
+        </div>
+        <div class="cat-right">
+          <div class="cat-pbar"><div class="cat-pfill" style="width:${Math.round(ratio*100)}%;background:${cat.color}"></div></div>
+          <div class="cat-count" style="color:${cat.color}">${cp}/${cat.tests.length}</div>
+          <div class="chevron">▼</div>
+        </div>
+      </div>
+      <div class="test-list">
+        ${tests.length===0 ? '<div style="padding:12px 18px;color:var(--text-muted);font-size:12px">No tests match filter.</div>' :
+          tests.map(t => {
+            const s=get(t.id);
+            return `<div class="test-row ${s}">
+              <div class="checkbox"><span class="ck-pass">✓</span><span class="ck-fail">✗</span><span class="ck-skip">–</span></div>
+              <div class="test-id">#${t.overall_idx.toString().padStart(3, '0')}<br>${t.id}</div>
+              <div class="test-content">
+                <div class="test-name">${t.name}</div>
+                <div class="test-exp">${t.exp}</div>
+                ${t.note ? `<div class="note-inline">💡 ${t.note}</div>` : ''}
+              </div>
+              <div class="btns">
+                <button class="btn btn-p" onclick="set('${t.id}','done')">✓ Pass</button>
+                <button class="btn btn-f" onclick="set('${t.id}','failed')">✗ Fail</button>
+                <button class="btn btn-s" onclick="set('${t.id}','skipped')">– Skip</button>
+              </div>
+            </div>`;
+          }).join('')
+        }
+      </div>
+    `;
+    root.appendChild(el);
+  });
+
+  const pend = total-pass-fail-skip;
+  document.getElementById('p-pass').textContent = pass;
+  document.getElementById('p-fail').textContent = fail;
+  document.getElementById('p-pend').textContent = pend;
+  document.getElementById('s-pass').textContent = pass;
+  document.getElementById('s-fail').textContent = fail;
+  document.getElementById('s-skip').textContent = skip;
+  document.getElementById('prog-txt').textContent = `${pass+fail+skip} / ${total}`;
+
+  const pct = total>0 ? Math.round((pass/total)*100) : 0;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('pct').textContent = pct+'%';
+  const circ = 62.83;
+  document.getElementById('ring').setAttribute('stroke-dasharray', `${(pass/total||0)*circ} ${circ}`);
+}
+
+function toggleCat(id) {
+  const el = document.querySelector(`[data-id="${id}"]`);
+  el.classList.toggle('collapsed');
+  localStorage.setItem('col-'+id, el.classList.contains('collapsed')?'1':'0');
+}
+function expandAll() { CATS.forEach(c => { const e=document.querySelector(`[data-id="${c.id}"]`); if(e) e.classList.remove('collapsed'); localStorage.setItem('col-'+c.id,'0'); }); }
+function collapseAll() { CATS.forEach(c => { const e=document.querySelector(`[data-id="${c.id}"]`); if(e) e.classList.add('collapsed'); localStorage.setItem('col-'+c.id,'1'); }); }
+function resetAll() { if(!confirm('Reset all to pending?')) return; state={}; save(); render(); }
+function setFilter(f,btn) { filter=f; document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(); }
+function exportReport() {
+  let lines=['FortisExam Test Report (Phases 1-5 Final) — '+new Date().toLocaleString(),''];
+  let p=0,f=0,s=0,tot=0;
+  CATS.forEach(c => {
+    lines.push('=== '+c.title+' ===');
+    c.tests.forEach(t => {
+      const st=get(t.id);
+      const ic=st==='done'?'✅':st==='failed'?'❌':st==='skipped'?'⏭️':'⬜';
+      lines.push(`  ${ic} #${t.overall_idx.toString().padStart(3, '0')} [${t.id}] ${t.name}`);
+      tot++; if(st==='done')p++; if(st==='failed')f++; if(st==='skipped')s++;
+    });
+    lines.push('');
+  });
+  lines.push(`Summary: ${p} passed, ${f} failed, ${s} skipped, ${tot-p-f-s} pending of ${tot} total`);
+  navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Copied to clipboard!'));
+}
+
+let globalCounter = 1;
+CATS.forEach(c => {
+  c.tests.forEach(t => {
+    t.overall_idx = globalCounter++;
+  });
+});
+
+load(); render();
+</script>
+</body>
+</html>
