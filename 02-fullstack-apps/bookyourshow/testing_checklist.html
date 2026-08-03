@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BookYourShow — Test Suite v2.0</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+  :root {
+    --bg: #070b14;
+    --surface: #0f1828;
+    --surface2: #182135;
+    --border: rgba(255,255,255,0.07);
+    --brand: #6d28d9;
+    --brand2: #7c3aed;
+    --accent: #db2777;
+    --pass: #10b981;
+    --fail: #ef4444;
+    --skip: #f59e0b;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
+
+  /* ── Header ── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(7,11,20,0.92); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  .logo { font-size: 18px; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .badge { font-size: 11px; background: var(--surface2); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--muted); }
+  .badge-new { background: rgba(109,40,217,0.2); border-color: rgba(109,40,217,0.4); color: #a78bfa; }
+  .score-strip { display: flex; align-items: center; gap: 20px; }
+  .score-item { text-align: center; }
+  .score-num { font-size: 22px; font-weight: 800; }
+  .score-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .score-pass { color: var(--pass); }
+  .score-fail { color: var(--fail); }
+  .score-skip { color: var(--skip); }
+  .header-actions { display: flex; gap: 8px; }
+  .btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: opacity .15s; }
+  .btn:hover { opacity: .85; }
+  .btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+  .btn-primary { background: var(--brand); color: #fff; }
+  .btn-danger { background: #7f1d1d; color: #fca5a5; border: 1px solid #991b1b; }
+
+  /* ── Overall progress ── */
+  .global-progress {
+    padding: 12px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--surface2); border-radius: 99px; overflow: hidden; display: flex; gap: 2px; }
+  .progress-seg { height: 100%; transition: width .4s ease; }
+  .progress-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+  /* ── Layout ── */
+  .container { max-width: 960px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  /* ── Module card ── */
+  .module { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; }
+  .module-header {
+    padding: 16px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; user-select: none;
+    border-bottom: 1px solid var(--border);
+    transition: background .15s;
+  }
+  .module-header:hover { background: var(--surface2); }
+  .module-title { display: flex; align-items: center; gap: 10px; }
+  .module-icon { font-size: 18px; }
+  .module-name { font-weight: 700; font-size: 15px; }
+  .module-meta { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .module-right { display: flex; align-items: center; gap: 12px; }
+  .module-prog { font-size: 12px; color: var(--muted); }
+  .mini-bar { width: 80px; height: 4px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+  .mini-fill { height: 100%; background: linear-gradient(90deg, var(--brand), var(--accent)); border-radius: 99px; transition: width .4s ease; }
+  .chevron { color: var(--muted); transition: transform .25s; font-size: 14px; }
+  .module.collapsed .chevron { transform: rotate(-90deg); }
+  .module-body { padding: 0; }
+  .module.collapsed .module-body { display: none; }
+
+  /* ── NEW badge on module ── */
+  .new-tag { font-size: 9px; background: rgba(109,40,217,0.25); border: 1px solid rgba(109,40,217,0.5); color: #c4b5fd; border-radius: 20px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; font-weight: 700; letter-spacing: .04em; }
+
+  /* ── Test row ── */
+  .test-row {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    transition: background .1s;
+  }
+  .test-row:last-child { border-bottom: none; }
+  .test-row:hover { background: rgba(255,255,255,0.02); }
+  .test-row.state-pass { border-left: 3px solid var(--pass); }
+  .test-row.state-fail { border-left: 3px solid var(--fail); }
+  .test-row.state-skip { border-left: 3px solid var(--skip); }
+  .test-num { display: flex; align-items: flex-start; justify-content: center; padding: 14px 4px 14px 12px; font-size: 11px; color: var(--muted); font-weight: 600; padding-top: 16px; }
+  .test-content { padding: 14px 12px; }
+  .test-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .test-steps { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+  .test-steps strong { color: #94a3b8; }
+  .test-expected { font-size: 11px; color: #4ade80; background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.15); border-radius: 6px; padding: 4px 8px; display: inline-block; margin-top: 2px; }
+  .test-notes { margin-top: 8px; }
+  .test-notes textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--muted); font-size: 11px; padding: 5px 8px;
+    resize: vertical; font-family: inherit; min-height: 36px;
+    transition: border-color .15s;
+  }
+  .test-notes textarea:focus { outline: none; border-color: var(--brand); color: var(--text); }
+  .test-actions { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 14px 12px; }
+  .act-btn {
+    width: 36px; height: 28px; border-radius: 7px; border: 1px solid var(--border);
+    background: transparent; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s; color: var(--muted);
+  }
+  .act-btn:hover.pass-btn { background: rgba(16,185,129,0.15); border-color: var(--pass); color: var(--pass); }
+  .act-btn:hover.fail-btn { background: rgba(239,68,68,0.15); border-color: var(--fail); color: var(--fail); }
+  .act-btn:hover.skip-btn { background: rgba(245,158,11,0.15); border-color: var(--skip); color: var(--skip); }
+  .act-btn.active-pass { background: rgba(16,185,129,0.2); border-color: var(--pass); color: var(--pass); }
+  .act-btn.active-fail { background: rgba(239,68,68,0.2); border-color: var(--fail); color: var(--fail); }
+  .act-btn.active-skip { background: rgba(245,158,11,0.2); border-color: var(--skip); color: var(--skip); }
+
+  /* ── Quick links bar ── */
+  .links-bar {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 14px 18px; margin-bottom: 24px;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  .links-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-right: 4px; }
+  .link-chip {
+    font-size: 12px; font-weight: 500; color: #a78bfa;
+    background: rgba(109,40,217,0.12); border: 1px solid rgba(109,40,217,0.25);
+    border-radius: 20px; padding: 4px 12px; text-decoration: none;
+    transition: background .15s;
+  }
+  .link-chip:hover { background: rgba(109,40,217,0.22); }
+  .cred-chip {
+    font-size: 11px; color: var(--muted); background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px;
+    font-family: 'Courier New', monospace;
+  }
+
+  /* ── Toast ── */
+  #toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: var(--pass); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 20px; border-radius: 99px; transition: transform .3s ease; z-index: 999; pointer-events: none; }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* ── Confetti dot ── */
+  @keyframes fall { 0% { transform: translateY(-10px) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+  .confetti-dot { position: fixed; width: 8px; height: 8px; border-radius: 2px; pointer-events: none; animation: fall linear forwards; z-index: 9999; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">🎬 BookYourShow</div>
+    <div class="badge badge-new">Test Suite v2.0</div>
+  </div>
+  <div class="score-strip">
+    <div class="score-item"><div class="score-num score-pass" id="cnt-pass">0</div><div class="score-label">Passed</div></div>
+    <div class="score-item"><div class="score-num score-fail" id="cnt-fail">0</div><div class="score-label">Failed</div></div>
+    <div class="score-item"><div class="score-num score-skip" id="cnt-skip">0</div><div class="score-label">Skipped</div></div>
+    <div class="score-item"><div class="score-num" id="cnt-total" style="color:#a78bfa">0</div><div class="score-label">Total</div></div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost" onclick="expandAll()">Expand All</button>
+    <button class="btn btn-ghost" onclick="exportReport()">📋 Export</button>
+    <button class="btn btn-danger" onclick="resetAll()">Reset</button>
+  </div>
+</div>
+
+<!-- Global Progress -->
+<div class="global-progress">
+  <div class="progress-label" id="prog-label">0 / 0 tested</div>
+  <div class="progress-bar-wrap">
+    <div class="progress-seg" id="bar-pass" style="width:0%;background:var(--pass)"></div>
+    <div class="progress-seg" id="bar-fail" style="width:0%;background:var(--fail)"></div>
+    <div class="progress-seg" id="bar-skip" style="width:0%;background:var(--skip)"></div>
+  </div>
+  <div class="progress-label" id="prog-pct">0%</div>
+</div>
+
+<div class="container">
+
+  <!-- Quick Links -->
+  <div class="links-bar">
+    <span class="links-label">Quick links</span>
+    <a class="link-chip" href="http://localhost:3000" target="_blank">🌐 Frontend :3000</a>
+    <a class="link-chip" href="http://localhost:5000/api/v1/health" target="_blank">⚙️ API Health</a>
+    <a class="link-chip" href="http://localhost:8001/health" target="_blank">🤖 RAG Health</a>
+    <a class="link-chip" href="http://localhost:8025" target="_blank">📧 MailHog</a>
+    <a class="link-chip" href="http://localhost:8080" target="_blank">📊 Kafka UI</a>
+    <a class="link-chip" href="http://localhost:3000/admin" target="_blank">🔧 Admin</a>
+    <span style="margin-left:8px;color:var(--muted);font-size:11px">Creds:</span>
+    <span class="cred-chip">admin@bookyourshow.com / Admin@123456!</span>
+    <span class="cred-chip">Card: 4111 1111 1111 1111 | CVV: 123</span>
+  </div>
+
+  <div id="modules-root"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// TEST DATA — v2.0
+// Changes from v1.0:
+//   • City locked to Ahmedabad only (no multi-city tests)
+//   • Added M12: Security & reCAPTCHA
+//   • Added M13: Google OAuth
+//   • Added M14: Email Notifications
+//   • Updated admin password to meet new policy (uppercase + special char)
+//   • Removed city-change and city-persistence tests
+// ═══════════════════════════════════════════════════════════
+const MODULES = [
+  {
+    id: "m1", icon: "🏠", name: "Homepage & Navigation", desc: "Landing page, Ahmedabad movies, movie cards",
+    tests: [
+      { id:"1.1", name:"Homepage loads", steps:"Go to <b>http://localhost:3000</b>", expected:"Hero section with movie cards visible, no blank screen" },
+      { id:"1.2", name:"City shows Ahmedabad", steps:"Look at top of navbar", expected:"Shows <b>Ahmedabad</b> — no city selector dropdown (locked)" },
+      { id:"1.3", name:"Movie cards render", steps:"Scroll homepage", expected:"Movie posters with title, rating, genre badges visible" },
+      { id:"1.4", name:"Exactly 20 TMDB movies", steps:"Count movies on homepage", expected:"Exactly 20 movies from TMDB 'Now Playing' shown" },
+      { id:"1.5", name:"Hero auto-slide", steps:"Wait 5 sec on homepage", expected:"Hero backdrop transitions to next movie automatically" },
+      { id:"1.6", name:"Movies nav link", steps:"Click <b>Movies</b> in navbar", expected:"Routes to /movies page" },
+      { id:"1.7", name:"Footer visible", steps:"Scroll to bottom", expected:"Footer renders correctly without overlap" },
+    ]
+  },
+  {
+    id: "m2", icon: "🔐", name: "Authentication", desc: "Signup, login, logout, session persistence",
+    tests: [
+      { id:"2.1", name:"Signup page opens", steps:"Click <b>Sign In → Create account</b> link", expected:"Form shows name, email, password fields" },
+      { id:"2.2", name:"Signup validation", steps:"Submit empty form", expected:"Red validation errors under each empty field" },
+      { id:"2.3", name:"Weak password rejected", steps:"Enter password <b>password</b> (no uppercase or special char)", expected:"Error: must contain uppercase letter + special character" },
+      { id:"2.4", name:"Strong password accepted", steps:"Password: <b>Test@1234</b>", expected:"No password error shown" },
+      { id:"2.5", name:"Signup success + email OTP", steps:"Fill valid details with a NEW email address", expected:"Redirected to /auth/verify-email; check MailHog for OTP" },
+      { id:"2.6", name:"OTP verification works", steps:"Enter the 6-digit OTP from MailHog", expected:"Email verified; auto-logged-in; redirected to homepage" },
+      { id:"2.7", name:"Duplicate email blocked", steps:"Sign up again with same email", expected:"Error: 'User with this email already exists'" },
+      { id:"2.8", name:"Login page opens", steps:"Click <b>Sign In</b>", expected:"Login form shows (email, password)" },
+      { id:"2.9", name:"Wrong password blocked", steps:"Correct email, wrong password", expected:"Error: 'Invalid credentials'" },
+      { id:"2.10", name:"Admin login", steps:"Email: <b>admin@bookyourshow.com</b> | Pass: <b>Admin@123456!</b>", expected:"Logged in; navbar shows admin name" },
+      { id:"2.11", name:"Session persists", steps:"Log in, then press F5", expected:"Still logged in after refresh" },
+      { id:"2.12", name:"Logout works", steps:"Click name → <b>Sign Out</b>", expected:"Redirected; navbar shows 'Sign In' button" },
+      { id:"2.13", name:"Protected route guard", steps:"While logged OUT, navigate to <b>/bookings</b>", expected:"Redirected to /auth/login" },
+    ]
+  },
+  {
+    id: "m3", icon: "🔑", name: "Google OAuth (Secure)", desc: "Sign-in with Google — secure token exchange flow", isNew: true,
+    tests: [
+      { id:"3.1", name:"Google Sign-In button visible", steps:"Go to /auth/login", expected:"'Continue with Google' button visible" },
+      { id:"3.2", name:"Google consent screen opens", steps:"Click Sign In with Google", expected:"Browser redirects to Google accounts.google.com" },
+      { id:"3.3", name:"Tokens NOT in URL", steps:"After Google callback, look at browser URL bar on /auth/google/callback", expected:"URL contains only a short <b>code</b> param, NOT accessToken or refreshToken" },
+      { id:"3.4", name:"Logged in after Google OAuth", steps:"Complete Google sign-in flow", expected:"Redirected to homepage; navbar shows Google account name" },
+      { id:"3.5", name:"Session persists", steps:"Refresh after Google login", expected:"Still logged in" },
+      { id:"3.6", name:"No token leakage in history", steps:"Press browser back after OAuth, check URL history", expected:"No JWT tokens visible in any URL in history" },
+    ]
+  },
+  {
+    id: "m4", icon: "🎬", name: "Movie Discovery", desc: "Movie list, filters, detail page, cast",
+    tests: [
+      { id:"4.1", name:"Movies list page loads", steps:"Go to <b>/movies</b>", expected:"Grid of movie cards with poster, title, rating, genre" },
+      { id:"4.2", name:"Genre filter works", steps:"Select <b>Action</b> from genre dropdown", expected:"Only action movies shown" },
+      { id:"4.3", name:"Language filter works", steps:"Select <b>Hindi</b> from language dropdown", expected:"Only Hindi films shown" },
+      { id:"4.4", name:"Sort by rating", steps:"Choose <b>Sort: Rating High→Low</b>", expected:"Movies sorted; highest rated first" },
+      { id:"4.5", name:"Pagination works", steps:"Click <b>Next Page</b>", expected:"Next set of movies loads" },
+      { id:"4.6", name:"Movie detail page", steps:"Click any movie poster or title", expected:"Opens /movies/[slug] with full details" },
+      { id:"4.7", name:"Poster visible", steps:"On movie detail page", expected:"Poster image on left side" },
+      { id:"4.8", name:"Backdrop image", steps:"On movie detail page", expected:"Cinematic backdrop behind header" },
+      { id:"4.9", name:"Cast section", steps:"Scroll down on detail page", expected:"Horizontal cast row with photos and names" },
+      { id:"4.10", name:"Movie metadata", steps:"On detail page header area", expected:"Rating, duration, language, director, certificate badges" },
+      { id:"4.11", name:"Book Tickets CTA", steps:"Click <b>Book Tickets</b> button on detail page", expected:"Routes to /movies/[slug]/showtimes" },
+    ]
+  },
+  {
+    id: "m5", icon: "🕐", name: "Showtimes", desc: "Date selector, theater groups, showtime cards — Ahmedabad theaters only",
+    tests: [
+      { id:"5.1", name:"Showtimes page opens", steps:"Click Book Tickets on any movie", expected:"/movies/[slug]/showtimes loads" },
+      { id:"5.2", name:"Date tabs visible", steps:"On showtimes page top", expected:"Date chips visible (today + next few days)" },
+      { id:"5.3", name:"Today's shows exist", steps:"Select <b>today's</b> date tab", expected:"Showtimes appear from Ahmedabad theaters" },
+      { id:"5.4", name:"Showtime card content", steps:"Look at any showtime card", expected:"Shows time slot, screen, theater name, price tiers (Silver/Gold/VIP)" },
+      { id:"5.5", name:"Multiple screens shown", steps:"On showtimes page", expected:"Different screens and different time slots visible for each theater" },
+      { id:"5.6", name:"No-shows fallback", steps:"Pick a date with no data", expected:"'No shows available' message (no crash)" },
+    ]
+  },
+  {
+    id: "m6", icon: "💺", name: "Seat Selection", desc: "Seat map, selection, deselection, pricing",
+    tests: [
+      { id:"6.1", name:"Seat map opens", steps:"Click any showtime's <b>Book</b> button", expected:"Routes to /book/[showtimeId] — seat grid visible" },
+      { id:"6.2", name:"Seat map renders", steps:"On booking page", expected:"Grid of seats: 🟢 Green=available, 🔴 Red=booked, 🟡 Amber=held" },
+      { id:"6.3", name:"Tier labels visible", steps:"Left side of seat rows", expected:"Row labels show Silver / Gold / VIP" },
+      { id:"6.4", name:"Select a seat", steps:"Click any green seat", expected:"Turns cyan/blue; appears in Booking Summary on right" },
+      { id:"6.5", name:"Deselect a seat", steps:"Click a selected (cyan) seat again", expected:"Returns to green; removed from summary" },
+      { id:"6.6", name:"Select 3 seats", steps:"Click 3 different green seats", expected:"All 3 listed in Booking Summary with prices" },
+      { id:"6.7", name:"Total calculation", steps:"Select 2 Gold seats", expected:"Total correctly sums all selected seat prices" },
+      { id:"6.8", name:"Pay button appears", steps:"With at least 1 seat selected", expected:"<b>Pay ₹X</b> button shows in summary sidebar" },
+      { id:"6.9", name:"Auth required for booking", steps:"Log out, try to visit /book/[any-id]", expected:"Redirected to login page" },
+    ]
+  },
+  {
+    id: "m7", icon: "💳", name: "Payment (Razorpay)", desc: "Test card payment, confirmation, booking status",
+    tests: [
+      { id:"7.1", name:"Razorpay modal opens", steps:"With seats selected, click <b>Pay ₹X</b>", expected:"Razorpay checkout popup/modal appears" },
+      { id:"7.2", name:"Merchant name correct", steps:"Inside Razorpay popup", expected:"Shows <b>BookYourShow</b> as merchant" },
+      { id:"7.3", name:"Amount matches", steps:"Inside Razorpay popup", expected:"Amount matches your selected seat total" },
+      { id:"7.4", name:"Test payment success", steps:"Card: <b>4111 1111 1111 1111</b>, CVV: <b>123</b>, any future expiry", expected:"Payment succeeds; redirected to /bookings/[id]" },
+      { id:"7.5", name:"Booking confirmed status", steps:"On booking detail after payment", expected:"Status badge shows <b>CONFIRMED</b> in green" },
+      { id:"7.6", name:"Payment cancel", steps:"Close Razorpay modal without paying", expected:"Stays on seat map; booking stays PENDING" },
+    ]
+  },
+  {
+    id: "m8", icon: "📧", name: "Email Notifications", desc: "Kafka → notification-service → Gmail delivery", isNew: true,
+    tests: [
+      { id:"8.1", name:"Welcome email on signup", steps:"Create new account; check MailHog (localhost:8025)", expected:"Welcome email arrives in MailHog with your name" },
+      { id:"8.2", name:"OTP email delivered", steps:"Check MailHog after signup", expected:"Email with 6-digit OTP code (subject: '123456 — Your verification code')" },
+      { id:"8.3", name:"Booking confirmation email", steps:"Complete a payment; check MailHog", expected:"Booking confirmation email with movie, date, seats, booking ID" },
+      { id:"8.4", name:"Password reset email", steps:"Click Forgot Password, enter your email", expected:"Email arrives with reset link/token in MailHog" },
+      { id:"8.5", name:"Kafka UI shows events", steps:"Go to localhost:8080 → Topics", expected:"Topics: user.signup, booking.confirmed, etc. visible with messages" },
+    ]
+  },
+  {
+    id: "m9", icon: "🎟️", name: "Booking History", desc: "Booking list, detail view, cancellation",
+    tests: [
+      { id:"9.1", name:"My Bookings page loads", steps:"Click username → <b>My Bookings</b>", expected:"/bookings shows list of your bookings" },
+      { id:"9.2", name:"Booking cards content", steps:"On /bookings list", expected:"Each card: movie title, date, time, theater, status badge" },
+      { id:"9.3", name:"Status badge colours", steps:"See different status bookings", expected:"PENDING=amber, CONFIRMED=green, CANCELLED=red" },
+      { id:"9.4", name:"Empty state", steps:"New account with no bookings", expected:"'No bookings yet' message with link to browse movies" },
+      { id:"9.5", name:"Booking detail page", steps:"Click a booking card", expected:"/bookings/[id] shows full ticket view" },
+      { id:"9.6", name:"Ticket details", steps:"On booking detail page", expected:"Movie, date, time, theater, screen name, all seats with tier & price, total" },
+      { id:"9.7", name:"Cancel button visible", steps:"On a PENDING or CONFIRMED booking detail", expected:"<b>Cancel Booking</b> button at bottom" },
+      { id:"9.8", name:"Cancel confirms", steps:"Click Cancel Booking → Yes, Cancel", expected:"Status changes to CANCELLED; Cancel button disappears" },
+    ]
+  },
+  {
+    id: "m10", icon: "👤", name: "User Profile", desc: "Profile page, quick links, role badge",
+    tests: [
+      { id:"10.1", name:"Profile page loads", steps:"Click username → <b>Profile</b>", expected:"/profile shows avatar initial, name, email, role, phone" },
+      { id:"10.2", name:"Role badge correct", steps:"Regular user profile", expected:"Shows <b>Member</b> badge" },
+      { id:"10.3", name:"Admin Panel link", steps:"Log in as admin, go to /profile", expected:"'Admin Panel' quick action card appears" },
+      { id:"10.4", name:"Auth guard", steps:"Go to /profile while logged out", expected:"Redirected to /auth/login" },
+    ]
+  },
+  {
+    id: "m11", icon: "🔧", name: "Admin Panel", desc: "Dashboard stats, CRUD, user management",
+    tests: [
+      { id:"11.1", name:"Admin dashboard loads", steps:"Go to <b>/admin</b> (as admin)", expected:"Stats: Total Users, Movies, Bookings, Revenue this week" },
+      { id:"11.2", name:"Non-admin blocked", steps:"Log in as regular user, go to /admin", expected:"Error or redirect — cannot access admin" },
+      { id:"11.3", name:"Recent bookings table", steps:"/admin dashboard", expected:"Last 5 bookings with movie, status, amount" },
+      { id:"11.4", name:"Users list page", steps:"Click <b>Users</b> in admin nav", expected:"Table: all registered users with role and date" },
+      { id:"11.5", name:"Movies admin page", steps:"Click <b>Movies</b> in admin nav", expected:"Grid/table of all 20 TMDB movies" },
+      { id:"11.6", name:"TMDB sync button", steps:"Click <b>Sync from TMDB</b>", expected:"Loading spinner → success message" },
+      { id:"11.7", name:"Showtimes admin page", steps:"Click <b>Showtimes</b> in admin nav", expected:"Table of showtimes: movie, screen, date, time, status" },
+      { id:"11.8", name:"Theaters admin page", steps:"Click <b>Theaters</b> in admin nav", expected:"Lists Ahmedabad theaters with screen count" },
+      { id:"11.9", name:"Bookings admin page", steps:"Click <b>Bookings</b> in admin nav", expected:"All system bookings with user, movie, status, amount" },
+    ]
+  },
+  {
+    id: "m12", icon: "🤖", name: "AI Chatbot (RAG)", desc: "Chat UI, streaming, markdown rendering",
+    tests: [
+      { id:"12.1", name:"Chat bubble visible", steps:"Homepage bottom-right corner", expected:"Purple floating button with sparkle icon" },
+      { id:"12.2", name:"Chat panel opens", steps:"Click the bubble", expected:"Chat panel slides open" },
+      { id:"12.3", name:"Welcome message", steps:"Open chat for first time", expected:"'Hi! I'm your Movie AI…' greeting" },
+      { id:"12.4", name:"Suggestion click works", steps:"Click any quick suggestion", expected:"AI responds with movie recommendations" },
+      { id:"12.5", name:"Markdown renders", steps:"See any AI response", expected:"<b>Bold</b> shows as bold, bullets show as bullet list (no raw asterisks)" },
+      { id:"12.6", name:"Streaming visible", steps:"Watch response come in", expected:"Text appears word-by-word, not all at once" },
+      { id:"12.7", name:"Custom question", steps:"Ask: <b>'Any Hindi movies available?'</b>", expected:"Relevant Hindi movies listed from real database" },
+    ]
+  },
+  {
+    id: "m13", icon: "🛡️", name: "Security & reCAPTCHA", desc: "Bot protection, rate limits, OTP lockout, headers", isNew: true,
+    tests: [
+      { id:"13.1", name:"reCAPTCHA badge visible", steps:"Go to /auth/login or /auth/signup", expected:"Small Google reCAPTCHA badge visible in bottom-right corner" },
+      { id:"13.2", name:"Login works with reCAPTCHA", steps:"Submit valid login form", expected:"Login succeeds — reCAPTCHA is invisible but running" },
+      { id:"13.3", name:"Signup works with reCAPTCHA", steps:"Submit valid signup form", expected:"Signup succeeds — reCAPTCHA passes transparently" },
+      { id:"13.4", name:"Auth rate limit hits", steps:"Enter wrong password <b>6 times rapidly</b> on login", expected:"Error: 'Too many auth attempts. Try again later.'" },
+      { id:"13.5", name:"OTP brute-force lockout", steps:"Enter wrong OTP <b>5 times</b> on verify-email page", expected:"Error: 'Too many failed OTP attempts. Try again in X minutes.'" },
+      { id:"13.6", name:"Security headers present", steps:"Open DevTools → Network → any API request → Response Headers", expected:"Headers: X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy all present" },
+      { id:"13.7", name:"Tokens not in Google OAuth URL", steps:"Do Google Sign-In; watch browser URL bar", expected:"URL has only short <b>code=...</b>, NO accessToken in URL" },
+      { id:"13.8", name:"Booking rate limit", steps:"Attempt to create <b>11 bookings</b> in under 1 minute", expected:"After 10th attempt: 'Too many booking requests. Please slow down.'" },
+      { id:"13.9", name:"Admin-only routes blocked", steps:"With regular user JWT, call <b>GET /api/v1/admin/users</b>", expected:"403 Forbidden response" },
+    ]
+  },
+  {
+    id: "m14", icon: "⚠️", name: "Edge Cases & Error Handling", desc: "Invalid routes, rate limits, fallbacks",
+    tests: [
+      { id:"14.1", name:"Invalid movie slug", steps:"Go to <b>/movies/fake-movie-00000</b>", expected:"'Movie not found' error state (no crash)" },
+      { id:"14.2", name:"Invalid booking ID", steps:"Go to <b>/bookings/FAKE-ID</b>", expected:"'Booking not found' (no crash)" },
+      { id:"14.3", name:"Image fallbacks", steps:"Find a movie with no poster image", expected:"Placeholder SVG shown (no broken image icon)" },
+      { id:"14.4", name:"Seat unavailable error", steps:"Attempt to book an already-booked seat", expected:"Error toast: 'Seats already held/booked'" },
+      { id:"14.5", name:"404 page", steps:"Go to <b>/this-does-not-exist</b>", expected:"404 not found page (no blank screen)" },
+    ]
+  },
+];
+
+// ═══════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════
+const STORAGE_KEY = 'bys_test_state_v2';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+let state = loadState();
+
+// ═══════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const root = document.getElementById('modules-root');
+  root.innerHTML = MODULES.map(mod => renderModule(mod)).join('');
+  updateGlobal();
+}
+
+function renderModule(mod) {
+  const { pass, fail, skip, total } = moduleStats(mod);
+  const pct = total ? Math.round((pass / total) * 100) : 0;
+  const collapsed = state[`__collapsed_${mod.id}`] ? 'collapsed' : '';
+  const newTag = mod.isNew ? '<span class="new-tag">NEW</span>' : '';
+  return `
+<div class="module ${collapsed}" id="module-${mod.id}">
+  <div class="module-header" onclick="toggleModule('${mod.id}')">
+    <div class="module-title">
+      <span class="module-icon">${mod.icon}</span>
+      <div>
+        <div class="module-name">${mod.name}${newTag}</div>
+        <div class="module-meta">${mod.desc} • ${total} tests</div>
+      </div>
+    </div>
+    <div class="module-right">
+      <div style="display:flex;gap:10px;font-size:12px">
+        <span style="color:var(--pass)">✓ ${pass}</span>
+        <span style="color:var(--fail)">✗ ${fail}</span>
+        <span style="color:var(--skip)">~ ${skip}</span>
+      </div>
+      <div>
+        <div class="mini-bar"><div class="mini-fill" style="width:${pct}%"></div></div>
+        <div class="module-prog" style="text-align:right;margin-top:2px">${pct}%</div>
+      </div>
+      <div class="chevron">▾</div>
+    </div>
+  </div>
+  <div class="module-body">
+    ${mod.tests.map(t => renderTest(t)).join('')}
+  </div>
+</div>`;
+}
+
+function renderTest(t) {
+  const s = state[t.id] || {};
+  const result = s.result || null;
+  const note = s.note || '';
+  const stateClass = result ? `state-${result}` : '';
+  const passActive = result === 'pass' ? 'active-pass' : '';
+  const failActive = result === 'fail' ? 'active-fail' : '';
+  const skipActive = result === 'skip' ? 'active-skip' : '';
+  return `
+<div class="test-row ${stateClass}" id="row-${t.id}">
+  <div class="test-num">${t.id}</div>
+  <div class="test-content">
+    <div class="test-name">${t.name}</div>
+    <div class="test-steps"><strong>Steps:</strong> ${t.steps}</div>
+    <div class="test-expected">✓ Expected: ${t.expected}</div>
+    <div class="test-notes">
+      <textarea placeholder="Notes (optional)…" onchange="setNote('${t.id}', this.value)">${note}</textarea>
+    </div>
+  </div>
+  <div class="test-actions">
+    <button class="act-btn pass-btn ${passActive}" onclick="setResult('${t.id}','pass')" title="Pass">✓</button>
+    <button class="act-btn fail-btn ${failActive}" onclick="setResult('${t.id}','fail')" title="Fail">✗</button>
+    <button class="act-btn skip-btn ${skipActive}" onclick="setResult('${t.id}','skip')" title="Skip">~</button>
+  </div>
+</div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// ACTIONS
+// ═══════════════════════════════════════════════════════════
+function setResult(id, result) {
+  if (!state[id]) state[id] = {};
+  state[id].result = state[id].result === result ? null : result;
+  saveState(state);
+  const mod = MODULES.find(m => m.tests.some(t => t.id === id));
+  const test = mod.tests.find(t => t.id === id);
+  document.getElementById(`row-${id}`).outerHTML = renderTest(test);
+  refreshModule(mod);
+  updateGlobal();
+  if (state[id].result === 'pass') celebrate();
+}
+
+function setNote(id, val) {
+  if (!state[id]) state[id] = {};
+  state[id].note = val;
+  saveState(state);
+}
+
+function toggleModule(id) {
+  const key = `__collapsed_${id}`;
+  state[key] = !state[key];
+  saveState(state);
+  document.getElementById(`module-${id}`).classList.toggle('collapsed');
+}
+
+function refreshModule(mod) {
+  const { pass, fail, skip, total } = moduleStats(mod);
+  const pct = total ? Math.round((pass / total) * 100) : 0;
+  const el = document.getElementById(`module-${mod.id}`);
+  el.querySelector('.mini-fill').style.width = pct + '%';
+  el.querySelector('.module-prog').textContent = pct + '%';
+  const spans = el.querySelectorAll('.module-right > div:first-child span');
+  spans[0].textContent = `✓ ${pass}`;
+  spans[1].textContent = `✗ ${fail}`;
+  spans[2].textContent = `~ ${skip}`;
+}
+
+function expandAll() {
+  MODULES.forEach(m => {
+    state[`__collapsed_${m.id}`] = false;
+    document.getElementById(`module-${m.id}`).classList.remove('collapsed');
+  });
+  saveState(state);
+}
+
+function resetAll() {
+  if (!confirm('Reset all test results? This cannot be undone.')) return;
+  const collapsed = {};
+  MODULES.forEach(m => { collapsed[`__collapsed_${m.id}`] = state[`__collapsed_${m.id}`]; });
+  state = collapsed;
+  saveState(state);
+  render();
+}
+
+// ═══════════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════════
+function moduleStats(mod) {
+  let pass = 0, fail = 0, skip = 0;
+  mod.tests.forEach(t => {
+    const r = (state[t.id] || {}).result;
+    if (r === 'pass') pass++;
+    else if (r === 'fail') fail++;
+    else if (r === 'skip') skip++;
+  });
+  return { pass, fail, skip, total: mod.tests.length };
+}
+
+function globalStats() {
+  let pass = 0, fail = 0, skip = 0, total = 0;
+  MODULES.forEach(m => {
+    const s = moduleStats(m);
+    pass += s.pass; fail += s.fail; skip += s.skip; total += s.total;
+  });
+  return { pass, fail, skip, total };
+}
+
+function updateGlobal() {
+  const { pass, fail, skip, total } = globalStats();
+  const tested = pass + fail + skip;
+  document.getElementById('cnt-pass').textContent = pass;
+  document.getElementById('cnt-fail').textContent = fail;
+  document.getElementById('cnt-skip').textContent = skip;
+  document.getElementById('cnt-total').textContent = total;
+  document.getElementById('prog-label').textContent = `${tested} / ${total} tested`;
+  const pct = total ? Math.round((tested / total) * 100) : 0;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('bar-pass').style.width = total ? (pass / total * 100) + '%' : '0%';
+  document.getElementById('bar-fail').style.width = total ? (fail / total * 100) + '%' : '0%';
+  document.getElementById('bar-skip').style.width = total ? (skip / total * 100) + '%' : '0%';
+}
+
+// ═══════════════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════════════
+function exportReport() {
+  const { pass, fail, skip, total } = globalStats();
+  const tested = pass + fail + skip;
+  let md = `# BookYourShow Test Report v2.0\n_Generated: ${new Date().toLocaleString()}_\n\n`;
+  md += `## Summary\n| Metric | Count |\n|--------|-------|\n| ✅ Passed | ${pass} |\n| ❌ Failed | ${fail} |\n| ⏭️ Skipped | ${skip} |\n| Total | ${total} |\n| Coverage | ${Math.round(tested/total*100)}% |\n\n`;
+  MODULES.forEach(mod => {
+    md += `## ${mod.icon} ${mod.name}\n\n`;
+    md += `| # | Test | Result | Notes |\n|---|------|--------|-------|\n`;
+    mod.tests.forEach(t => {
+      const r = (state[t.id] || {}).result;
+      const n = (state[t.id] || {}).note || '';
+      const icon = r === 'pass' ? '✅' : r === 'fail' ? '❌' : r === 'skip' ? '⏭️' : '⬜';
+      md += `| ${t.id} | ${t.name} | ${icon} | ${n} |\n`;
+    });
+    md += '\n';
+  });
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `bys-test-report-${new Date().toISOString().slice(0,10)}.md`;
+  a.click();
+  showToast('Report exported!');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TOAST & CONFETTI
+// ═══════════════════════════════════════════════════════════
+function showToast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+function celebrate() {
+  const colors = ['#6d28d9','#db2777','#10b981','#f59e0b','#3b82f6','#ec4899'];
+  for (let i = 0; i < 18; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'confetti-dot';
+    dot.style.cssText = `
+      left:${Math.random()*100}vw;
+      top:-10px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${0.8+Math.random()*1.2}s;
+      animation-delay:${Math.random()*0.3}s;
+      width:${6+Math.random()*8}px;
+      height:${6+Math.random()*8}px;
+    `;
+    document.body.appendChild(dot);
+    setTimeout(() => dot.remove(), 2000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+render();
+</script>
+</body>
+</html>

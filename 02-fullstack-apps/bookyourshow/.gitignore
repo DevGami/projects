@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+target/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Docker volumes
+bys_pgdata/
+bys_mongodata/
+bys_redisdata/
+
+# Prisma
+apps/api/prisma/*.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Java
+*.class
+*.jar
+apps/notification-service/target/
+
+# Test coverage
+coverage/
+.nyc_output/
+htmlcov/
+
+# Misc
+*.tgz
+*.bak
+
+# Production secrets
+.env.prod
+nginx/ssl/
+
+# Credentials files (NEVER commit these)
+rzp-key.csv
+*.csv
+*.key
+
+
+# Confidential
+*.csv
+vault/
+

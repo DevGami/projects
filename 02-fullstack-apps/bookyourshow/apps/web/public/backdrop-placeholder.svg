@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+  <rect width="1280" height="720" fill="#0f172a"/>
+  <circle cx="640" cy="320" r="80" fill="#1e293b"/>
+  <polygon points="615,290 615,350 680,320" fill="#334155"/>
+  <text x="640" y="450" text-anchor="middle" font-family="system-ui" font-size="28" fill="#334155">No Backdrop Available</text>
+</svg>

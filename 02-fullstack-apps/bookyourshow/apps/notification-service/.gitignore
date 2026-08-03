@@ -1,0 +1,4 @@
+target/
+*.class
+.env
+hs_err_pid*.log

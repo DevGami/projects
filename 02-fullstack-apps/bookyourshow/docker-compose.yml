@@ -1,0 +1,144 @@
+services:
+  # ── PostgreSQL 17 ──────────────────────────────────────────
+  postgres:
+    image: postgres:17-alpine
+    container_name: bys-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: bookyourshow
+      POSTGRES_PASSWORD: bys_dev_2026
+      POSTGRES_DB: bookyourshow
+    volumes:
+      - bys_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookyourshow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── MongoDB 8 ──────────────────────────────────────────────
+  mongodb:
+    image: mongo:8.0
+    container_name: bys-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: bookyourshow
+      MONGO_INITDB_ROOT_PASSWORD: bys_dev_2026
+      MONGO_INITDB_DATABASE: bookyourshow
+    volumes:
+      - bys_mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Redis 7 ────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: bys-redis
+    ports:
+      - "6379:6379"
+    command: redis-server --requirepass bys_dev_2026 --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - bys_redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "bys_dev_2026", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # ── Apache Kafka 3.9 (KRaft, no Zookeeper) ─────────────────
+  kafka:
+    image: apache/kafka:3.9.0
+    container_name: bys-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # KRaft mode (single combined node)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:29093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      # Listeners — CONTROLLER handled separately by the image
+      KAFKA_LISTENERS: PLAINTEXT://:29092,CONTROLLER://:29093,EXTERNAL://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      # Topic defaults
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      # Cluster
+      CLUSTER_ID: "bys-kafka-kraft-cluster-001"
+    volumes:
+      - bys_kafkadata:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+
+  # ── Kafka UI (Dev Only) ────────────────────────────────────
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: bys-kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: BookYourShow
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── Mailhog (Dev SMTP mock) ─────────────────────────────────
+  # All emails are captured here in dev — no real emails sent
+  # Web UI: http://localhost:8025  |  SMTP: localhost:1025
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: bys-mailhog
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+    restart: unless-stopped
+
+  # ── Notification Service (Spring Boot + Kafka Consumer) ──────
+  notification-service:
+    build:
+      context: ./apps/notification-service
+      dockerfile: Dockerfile
+    image: bys-notification:dev
+    container_name: bys-notification
+    ports:
+      - "8081:8081"
+    environment:
+      KAFKA_BROKERS: kafka:29092
+      MAIL_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${SMTP_PORT:-587}
+      MAIL_USERNAME: ${SMTP_USER}
+      MAIL_PASSWORD: ${SMTP_PASS}
+      MAIL_SMTP_AUTH: "true"
+      MAIL_SMTP_STARTTLS: "true"
+      MAIL_FROM: ${SMTP_USER}
+      MAIL_FROM_NAME: BookYourShow
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    depends_on:
+      kafka:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  bys_pgdata:
+  bys_mongodata:
+  bys_redisdata:
+  bys_kafkadata:

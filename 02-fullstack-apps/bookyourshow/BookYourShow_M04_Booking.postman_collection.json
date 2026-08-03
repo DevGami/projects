@@ -1,0 +1,497 @@
+{
+    "info": {
+        "name": "BookYourShow_M04_Booking",
+        "description": "Module 4: Theaters, Showtimes, and Bookings API Endpoints.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:5000",
+            "type": "string"
+        },
+        {
+            "key": "accessToken",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "theaterId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "screenId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "showtimeId",
+            "value": "",
+            "type": "string"
+        },
+        {
+            "key": "bookingId",
+            "value": "",
+            "type": "string"
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    "const token = pm.collectionVariables.get('accessToken');",
+                    "if (token) {",
+                    "    pm.request.headers.upsert({",
+                    "        key: 'Authorization',",
+                    "        value: `Bearer ${token}`",
+                    "    });",
+                    "}"
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "item": [
+        {
+            "name": "Login (Admin)",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "type": "text/javascript",
+                        "exec": [
+                            "const res = pm.response.json();",
+                            "const token = (res.data && res.data.accessToken) || res.accessToken;",
+                            "if (token) {",
+                            "    pm.collectionVariables.set('accessToken', token);",
+                            "    console.log('Access token automatically saved.');",
+                            "}"
+                        ]
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"email\": \"admin@bookyourshow.com\",\n  \"password\": \"admin123456\"\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/api/v1/auth/login",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "api",
+                        "v1",
+                        "auth",
+                        "login"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Folder 1: Theaters (Admin)",
+            "item": [
+                {
+                    "name": "Create Theater",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "const id = (res.data && (res.data._id || res.data.id)) || res._id || res.id;",
+                                    "if (id) {",
+                                    "    pm.collectionVariables.set('theaterId', id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"PVR Cinemas - SG Highway\",\n  \"city\": \"Ahmedabad\",\n  \"address\": \"SG Highway, Ahmedabad\",\n  \"totalScreens\": 2\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/theaters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "theaters"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "List Theaters",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/theaters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "theaters"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get Theater Detail",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/theaters/{{theaterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "theaters",
+                                "{{theaterId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Theater",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"PVR Cinemas - Updated\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/theaters/{{theaterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "theaters",
+                                "{{theaterId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Add Screen",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "const id = (res.data && (res.data._id || res.data.id)) || res._id || res.id;",
+                                    "if (id) {",
+                                    "    pm.collectionVariables.set('screenId', id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Screen 4 - Dolby\",\n  \"rows\": 6,\n  \"cols\": 12,\n  \"seatLayout\": [\n    {\"tier\": \"Silver\", \"rows\": [0,1], \"price\": 150},\n    {\"tier\": \"Gold\", \"rows\": [2,3], \"price\": 250},\n    {\"tier\": \"VIP\", \"rows\": [4,5], \"price\": 400}\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/theaters/{{theaterId}}/screens",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "theaters",
+                                "{{theaterId}}",
+                                "screens"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Folder 2: Showtimes (Admin + Public)",
+            "item": [
+                {
+                    "name": "Create Showtime",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "const id = (res.data && (res.data._id || res.data.id)) || res._id || res.id;",
+                                    "if (id) {",
+                                    "    pm.collectionVariables.set('showtimeId', id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"movieTmdbId\": 1392469,\n  \"movieTitle\": \"Test Movie\",\n  \"screenId\": \"{{screenId}}\",\n  \"showDate\": \"2026-07-15\",\n  \"showTime\": \"07:00 PM\",\n  \"priceMultiplier\": 1.0\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/showtimes",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "showtimes"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "List Showtimes",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/showtimes?movieTmdbId=1392469&city=Ahmedabad&date=2026-07-15",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "showtimes"
+                            ],
+                            "query": [
+                                {
+                                    "key": "movieTmdbId",
+                                    "value": "1392469"
+                                },
+                                {
+                                    "key": "city",
+                                    "value": "Ahmedabad"
+                                },
+                                {
+                                    "key": "date",
+                                    "value": "2026-07-15"
+                                }
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Showtime Detail + Seat Map",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/showtimes/{{showtimeId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "showtimes",
+                                "{{showtimeId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Cancel Showtime",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/showtimes/{{showtimeId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "showtimes",
+                                "{{showtimeId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Folder 3: Bookings (User)",
+            "item": [
+                {
+                    "name": "Create Booking",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "const res = pm.response.json();",
+                                    "const id = (res.data && (res.data._id || res.data.id)) || res._id || res.id;",
+                                    "if (id) {",
+                                    "    pm.collectionVariables.set('bookingId', id);",
+                                    "}"
+                                ]
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"showtimeId\": \"{{showtimeId}}\",\n  \"seats\": [\n    {\"id\": \"A1\", \"tier\": \"Silver\", \"price\": 150},\n    {\"id\": \"A2\", \"tier\": \"Silver\", \"price\": 150}\n  ]\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/bookings",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "bookings"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "My Bookings",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/bookings",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "bookings"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Booking Detail",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "bookings",
+                                "{{bookingId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Cancel Booking",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/api/v1/bookings/{{bookingId}}/cancel",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "api",
+                                "v1",
+                                "bookings",
+                                "{{bookingId}}",
+                                "cancel"
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

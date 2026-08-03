@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Welcome to BookYourShow</title>
+  <style>
+    body { margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; background: #0f0f13; color: #e2e8f0; }
+    .wrapper { max-width: 600px; margin: 0 auto; padding: 32px 16px; }
+    .card { background: #1a1a24; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+    .header { background: linear-gradient(135deg, #6c3de8, #3d3de8); padding: 40px 32px; text-align: center; }
+    .header h1 { margin: 0; font-size: 28px; color: #fff; }
+    .header p { margin: 10px 0 0; color: rgba(255,255,255,0.85); }
+    .body { padding: 32px; text-align: center; }
+    .greeting { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .message { color: #94a3b8; line-height: 1.7; margin-bottom: 32px; }
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #6c3de8, #3d3de8); color: #fff; text-decoration: none; padding: 14px 36px; border-radius: 12px; font-weight: 600; font-size: 15px; }
+    .footer { padding: 20px 32px; text-align: center; font-size: 12px; color: #475569; border-top: 1px solid rgba(255,255,255,0.05); }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div class="card">
+    <div class="header">
+      <h1>🎉 Welcome aboard!</h1>
+      <p>You're now part of the BookYourShow family</p>
+    </div>
+    <div class="body">
+      <p class="greeting" th:text="'Hi ' + ${name} + '!'">Hi there!</p>
+      <p class="message">
+        Your account is ready. Start exploring the latest movies, 
+        book seats in seconds, and never miss a show again.
+      </p>
+      <a class="cta-btn" th:href="${frontendUrl}">Explore Movies →</a>
+    </div>
+    <div class="footer">
+      BookYourShow · <span th:text="${email}">you@example.com</span>
+    </div>
+  </div>
+</div>
+</body>
+</html>

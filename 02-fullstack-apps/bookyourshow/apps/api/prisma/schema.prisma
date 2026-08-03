@@ -1,0 +1,202 @@
+// ═══════════════════════════════════════════════════════════════
+// BookYourShow — Prisma Schema (PostgreSQL 17)
+// ═══════════════════════════════════════════════════════════════
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Users ───────────────────────────────────────────────────────
+model User {
+  id                  String    @id @default(uuid()) @db.Uuid
+  name                String    @db.VarChar(100)
+  email               String    @unique @db.VarChar(255)
+  emailVerified       Boolean   @default(false) @map("email_verified")
+  passwordHash        String    @map("password_hash") @db.VarChar(255)
+  role                Role      @default(USER)
+  avatarUrl           String?   @map("avatar_url")
+  phone               String?   @db.VarChar(15)
+
+  // Security
+  failedLoginAttempts Int       @default(0) @map("failed_login_attempts")
+  lockedUntil         DateTime? @map("locked_until")
+  lastLoginAt         DateTime? @map("last_login_at")
+  lastLoginIp         String?   @map("last_login_ip") @db.VarChar(45)
+  passwordChangedAt   DateTime  @default(now()) @map("password_changed_at")
+
+  // Metadata
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  bookings            Booking[]
+  refreshTokens       RefreshToken[]
+  verificationTokens  VerificationToken[]
+
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// ── Refresh Tokens ──────────────────────────────────────────────
+model RefreshToken {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @map("user_id") @db.Uuid
+  tokenHash   String    @map("token_hash") @db.VarChar(255)
+  expiresAt   DateTime  @map("expires_at")
+  revoked     Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  replacedBy  String?   @map("replaced_by") @db.Uuid
+
+  // Relations
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+// ── Verification Tokens ─────────────────────────────────────────
+model VerificationToken {
+  id          String            @id @default(uuid()) @db.Uuid
+  userId      String            @map("user_id") @db.Uuid
+  tokenHash   String            @map("token_hash") @db.VarChar(255)
+  type        VerificationTokenType
+  expiresAt   DateTime          @map("expires_at")
+  used        Boolean           @default(false)
+  createdAt   DateTime          @default(now()) @map("created_at")
+
+  // Relations
+  user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("verification_tokens")
+}
+
+enum VerificationTokenType {
+  EMAIL_VERIFY
+  PASSWORD_RESET
+}
+
+// ── Theaters ────────────────────────────────────────────────────
+model Theater {
+  id            String    @id @default(uuid()) @db.Uuid
+  name          String    @db.VarChar(200)
+  city          String    @db.VarChar(100)
+  address       String?
+  totalScreens  Int       @default(1) @map("total_screens")
+  isActive      Boolean   @default(true) @map("is_active")
+  createdAt     DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  screens       Screen[]
+
+  @@map("theaters")
+}
+
+// ── Screens ─────────────────────────────────────────────────────
+model Screen {
+  id          String    @id @default(uuid()) @db.Uuid
+  theaterId   String    @map("theater_id") @db.Uuid
+  name        String    @db.VarChar(50) // "Screen 1", "IMAX"
+  rows        Int
+  cols        Int
+  seatLayout  Json      @map("seat_layout")  // [{tier: "Silver", rows: [0,1], price: 120}]
+  isActive    Boolean   @default(true) @map("is_active")
+
+  // Relations
+  theater     Theater   @relation(fields: [theaterId], references: [id], onDelete: Cascade)
+  showtimes   Showtime[]
+
+  @@map("screens")
+}
+
+// ── Showtimes ───────────────────────────────────────────────────
+model Showtime {
+  id               String    @id @default(uuid()) @db.Uuid
+  movieTmdbId      Int       @map("movie_tmdb_id")
+  movieTitle       String    @map("movie_title") @db.VarChar(300)
+  screenId         String    @map("screen_id") @db.Uuid
+  showDate         DateTime  @map("show_date") @db.Date
+  showTime         String    @map("show_time") @db.VarChar(10) // "10:30 AM"
+  priceMultiplier  Decimal   @default(1.00) @map("price_multiplier") @db.Decimal(3, 2)
+  bookedSeats      Json      @default("[]") @map("booked_seats") // ["A3","B5"] pre-booked seat IDs
+  status           ShowtimeStatus @default(ACTIVE)
+
+  // Relations
+  screen           Screen    @relation(fields: [screenId], references: [id])
+  bookings         Booking[]
+
+  @@unique([screenId, showDate, showTime])
+  @@map("showtimes")
+}
+
+enum ShowtimeStatus {
+  ACTIVE
+  CANCELLED
+  COMPLETED
+}
+
+// ── Bookings ────────────────────────────────────────────────────
+model Booking {
+  id                String    @id @db.VarChar(20)  // "BYS-XXXXXX"
+  userId            String    @map("user_id") @db.Uuid
+  showtimeId        String    @map("showtime_id") @db.Uuid
+  movieTmdbId       Int       @map("movie_tmdb_id")
+  movieTitle        String    @map("movie_title") @db.VarChar(300)
+  seats             Json      // [{id: "A3", tier: "Silver", price: 120}]
+  totalAmount       Decimal   @map("total_amount") @db.Decimal(10, 2)
+  status            BookingStatus @default(PENDING)
+  bookedAt          DateTime  @default(now()) @map("booked_at")
+  cancelledAt       DateTime? @map("cancelled_at")
+  cancellationReason String?  @map("cancellation_reason")
+
+  // Relations
+  user              User      @relation(fields: [userId], references: [id])
+  showtime          Showtime  @relation(fields: [showtimeId], references: [id])
+  payment           Payment?
+
+  @@map("bookings")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  EXPIRED
+}
+
+// ── Payments ────────────────────────────────────────────────────
+model Payment {
+  id                  String    @id @db.VarChar(50) // Razorpay payment_id
+  bookingId           String    @unique @map("booking_id") @db.VarChar(20)
+  razorpayOrderId     String    @map("razorpay_order_id") @db.VarChar(50)
+  razorpayPaymentId   String?   @map("razorpay_payment_id") @db.VarChar(50)
+  razorpaySignature   String?   @map("razorpay_signature") @db.VarChar(128)
+  amount              Decimal   @db.Decimal(10, 2)
+  currency            String    @default("INR") @db.VarChar(3)
+  method              String?   @db.VarChar(30) // upi, card, netbanking, wallet
+  status              PaymentStatus @default(CREATED)
+  refundId            String?   @map("refund_id") @db.VarChar(50)
+  createdAt           DateTime  @default(now()) @map("created_at")
+  capturedAt          DateTime? @map("captured_at")
+  refundedAt          DateTime? @map("refunded_at")
+
+  // Relations
+  booking             Booking   @relation(fields: [bookingId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  CREATED
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}

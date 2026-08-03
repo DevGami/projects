@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BookYourShow — Design Tokens & Global Styles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Brand Colors ──────────────────────────────────────────────────────── */
+  --color-brand-50: oklch(0.97 0.02 280);
+  --color-brand-100: oklch(0.93 0.04 280);
+  --color-brand-200: oklch(0.86 0.08 280);
+  --color-brand-300: oklch(0.77 0.12 280);
+  --color-brand-400: oklch(0.68 0.17 280);
+  --color-brand-500: oklch(0.58 0.22 280);
+  --color-brand-600: oklch(0.50 0.22 280);
+  --color-brand-700: oklch(0.42 0.18 280);
+
+  /* ── Surface Colors (Dark Theme) ──────────────────────────────────────── */
+  --color-surface-900: oklch(0.13 0.02 260);
+  --color-surface-800: oklch(0.17 0.02 260);
+  --color-surface-700: oklch(0.22 0.02 260);
+  --color-surface-600: oklch(0.28 0.02 260);
+
+  /* ── Accent (Rose/Red for CTAs) ────────────────────────────────────────── */
+  --color-accent-500: oklch(0.65 0.22 15);
+  --color-accent-600: oklch(0.57 0.22 15);
+}
+
+/* ── Base Styles ─────────────────────────────────────────────────────────── */
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-surface-900);
+  color: oklch(0.93 0.01 260);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+}
+
+/* ── Custom Scrollbar ────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-600);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-surface-700);
+}
+
+/* ── Selection ───────────────────────────────────────────────────────────── */
+::selection {
+  background-color: oklch(0.58 0.22 280 / 0.4);
+  color: white;
+}
+
+/* ── Focus Visible ───────────────────────────────────────────────────────── */
+*:focus-visible {
+  outline: 2px solid oklch(0.58 0.22 280);
+  outline-offset: 2px;
+}
+
+/* ── Smooth Scroll ───────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ── Glass Effect Utility ────────────────────────────────────────────────── */
+.glass {
+  background: oklch(0.17 0.02 260 / 0.7);
+  backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid oklch(1 0 0 / 0.08);
+}
+
+/* ── Gradient Text ───────────────────────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, oklch(0.77 0.12 280), oklch(0.65 0.22 15));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Hide Scrollbar (for horizontal scroll containers) ───────────────────── */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
