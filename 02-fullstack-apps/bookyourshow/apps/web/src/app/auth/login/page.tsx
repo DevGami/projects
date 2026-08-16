@@ -13,6 +13,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import { Button } from "@/components/ui/Button";
 import { ApiError } from "@/lib/api";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
+import { API_BASE_URL } from "@/lib/constants";
 
 // ── Schema ──────────────────────────────────────────────────────────────────
 const loginSchema = z.object({
@@ -21,7 +22,7 @@ const loginSchema = z.object({
 });
 type LoginForm = z.infer<typeof loginSchema>;
 
-const GOOGLE_AUTH_URL = "http://localhost:5000/api/v1/auth/google";
+const GOOGLE_AUTH_URL = `${API_BASE_URL}/auth/google`;
 
 // ═══════════════════════════════════════════════════════════════════════════
 function LoginPageInner() {

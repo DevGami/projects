@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/Button";
 import { api, ApiError } from "@/lib/api";
 import { useRecaptcha } from "@/hooks/useRecaptcha";
+import { API_BASE_URL } from "@/lib/constants";
 
 // ── Schema ──────────────────────────────────────────────────────────────────
 const signupSchema = z.object({
@@ -31,7 +32,7 @@ const signupSchema = z.object({
 });
 type SignupForm = z.infer<typeof signupSchema>;
 
-const GOOGLE_AUTH_URL = "http://localhost:5000/api/v1/auth/google";
+const GOOGLE_AUTH_URL = `${API_BASE_URL}/auth/google`;
 
 // ═══════════════════════════════════════════════════════════════════════════
 export default function SignupPage() {
