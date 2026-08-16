@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Star, Search, X, ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, Search, X, ArrowUpDown, ChevronLeft, ChevronRight, RefreshCw, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { api } from "@/lib/api";
 import { TMDB_IMAGE } from "@/lib/constants";
@@ -49,6 +49,7 @@ export default function MoviesPage() {
   const [genres, setGenres] = useState<string[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Filters
   const [activeGenre, setActiveGenre] = useState("");
@@ -70,8 +71,9 @@ export default function MoviesPage() {
 
   // Fetch paginated movies whenever filters/page change
   const fetchMovies = useCallback(async () => {
-    if (searchQuery.trim()) return; // search mode — don't paginate
+    if (searchQuery.trim()) return;
     setIsLoading(true);
+    setError(null);
     try {
       const res = await api.get<{ movies: Movie[]; pagination: Pagination }>(
         "/movies",
@@ -87,7 +89,7 @@ export default function MoviesPage() {
       setMovies(res.data?.movies || []);
       setPagination(res.data?.pagination || null);
     } catch (err) {
-      console.error(err);
+      setError("Failed to load movies. Please check your connection.");
     } finally {
       setIsLoading(false);
     }
@@ -241,6 +243,17 @@ export default function MoviesPage() {
         {/* ── Movie Grid ── */}
         {isLoading || isSearching ? (
           <MovieGridSkeleton count={PAGE_SIZE} />
+        ) : error ? (
+          <div className="text-center py-20">
+            <AlertCircle className="h-10 w-10 text-red-400 mx-auto mb-4" />
+            <p className="text-lg text-slate-300 mb-1">{error}</p>
+            <button
+              onClick={() => fetchMovies()}
+              className="mt-4 flex items-center gap-2 mx-auto px-4 py-2 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 text-sm font-medium transition"
+            >
+              <RefreshCw className="h-4 w-4" /> Retry
+            </button>
+          </div>
         ) : displayMovies.length === 0 ? (
           <div className="text-center py-20">
             <p className="text-lg text-slate-400">No movies found</p>
@@ -269,6 +282,7 @@ export default function MoviesPage() {
                           fill
                           className="object-cover transition-transform duration-500 group-hover:scale-105"
                           sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                          onError={(e) => { (e.target as HTMLImageElement).src = '/poster-placeholder.svg'; }}
                         />
                         {movie.rating && (
                           <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 text-xs font-semibold text-amber-400">

@@ -41,7 +41,7 @@ export async function verifyPaymentHandler(req: Request, res: Response): Promise
 // ═══════════════════════════════════════════════════════════════════════════
 export async function refundPaymentHandler(req: Request, res: Response): Promise<void> {
   const userId = req.user!.userId;
-  const { id: paymentId } = req.params;
+  const paymentId = req.params.id as string;
 
   const result = await refundPayment(paymentId, userId);
 

@@ -20,10 +20,30 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 from typing import Optional
 from fastapi.responses import StreamingResponse
+from fastapi import BackgroundTasks
+from contextlib import asynccontextmanager
 
 load_dotenv()
 
-app = FastAPI(title="BookYourShow Movie RAG Service", docs_url="/docs")
+# ── Lazy-load RAG pipeline ────────────────────────────────────────────── #
+_rag = None
+
+def get_rag():
+    global _rag
+    if _rag is None:
+        from movie_rag import MovieRAG
+        _rag = MovieRAG(persist_dir="faiss_store")
+    return _rag
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialize RAG in background executor on startup so it doesn't block port binding
+    loop = asyncio.get_event_loop()
+    loop.run_in_executor(None, get_rag)
+    yield
+    # Cleanup if necessary
+
+app = FastAPI(title="BookYourShow Movie RAG Service", docs_url="/docs", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,16 +63,7 @@ class ChatRequest(BaseModel):
     message: str
     history: Optional[list[Message]] = []
 
-# ── Lazy-load RAG pipeline ────────────────────────────────────────────── #
-_rag = None
-
-def get_rag():
-    global _rag
-    if _rag is None:
-        from movie_rag import MovieRAG
-        _rag = MovieRAG(persist_dir="faiss_store")
-    return _rag
-
+# (Moved get_rag up to avoid reference errors before app definition)
 
 # ── Endpoints ─────────────────────────────────────────────────────────── #
 @app.get("/health")
@@ -79,8 +90,7 @@ async def chat(req: ChatRequest):
 
     async def event_stream():
         try:
-            loop = asyncio.get_event_loop()
-            for token in rag.stream_response(req.message, history):
+            async for token in rag.astream_response(req.message, history):
                 yield f"data: {json.dumps({'content': token})}\n\n"
             yield f"data: {json.dumps({'done': True})}\n\n"
         except Exception as e:
@@ -93,12 +103,15 @@ async def chat(req: ChatRequest):
     )
 
 @app.post("/index/rebuild")
-async def rebuild_index():
-    """Re-fetch movies from MongoDB and rebuild FAISS index."""
-    rag = get_rag()
-    loop = asyncio.get_event_loop()
-    count = await loop.run_in_executor(None, rag.rebuild_index)
-    return {"message": f"Index rebuilt with {count} movie chunks."}
+async def rebuild_index(background_tasks: BackgroundTasks):
+    """Re-fetch movies from MongoDB and rebuild FAISS index in the background."""
+    def run_rebuild():
+        rag = get_rag()
+        rag.rebuild_index()
+    
+    background_tasks.add_task(run_rebuild)
+    return {"message": "Index rebuild started in background."}
+
 
 
 if __name__ == "__main__":

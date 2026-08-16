@@ -19,19 +19,19 @@ spring:
 
   # ── Mail (Gmail SMTP — swappable via env vars) ─────────────────────────────
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
-    port: ${MAIL_PORT:587}
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:1025}
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
     properties:
       mail:
         smtp:
-          auth: ${MAIL_SMTP_AUTH:true}
+          auth: ${MAIL_SMTP_AUTH:false}
           starttls:
-            enable: ${MAIL_SMTP_STARTTLS:true}
-            required: ${MAIL_SMTP_STARTTLS:true}
+            enable: ${MAIL_SMTP_STARTTLS:false}
+            required: ${MAIL_SMTP_STARTTLS:false}
           ssl:
-            trust: ${MAIL_HOST:smtp.gmail.com}
+            trust: ${MAIL_HOST:localhost}
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000

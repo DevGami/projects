@@ -6,14 +6,14 @@ import { RefreshCw, Star, Eye, EyeOff, Trash2, Search } from "lucide-react";
 import { api } from "@/lib/api";
 
 interface Movie {
-  id: string;
+  _id: string;
+  tmdbId: number;
   title: string;
   genres: string[];
   releaseDate: string;
   rating: number;
-  isNowShowing: boolean;
-  isUpcoming: boolean;
-  posterUrl: string | null;
+  status: string;
+  poster: string | null;
 }
 
 export default function AdminMoviesPage() {
@@ -27,7 +27,7 @@ export default function AdminMoviesPage() {
   async function fetchMovies() {
     setLoading(true);
     try {
-      const res = await api.get<{ movies: Movie[] }>("/movies?limit=100");
+      const res = await api.get<{ movies: Movie[] }>("/movies?limit=50");
       setMovies(res.data?.movies || []);
     } finally {
       setLoading(false);
@@ -45,14 +45,15 @@ export default function AdminMoviesPage() {
   }
 
   async function toggleShowing(movie: Movie) {
-    await api.patch(`/admin/movies/${movie.id}`, { isNowShowing: !movie.isNowShowing });
-    setMovies((prev) => prev.map((m) => m.id === movie.id ? { ...m, isNowShowing: !m.isNowShowing } : m));
+    const isNowShowing = movie.status === "now_showing";
+    await api.patch(`/admin/movies/${movie._id}`, { isNowShowing: !isNowShowing });
+    setMovies((prev) => prev.map((m) => m._id === movie._id ? { ...m, status: !isNowShowing ? "now_showing" : "upcoming" } : m));
   }
 
   async function deleteMovie(id: string) {
     if (!confirm("Delete this movie? This cannot be undone.")) return;
     await api.delete(`/admin/movies/${id}`);
-    setMovies((prev) => prev.filter((m) => m.id !== id));
+    setMovies((prev) => prev.filter((m) => m._id !== id));
   }
 
   const filtered = movies.filter((m) => m.title.toLowerCase().includes(search.toLowerCase()));
@@ -116,16 +117,16 @@ export default function AdminMoviesPage() {
             ) : (
               filtered.map((movie) => (
                 <motion.tr
-                  key={movie.id}
+                  key={movie._id || movie.tmdbId}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="hover:bg-white/2 transition"
                 >
                   <td className="px-6 py-3">
                     <div className="flex items-center gap-3">
-                      {movie.posterUrl ? (
+                      {movie.poster ? (
                         <img
-                          src={`https://image.tmdb.org/t/p/w92${movie.posterUrl}`}
+                          src={`https://image.tmdb.org/t/p/w92${movie.poster}`}
                           alt={movie.title}
                           className="h-10 w-7 rounded object-cover shrink-0"
                         />
@@ -148,18 +149,18 @@ export default function AdminMoviesPage() {
                     <button
                       onClick={() => toggleShowing(movie)}
                       className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-lg border transition ${
-                        movie.isNowShowing
+                        movie.status === "now_showing"
                           ? "text-green-400 bg-green-400/10 border-green-400/20 hover:bg-green-400/20"
                           : "text-slate-500 bg-surface-700 border-white/8 hover:bg-white/5"
                       }`}
                     >
-                      {movie.isNowShowing ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
-                      {movie.isNowShowing ? "Live" : "Hidden"}
+                      {movie.status === "now_showing" ? <Eye className="h-3 w-3" /> : <EyeOff className="h-3 w-3" />}
+                      {movie.status === "now_showing" ? "Live" : "Hidden"}
                     </button>
                   </td>
                   <td className="px-6 py-3 text-right">
                     <button
-                      onClick={() => deleteMovie(movie.id)}
+                      onClick={() => deleteMovie(movie._id)}
                       className="p-1.5 rounded-lg text-slate-500 hover:text-red-400 hover:bg-red-400/10 transition"
                     >
                       <Trash2 className="h-4 w-4" />

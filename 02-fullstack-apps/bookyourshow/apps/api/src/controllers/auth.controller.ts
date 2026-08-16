@@ -66,6 +66,12 @@ export async function signup(req: Request, res: Response): Promise<void> {
     data: { name, email, passwordHash },
   });
 
+  // ── Generate tokens so user is immediately logged in after signup ──────
+  const tokenPayload = { userId: user.id, email: user.email, role: user.role };
+  const accessToken = generateAccessToken(tokenPayload);
+  const refreshToken = generateRefreshToken(tokenPayload);
+  await storeRefreshToken(user.id, refreshToken);
+
   // Send OTP email for verification
   try {
     await createAndSendOTP(email, name);
@@ -89,6 +95,8 @@ export async function signup(req: Request, res: Response): Promise<void> {
         role: user.role,
         emailVerified: false,
       },
+      accessToken,
+      refreshToken,
       requiresVerification: true,
     },
   });
@@ -262,8 +270,18 @@ export async function logout(req: Request, res: Response): Promise<void> {
 // GET /api/v1/auth/me
 // ═══════════════════════════════════════════════════════════════════════════
 export async function getProfile(req: Request, res: Response): Promise<void> {
+  const userId = req.user!.userId;
+  const cacheKey = `bys:user:profile:${userId}`;
+
+  // Serve from cache if available (5-minute TTL)
+  const cached = await redis.get(cacheKey);
+  if (cached) {
+    res.json({ success: true, data: { user: JSON.parse(cached) } });
+    return;
+  }
+
   const user = await prisma.user.findUnique({
-    where: { id: req.user!.userId },
+    where: { id: userId },
     select: {
       id: true,
       name: true,
@@ -285,6 +303,9 @@ export async function getProfile(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  // Cache for 5 minutes
+  await redis.set(cacheKey, JSON.stringify(user), 'EX', 300);
+
   res.json({ success: true, data: { user } });
 }
 
@@ -293,9 +314,10 @@ export async function getProfile(req: Request, res: Response): Promise<void> {
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateProfile(req: Request, res: Response): Promise<void> {
   const updates = req.body as UpdateProfileInput;
+  const userId = req.user!.userId;
 
   const user = await prisma.user.update({
-    where: { id: req.user!.userId },
+    where: { id: userId },
     data: updates,
     select: {
       id: true,
@@ -307,6 +329,9 @@ export async function updateProfile(req: Request, res: Response): Promise<void> 
       avatarUrl: true,
     },
   });
+
+  // Invalidate the user profile cache so next /me fetch gets fresh data
+  await redis.del(`bys:user:profile:${userId}`);
 
   res.json({ success: true, data: { user } });
 }
@@ -490,7 +515,7 @@ export async function resendOtp(req: Request, res: Response): Promise<void> {
 // ═══════════════════════════════════════════════════════════════════════════
 // GET /api/v1/auth/google — Redirect to Google consent screen
 // ═══════════════════════════════════════════════════════════════════════════
-export async function googleRedirect(req: Request, res: Response): Promise<void> {
+export async function googleRedirect(_req: Request, res: Response): Promise<void> {
   const url = getGoogleAuthUrl();
   res.redirect(url);
 }

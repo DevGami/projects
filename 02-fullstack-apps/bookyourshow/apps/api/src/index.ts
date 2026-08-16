@@ -26,6 +26,8 @@ import aiRoutes from './routes/ai.routes.js';
 
 // Cron Jobs
 import { startMovieSyncCron } from './cron/movie-sync.cron.js';
+import { startShowtimeScheduler } from './cron/showtime-scheduler.cron.js';
+import { startBookingExpiryJob } from './cron/booking-expiry.cron.js';
 
 // ── Express App ─────────────────────────────────────────────────────────────
 const app = express();
@@ -83,12 +85,24 @@ app.use((_req, res, next) => {
   next();
 });
 
+// Build allowed CORS origins based on environment
+const CORS_ORIGINS = process.env.NODE_ENV === 'production'
+  ? [env.FRONTEND_URL].filter(Boolean) // production: only the deployed frontend
+  : [env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000'];
+
 app.use(cors({
-  origin: [env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (CORS_ORIGINS.includes(origin)) return callback(null, true);
+    logger.warn(`CORS blocked origin: ${origin}`);
+    callback(new Error(`CORS: origin ${origin} not allowed`));
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
 
 // ── Rate Limiting ───────────────────────────────────────────────────────────
 const globalLimiter = rateLimit({
@@ -169,17 +183,52 @@ async function bootstrap(): Promise<void> {
     // Start HTTP server
     // Start cron jobs
     startMovieSyncCron();
+    startShowtimeScheduler();
+    startBookingExpiryJob();
 
     app.listen(env.API_PORT, () => {
       logger.info(`✅ API running on http://localhost:${env.API_PORT}`);
       logger.info(`📡 Health check: http://localhost:${env.API_PORT}/api/v1/health`);
       logger.info(`🎬 Movies: http://localhost:${env.API_PORT}/api/v1/movies`);
       logger.info(`🌍 Environment: ${env.NODE_ENV}`);
+
+      // ── Cache Warm-Up ───────────────────────────────────────────────────
+      // Pre-populate now-showing and movies list caches after server boots.
+      // Runs asynchronously so it never delays startup.
+      warmUpCache().catch((err) => logger.warn('Cache warm-up failed (non-fatal):', err));
     });
   } catch (error) {
     logger.error('❌ Failed to start server:', error);
     process.exit(1);
   }
+}
+
+// ── Cache Warm-Up ────────────────────────────────────────────────────────────
+// Called once after server starts. Hits internal API endpoints to populate
+// Redis cache so first real user gets a fast cached response.
+async function warmUpCache(): Promise<void> {
+  const base = `http://localhost:${env.API_PORT}/api/v1`;
+  const cities = ['Ahmedabad', 'Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Hyderabad', 'Kolkata', 'Pune'];
+
+  logger.info('🔥 Warming up Redis cache...');
+
+  const urls = [
+    `${base}/movies/now-showing`,                // no-city fallback (also warms MongoDB cold start)
+    ...cities.map((c) => `${base}/movies/now-showing?city=${encodeURIComponent(c)}`),
+    `${base}/movies?sort=rating&order=desc&page=1&limit=12`,
+  ];
+
+  let warmed = 0;
+  for (const url of urls) {
+    try {
+      await fetch(url, { signal: AbortSignal.timeout(10_000) });
+      warmed++;
+    } catch {
+      // Non-fatal — cache warm-up is best-effort
+    }
+  }
+
+  logger.info(`🔥 Cache warm-up complete: ${warmed}/${urls.length} endpoints warmed`);
 }
 
 // ── Graceful Shutdown ───────────────────────────────────────────────────────

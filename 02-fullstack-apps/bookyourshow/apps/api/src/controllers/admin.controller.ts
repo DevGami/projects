@@ -7,7 +7,7 @@ import { Movie } from '../models/mongo/Movie.js';
 // ═══════════════════════════════════════════════════════════════════════════
 // GET /api/v1/admin/stats — Dashboard summary
 // ═══════════════════════════════════════════════════════════════════════════
-export async function getDashboardStats(req: Request, res: Response): Promise<void> {
+export async function getDashboardStats(_req: Request, res: Response): Promise<void> {
   const now = new Date();
   const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const weekStart = new Date(todayStart);
@@ -22,7 +22,7 @@ export async function getDashboardStats(req: Request, res: Response): Promise<vo
     recentBookings,
   ] = await Promise.all([
     prisma.user.count(),
-    Movie.countDocuments(),
+    Movie.countDocuments({ status: 'now_showing' }),
     prisma.booking.count(),
     prisma.booking.count({ where: { bookedAt: { gte: todayStart } } }),
     prisma.booking.aggregate({
@@ -102,7 +102,7 @@ export async function getUsers(req: Request, res: Response): Promise<void> {
 // PATCH /api/v1/admin/users/:id/role
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateUserRole(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const { role } = req.body;
 
   if (!['USER', 'ADMIN'].includes(role)) {
@@ -143,8 +143,15 @@ export async function triggerMovieSync(req: Request, res: Response): Promise<voi
 // PATCH /api/v1/admin/movies/:id — Update movie flags
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateMovie(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const { isNowShowing, isUpcoming, releaseDate } = req.body;
+
+  // Guard against invalid MongoDB ObjectId (prevents unhandled CastError)
+  const { isValidObjectId } = await import('mongoose');
+  if (!isValidObjectId(id)) {
+    res.status(400).json({ success: false, error: { code: 'INVALID_ID', message: 'Invalid movie ID format' } });
+    return;
+  }
 
   // MongoDB via Mongoose — movies live in Mongo, not Postgres
   const movie = await Movie.findByIdAndUpdate(
@@ -169,7 +176,12 @@ export async function updateMovie(req: Request, res: Response): Promise<void> {
 // DELETE /api/v1/admin/movies/:id
 // ═══════════════════════════════════════════════════════════════════════════
 export async function deleteMovie(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
+  const { isValidObjectId } = await import('mongoose');
+  if (!isValidObjectId(id)) {
+    res.status(400).json({ success: false, error: { code: 'INVALID_ID', message: 'Invalid movie ID format' } });
+    return;
+  }
   // MongoDB via Mongoose
   await Movie.findByIdAndDelete(id);
   logger.info(`Admin ${req.user?.email} deleted movie ${id}`);
@@ -208,7 +220,7 @@ export async function createTheater(req: Request, res: Response): Promise<void> 
 // PATCH /api/v1/admin/theaters/:id
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateTheater(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const { name, city, address } = req.body;
 
   const theater = await prisma.theater.update({
@@ -223,7 +235,7 @@ export async function updateTheater(req: Request, res: Response): Promise<void> 
 // DELETE /api/v1/admin/theaters/:id
 // ═══════════════════════════════════════════════════════════════════════════
 export async function deleteTheater(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   await prisma.theater.delete({ where: { id } });
   logger.info(`Admin ${req.user?.email} deleted theater ${id}`);
   res.json({ success: true, data: { message: 'Theater deleted' } });
@@ -233,54 +245,51 @@ export async function deleteTheater(req: Request, res: Response): Promise<void> 
 // POST /api/v1/admin/showtimes — Create showtime
 // ═══════════════════════════════════════════════════════════════════════════
 export async function createShowtime(req: Request, res: Response): Promise<void> {
-  const { movieId, screenId, showDate, showTime, basePrice, language, format } = req.body;
+  const { movieId, screenId, showDate, showTime } = req.body;
 
-  // Get screen tiers to build seat pricing
+  // Get screen
   const screen = await prisma.screen.findUnique({ where: { id: screenId } });
   if (!screen) {
     res.status(404).json({ success: false, error: { code: 'SCREEN_NOT_FOUND', message: 'Screen not found' } });
     return;
   }
 
-  const movie = await prisma.movie.findUnique({ where: { id: movieId }, select: { title: true } });
+  // Get movie from Mongo
+  const movie = await Movie.findById(movieId).select('title tmdbId poster');
   if (!movie) {
     res.status(404).json({ success: false, error: { code: 'MOVIE_NOT_FOUND', message: 'Movie not found' } });
     return;
   }
 
-  // Build seat pricing from screen tiers + basePrice multipliers
-  const tiers = screen.tiers as Record<string, { rows: string[]; multiplier: number }>;
-  const seatPricing: Record<string, number> = {};
-  for (const [tierName, tierData] of Object.entries(tiers)) {
-    seatPricing[tierName] = Math.round(basePrice * (tierData.multiplier ?? 1));
-  }
-
+  // In new schema, basePrice is determined by priceMultiplier. We'll set a default 1.0.
   const showtime = await prisma.showtime.create({
     data: {
-      movieId,
+      movieTmdbId: movie.tmdbId,
+      movieTitle: movie.title,
       screenId,
       showDate: new Date(showDate),
       showTime,
-      basePrice,
-      language: language || 'Hindi',
-      format: format || '2D',
-      seatPricing,
+      priceMultiplier: 1.0,
     },
     include: {
-      movie: { select: { title: true, posterUrl: true } },
       screen: { include: { theater: { select: { name: true, city: true } } } },
     },
   });
 
+  const enrichedShowtime = {
+    ...showtime,
+    movie: { title: movie.title, posterUrl: movie.poster }
+  };
+
   logger.info(`Admin ${req.user?.email} created showtime for "${movie.title}" on ${showDate}`);
-  res.status(201).json({ success: true, data: { showtime } });
+  res.status(201).json({ success: true, data: { showtime: enrichedShowtime } });
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
 // DELETE /api/v1/admin/showtimes/:id
 // ═══════════════════════════════════════════════════════════════════════════
 export async function deleteShowtime(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   await prisma.showtime.delete({ where: { id } });
   logger.info(`Admin ${req.user?.email} deleted showtime ${id}`);
   res.json({ success: true, data: { message: 'Showtime deleted' } });
@@ -294,22 +303,37 @@ export async function getShowtimes(req: Request, res: Response): Promise<void> {
   const limit = parseInt(req.query.limit as string) || 30;
   const skip = (page - 1) * limit;
 
+  // Only show today and future showtimes
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const [showtimes, total] = await Promise.all([
     prisma.showtime.findMany({
+      where: { showDate: { gte: today } },
       skip,
       take: limit,
       orderBy: [{ showDate: 'asc' }, { showTime: 'asc' }],
       include: {
-        movie: { select: { title: true, posterUrl: true } },
         screen: { include: { theater: { select: { name: true, city: true } } } },
       },
     }),
-    prisma.showtime.count(),
+    prisma.showtime.count({ where: { showDate: { gte: today } } }),
   ]);
+
+  const tmdbIds = [...new Set(showtimes.map(s => s.movieTmdbId))];
+  const movies = await Movie.find({ tmdbId: { $in: tmdbIds } }, { tmdbId: 1, title: 1, poster: 1 }).lean();
+  const movieMap = new Map(movies.map((m: any) => [m.tmdbId, m]));
+
+  const enrichedShowtimes = showtimes.map(s => ({
+    ...s,
+    movie: movieMap.get(s.movieTmdbId) 
+      ? { title: movieMap.get(s.movieTmdbId).title, posterUrl: movieMap.get(s.movieTmdbId).poster } 
+      : { title: s.movieTitle, posterUrl: null }
+  }));
 
   res.json({
     success: true,
-    data: { showtimes, total, page, pages: Math.ceil(total / limit) },
+    data: { showtimes: enrichedShowtimes, total, page, pages: Math.ceil(total / limit) },
   });
 }
 
@@ -320,9 +344,9 @@ export async function getAllBookings(req: Request, res: Response): Promise<void>
   const page = parseInt(req.query.page as string) || 1;
   const limit = parseInt(req.query.limit as string) || 20;
   const skip = (page - 1) * limit;
-  const status = req.query.status as string;
+  const status = req.query.status as any; // Type-cast to any to satisfy BookingStatus enum
 
-  const where = status ? { status } : {};
+  const where: any = status ? { status } : {};
 
   const [bookings, total] = await Promise.all([
     prisma.booking.findMany({

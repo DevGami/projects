@@ -85,7 +85,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         user: User;
         accessToken: string;
         refreshToken: string;
-      }>('/auth/signup', { name, email, password });
+      }>('/auth/signup', { name, email, password, captchaToken });
 
       const { user, accessToken, refreshToken } = res.data!;
       saveTokens(accessToken, refreshToken);

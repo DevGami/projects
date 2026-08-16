@@ -28,9 +28,9 @@ export async function connectKafka(): Promise<void> {
 
     await producer.connect();
     isConnected = true;
-    console.log('✅ Kafka connected');
+    logger.info('✅ Kafka connected');
   } catch (error) {
-    console.error('❌ Kafka connection failed:', error);
+    logger.error('❌ Kafka connection failed:', error);
     // Don't throw — Kafka is not critical for API startup
     // Events will be silently dropped until Kafka reconnects
     isConnected = false;
@@ -41,7 +41,7 @@ export async function disconnectKafka(): Promise<void> {
   if (producer) {
     await producer.disconnect();
     isConnected = false;
-    console.log('🔌 Kafka disconnected');
+    logger.info('🔌 Kafka disconnected');
   }
 }
 

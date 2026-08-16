@@ -3,7 +3,7 @@ import { z } from 'zod';
 // ── Seat Selection ──────────────────────────────────────────────────────────
 const seatSelectionSchema = z.object({
   id: z.string().regex(/^[A-Z]\d{1,2}$/, 'Seat ID must be like A1, B10, etc.'),
-  tier: z.enum(['Silver', 'Gold', 'VIP']),
+  tier: z.enum(['Classic', 'Prime', 'Prime Plus', 'Recliner']),
   price: z.number().positive(),
 });
 

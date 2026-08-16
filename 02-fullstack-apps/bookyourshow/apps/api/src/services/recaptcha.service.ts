@@ -36,9 +36,9 @@ export async function verifyRecaptcha(
 ): Promise<boolean> {
   const secretKey = env.RECAPTCHA_SECRET_KEY;
 
-  // If reCAPTCHA is not configured, skip verification (dev mode)
-  if (!secretKey) {
-    logger.debug('reCAPTCHA not configured — skipping verification');
+  // If reCAPTCHA is not configured or we are in development mode, skip verification
+  if (!secretKey || env.NODE_ENV === 'development') {
+    logger.debug('reCAPTCHA verification skipped (dev mode or no key)');
     return true;
   }
 

@@ -68,7 +68,7 @@ export async function listTheaters(req: Request, res: Response): Promise<void> {
 // GET /api/v1/theaters/:id — Theater detail + screens (Public)
 // ═══════════════════════════════════════════════════════════════════════════
 export async function getTheater(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
 
   const theater = await prisma.theater.findUnique({
     where: { id },
@@ -95,7 +95,7 @@ export async function getTheater(req: Request, res: Response): Promise<void> {
 // PUT /api/v1/theaters/:id — Update theater (Admin)
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateTheater(req: Request, res: Response): Promise<void> {
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
   const data = req.body as UpdateTheaterInput;
 
   try {
@@ -114,7 +114,7 @@ export async function updateTheater(req: Request, res: Response): Promise<void> 
 // POST /api/v1/theaters/:id/screens — Add screen to theater (Admin)
 // ═══════════════════════════════════════════════════════════════════════════
 export async function createScreen(req: Request, res: Response): Promise<void> {
-  const theaterId = req.params.id;
+  const theaterId = req.params.id as string;
   const data = req.body as CreateScreenInput;
 
   // Verify theater exists
@@ -139,7 +139,7 @@ export async function createScreen(req: Request, res: Response): Promise<void> {
 // PUT /api/v1/theaters/:id/screens/:screenId — Update screen (Admin)
 // ═══════════════════════════════════════════════════════════════════════════
 export async function updateScreen(req: Request, res: Response): Promise<void> {
-  const { screenId } = req.params;
+  const screenId = req.params.screenId as string;
   const data = req.body as UpdateScreenInput;
 
   try {

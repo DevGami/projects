@@ -39,14 +39,16 @@ interface JwtPayload {
 }
 
 export function generateAccessToken(payload: JwtPayload): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return jwt.sign(payload, env.JWT_ACCESS_SECRET, {
-    expiresIn: env.JWT_ACCESS_EXPIRY,
+    expiresIn: env.JWT_ACCESS_EXPIRY as any,
   });
 }
 
 export function generateRefreshToken(payload: JwtPayload): string {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return jwt.sign(payload, env.JWT_REFRESH_SECRET, {
-    expiresIn: env.JWT_REFRESH_EXPIRY,
+    expiresIn: env.JWT_REFRESH_EXPIRY as any,
   });
 }
 

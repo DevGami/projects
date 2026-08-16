@@ -78,8 +78,8 @@ export async function listMovies(req: Request, res: Response): Promise<void> {
     },
   };
 
-  // Cache for 10 minutes
-  await setCache(key, response, 600);
+  // Cache for 5 minutes
+  await setCache(key, response, 300);
 
   res.json(response);
 }
@@ -160,7 +160,7 @@ export async function nowShowing(req: Request, res: Response): Promise<void> {
     data: { movies, total: movies.length, city },
   };
 
-  await setCache(key, response, 300); // 5 min cache (shorter for city-filtered)
+  await setCache(key, response, 900); // 15 min cache — movies don't change frequently
   res.json(response);
 }
 

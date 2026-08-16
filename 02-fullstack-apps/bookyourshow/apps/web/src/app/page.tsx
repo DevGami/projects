@@ -231,7 +231,9 @@ function MovieCard({ movie }: { movie: Movie }) {
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            onError={(e) => { (e.target as HTMLImageElement).src = '/poster-placeholder.svg'; }}
           />
+
           {/* Rating overlay */}
           {movie.rating && (
             <div className="absolute top-2 right-2 flex items-center gap-1 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 text-xs font-semibold text-amber-400">

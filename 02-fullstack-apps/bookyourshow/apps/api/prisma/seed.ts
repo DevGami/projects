@@ -3,6 +3,164 @@ import { hash } from 'argon2';
 
 const prisma = new PrismaClient();
 
+// ═══════════════════════════════════════════════════════════════════════════
+// Real Ahmedabad Theaters
+// ═══════════════════════════════════════════════════════════════════════════
+interface TheaterDef {
+  id: string;
+  name: string;
+  address: string;
+  screens: ScreenDef[];
+}
+
+interface ScreenDef {
+  id: string;
+  name: string;
+  format: string; // Standard, IMAX, 3D, 4DX
+  rows: number;
+  cols: number;
+  seatLayout: { tier: string; rows: number[]; price: number }[];
+}
+
+// 4-tier layout: Classic (3 rows) → Prime (3 rows) → Prime Plus (2 rows) → Recliner (1 row)
+function standardLayout(basePrice: number): ScreenDef['seatLayout'] {
+  return [
+    { tier: 'Classic',    rows: [0, 1, 2],    price: basePrice },
+    { tier: 'Prime',      rows: [3, 4, 5],    price: Math.round(basePrice * 1.5) },
+    { tier: 'Prime Plus', rows: [6, 7],       price: Math.round(basePrice * 2.0) },
+    { tier: 'Recliner',   rows: [9],          price: Math.round(basePrice * 3.0) }, // row 9 = J, gap at row 8
+  ];
+}
+
+const THEATERS: TheaterDef[] = [
+  {
+    id: '00000000-0000-0000-0001-000000000001',
+    name: 'PVR INOX — Acropolis Mall',
+    address: 'Acropolis Mall, 3rd Floor, Thaltej Cross Road, SG Highway, Ahmedabad 380054',
+    screens: [
+      {
+        id: '00000000-0000-0000-0001-000000000101',
+        name: 'Screen 1',
+        format: 'Standard',
+        rows: 10, cols: 16,
+        seatLayout: standardLayout(150),
+      },
+      {
+        id: '00000000-0000-0000-0001-000000000102',
+        name: 'Screen 2',
+        format: 'Standard',
+        rows: 10, cols: 16,
+        seatLayout: standardLayout(150),
+      },
+      {
+        id: '00000000-0000-0000-0001-000000000103',
+        name: 'Screen 3 — IMAX',
+        format: 'IMAX',
+        rows: 10, cols: 18,
+        seatLayout: standardLayout(200),
+      },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0002-000000000001',
+    name: 'INOX — Palladium Mall',
+    address: 'Palladium Mall, 1st Floor, 136 ft Ring Road, Prahladnagar, Ahmedabad 380015',
+    screens: [
+      {
+        id: '00000000-0000-0000-0002-000000000101',
+        name: 'Screen 1',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(140),
+      },
+      {
+        id: '00000000-0000-0000-0002-000000000102',
+        name: 'Screen 2 — 3D',
+        format: '3D',
+        rows: 10, cols: 16,
+        seatLayout: standardLayout(170),
+      },
+      {
+        id: '00000000-0000-0000-0002-000000000103',
+        name: 'Screen 3 — IMAX',
+        format: 'IMAX',
+        rows: 10, cols: 18,
+        seatLayout: standardLayout(210),
+      },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0003-000000000001',
+    name: 'Cinépolis — Ahmedabad One Mall',
+    address: 'Ahmedabad One Mall, 3rd Floor, Vastrapur Lake Road, Vastrapur, Ahmedabad 380015',
+    screens: [
+      {
+        id: '00000000-0000-0000-0003-000000000101',
+        name: 'Screen 1',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(160),
+      },
+      {
+        id: '00000000-0000-0000-0003-000000000102',
+        name: 'Screen 2 — Macro XL',
+        format: 'IMAX',
+        rows: 10, cols: 18,
+        seatLayout: standardLayout(220),
+      },
+      {
+        id: '00000000-0000-0000-0003-000000000103',
+        name: 'Screen 3 — 4DX',
+        format: '4DX',
+        rows: 10, cols: 12,
+        seatLayout: standardLayout(250),
+      },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0004-000000000001',
+    name: 'PVR INOX — Motera',
+    address: 'Sardar Patel Stadium Complex, Motera, Ahmedabad 380005',
+    screens: [
+      {
+        id: '00000000-0000-0000-0004-000000000101',
+        name: 'Screen 1',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(130),
+      },
+      {
+        id: '00000000-0000-0000-0004-000000000102',
+        name: 'Screen 2',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(130),
+      },
+    ],
+  },
+  {
+    id: '00000000-0000-0000-0005-000000000001',
+    name: 'Rajhans Cineplex — Naranpura',
+    address: 'Rajhans Complex, Naranpura Cross Rd, Naranpura, Ahmedabad 380013',
+    screens: [
+      {
+        id: '00000000-0000-0000-0005-000000000101',
+        name: 'Screen 1',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(120),
+      },
+      {
+        id: '00000000-0000-0000-0005-000000000102',
+        name: 'Screen 2',
+        format: 'Standard',
+        rows: 10, cols: 14,
+        seatLayout: standardLayout(120),
+      },
+    ],
+  },
+];
+
 async function main() {
   console.log('🌱 Seeding database...\n');
 
@@ -48,144 +206,45 @@ async function main() {
   });
   console.log(`✅ Test user: ${testUser.email} (password: test123456)`);
 
-  // ── Create Default Theater ──────────────────────────────────
-  const theater = await prisma.theater.upsert({
-    where: { id: '00000000-0000-0000-0000-000000000001' },
-    update: {},
-    create: {
-      id: '00000000-0000-0000-0000-000000000001',
-      name: 'BookYourShow Cinemas - Ahmedabad',
-      city: 'Ahmedabad',
-      address: 'SG Highway, near PDEU, Ahmedabad, Gujarat 382007',
-      totalScreens: 3,
-    },
-  });
-  console.log(`✅ Theater: ${theater.name}`);
+  // ── Clean old theaters & screens ────────────────────────────
+  // Must delete in correct FK order: payments → bookings → showtimes → screens → theaters
+  await prisma.payment.deleteMany({});
+  await prisma.booking.deleteMany({});
+  await prisma.showtime.deleteMany({});
+  await prisma.screen.deleteMany({});
+  await prisma.theater.deleteMany({});
+  console.log('🗑️  Cleared old theaters, screens, showtimes, bookings, and payments');
 
-  // ── Create Screens ──────────────────────────────────────────
-  const seatLayout = [
-    { tier: 'Silver', rows: [0, 1], price: 150 },
-    { tier: 'Gold', rows: [2, 3], price: 220 },
-    { tier: 'VIP', rows: [4], price: 350 },
-  ];
-
-  const screenNames = ['Screen 1 - Standard', 'Screen 2 - Premium', 'Screen 3 - IMAX'];
-  for (let i = 0; i < 3; i++) {
-    const screenId = `00000000-0000-0000-0000-00000000010${i + 1}`;
-    const screen = await prisma.screen.upsert({
-      where: { id: screenId },
-      update: {},
-      create: {
-        id: screenId,
-        theaterId: theater.id,
-        name: screenNames[i]!,
-        rows: 5,
-        cols: 10,
-        seatLayout,
+  // ── Create Theaters & Screens ───────────────────────────────
+  for (const t of THEATERS) {
+    const theater = await prisma.theater.create({
+      data: {
+        id: t.id,
+        name: t.name,
+        city: 'Ahmedabad',
+        address: t.address,
+        totalScreens: t.screens.length,
       },
     });
-    console.log(`✅ Screen: ${screen.name} (5 rows × 10 cols)`);
-  }
+    console.log(`✅ Theater: ${theater.name} (${t.screens.length} screens)`);
 
-  // ── Create Sample Showtimes ──────────────────────────────────
-  // Uses real TMDB movie IDs from the synced collection
-  const sampleMovies = [
-    { tmdbId: 1084244, title: 'Toy Story 5' },
-    { tmdbId: 1275779, title: 'Disclosure Day' },
-    { tmdbId: 1083381, title: 'Backrooms' },
-    { tmdbId: 1280738, title: 'The Furious' },
-    { tmdbId: 1315772, title: 'Minions & Monsters' },
-    { tmdbId: 1081003, title: 'Supergirl' },
-  ];
-
-  const screenIds = [
-    '00000000-0000-0000-0000-000000000101',
-    '00000000-0000-0000-0000-000000000102',
-    '00000000-0000-0000-0000-000000000103',
-  ];
-
-  const showTimes = ['10:30 AM', '02:00 PM', '06:30 PM', '09:45 PM'];
-
-  // Seed showtimes for today + next 2 days
-  const today = new Date();
-  const dates: string[] = [];
-  for (let d = 0; d < 3; d++) {
-    const dt = new Date(today);
-    dt.setDate(dt.getDate() + d);
-    dates.push(dt.toISOString().split('T')[0]!);
-  }
-
-  let showtimeCount = 0;
-  for (const date of dates) {
-    // Screen 1: 2 movies, 4 shows each
-    for (let mi = 0; mi < 2; mi++) {
-      const movie = sampleMovies[mi]!;
-      for (const time of showTimes) {
-        try {
-          await prisma.showtime.create({
-            data: {
-              movieTmdbId: movie.tmdbId,
-              movieTitle: movie.title,
-              screenId: screenIds[0]!,
-              showDate: new Date(date),
-              showTime: time,
-              priceMultiplier: 1.0,
-            },
-          });
-          showtimeCount++;
-        } catch {
-          // Skip duplicates on re-seed
-        }
-      }
-    }
-
-    // Screen 2: 2 movies, 4 shows each
-    for (let mi = 2; mi < 4; mi++) {
-      const movie = sampleMovies[mi]!;
-      for (const time of showTimes) {
-        try {
-          await prisma.showtime.create({
-            data: {
-              movieTmdbId: movie.tmdbId,
-              movieTitle: movie.title,
-              screenId: screenIds[1]!,
-              showDate: new Date(date),
-              showTime: time,
-              priceMultiplier: 1.2,
-            },
-          });
-          showtimeCount++;
-        } catch {
-          // Skip duplicates on re-seed
-        }
-      }
-    }
-
-    // Screen 3 (IMAX): 2 movies, 4 shows each
-    for (let mi = 4; mi < 6; mi++) {
-      const movie = sampleMovies[mi]!;
-      for (const time of showTimes) {
-        try {
-          await prisma.showtime.create({
-            data: {
-              movieTmdbId: movie.tmdbId,
-              movieTitle: movie.title,
-              screenId: screenIds[2]!,
-              showDate: new Date(date),
-              showTime: time,
-              priceMultiplier: 1.5,
-            },
-          });
-          showtimeCount++;
-        } catch {
-          // Skip duplicates on re-seed
-        }
-      }
+    for (const s of t.screens) {
+      await prisma.screen.create({
+        data: {
+          id: s.id,
+          theaterId: theater.id,
+          name: s.name,
+          rows: s.rows,
+          cols: s.cols,
+          seatLayout: s.seatLayout,
+        },
+      });
+      console.log(`   📺 ${s.name} (${s.format}) — ${s.rows} rows × ${s.cols} cols`);
     }
   }
-  console.log(`✅ Showtimes: ${showtimeCount} created across 3 screens × 3 days`);
 
   console.log('\n🎉 Seed completed successfully!');
+  console.log('💡 Run the showtime generator to populate shows: npx tsx src/cron/generate-showtimes-now.ts');
 }
 
 main()

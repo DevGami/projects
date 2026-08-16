@@ -11,6 +11,7 @@ import {
   Ticket,
   ArrowLeft,
   XCircle,
+  CreditCard,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { api, ApiError } from "@/lib/api";
@@ -38,6 +39,11 @@ interface BookingDetail {
       theater: { name: string; city: string; address: string };
     };
   };
+  payment: {
+    razorpayOrderId: string;
+    amount: string;
+    currency: string;
+  };
 }
 
 export default function BookingDetailPage() {
@@ -50,6 +56,7 @@ export default function BookingDetailPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [isPaying, setIsPaying] = useState(false);
 
   useEffect(() => {
     if (isHydrated && !isAuthenticated) {
@@ -90,6 +97,65 @@ export default function BookingDetailPage() {
     } finally {
       setIsCancelling(false);
     }
+  }
+
+  function handlePayment() {
+    setIsPaying(true);
+
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => {
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: booking!.payment.amount,
+        currency: booking!.payment.currency,
+        name: "BookYourShow",
+        description: `Booking ${bookingId}`,
+        order_id: booking!.payment.razorpayOrderId,
+        handler: async function (response: {
+          razorpay_order_id: string;
+          razorpay_payment_id: string;
+          razorpay_signature: string;
+        }) {
+          try {
+            await api.post("/payments/verify", {
+              ...response,
+              bookingId,
+            });
+            toast.success("Payment successful! Booking confirmed 🎬");
+            // Refresh
+            const res = await api.get<BookingDetail>(`/bookings/${bookingId}`);
+            setBooking(res.data || null);
+          } catch (err) {
+            if (err instanceof ApiError) {
+              toast.error(err.message);
+            } else {
+              toast.error("Payment verification failed");
+            }
+          }
+          setIsPaying(false);
+        },
+        modal: {
+          ondismiss: function () {
+            toast.error("Payment cancelled");
+            setIsPaying(false);
+          },
+        },
+        prefill: {
+          email: useAuthStore.getState().user?.email || "",
+        },
+        theme: {
+          color: "#7C3AED",
+        },
+      };
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+    };
+    script.onerror = () => {
+      toast.error("Failed to load payment gateway");
+      setIsPaying(false);
+    };
+    document.body.appendChild(script);
   }
 
   if (isLoading) {
@@ -167,6 +233,7 @@ export default function BookingDetailPage() {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
+                  timeZone: "Asia/Kolkata",
                 })}
               />
               <InfoItem
@@ -238,7 +305,19 @@ export default function BookingDetailPage() {
 
           {/* Actions */}
           {booking.status === "PENDING" || booking.status === "CONFIRMED" ? (
-            <div className="px-6 pb-5">
+            <div className="px-6 pb-5 space-y-3">
+              {booking.status === "PENDING" && (
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="w-full"
+                  onClick={handlePayment}
+                  isLoading={isPaying}
+                >
+                  <CreditCard className="h-4 w-4" />
+                  Pay Now
+                </Button>
+              )}
               <Button
                 variant="danger"
                 size="md"

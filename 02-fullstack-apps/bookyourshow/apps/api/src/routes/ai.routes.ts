@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import rateLimit from 'express-rate-limit';
-import { chat, aiStatus } from '../controllers/ai.controller.js';
+import { chat, aiStatus, listSessions, getSession, deleteSession } from '../controllers/ai.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
@@ -15,8 +16,13 @@ const aiLimiter = rateLimit({
   },
 });
 
-// ── Routes ───────────────────────────────────────────────────────────────────
+// ── Public Routes ─────────────────────────────────────────────────────────────
 router.get('/status', aiStatus);
 router.post('/chat', aiLimiter, chat);
+
+// ── Authenticated Routes (session history) ────────────────────────────────────
+router.get('/sessions', authenticate, listSessions);
+router.get('/sessions/:id', authenticate, getSession);
+router.delete('/sessions/:id', authenticate, deleteSession);
 
 export default router;

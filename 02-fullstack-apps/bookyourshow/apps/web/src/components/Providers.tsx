@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "@/stores/auth.store";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const hydrate = useAuthStore((s) => s.hydrate);
@@ -12,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }, [hydrate]);
 
   return (
-    <>
+    <ErrorBoundary>
       <Toaster
         position="top-right"
         toastOptions={{
@@ -32,6 +33,6 @@ export function Providers({ children }: { children: React.ReactNode }) {
         }}
       />
       {children}
-    </>
+    </ErrorBoundary>
   );
 }

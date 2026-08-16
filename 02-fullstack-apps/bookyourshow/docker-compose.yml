@@ -123,13 +123,13 @@ services:
       - "8081:8081"
     environment:
       KAFKA_BROKERS: kafka:29092
-      MAIL_HOST: ${SMTP_HOST:-smtp.gmail.com}
-      MAIL_PORT: ${SMTP_PORT:-587}
-      MAIL_USERNAME: ${SMTP_USER}
-      MAIL_PASSWORD: ${SMTP_PASS}
-      MAIL_SMTP_AUTH: "true"
-      MAIL_SMTP_STARTTLS: "true"
-      MAIL_FROM: ${SMTP_USER}
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_USERNAME: ""
+      MAIL_PASSWORD: ""
+      MAIL_SMTP_AUTH: "false"
+      MAIL_SMTP_STARTTLS: "false"
+      MAIL_FROM: noreply@bookyourshow.dev
       MAIL_FROM_NAME: BookYourShow
       FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
     depends_on:

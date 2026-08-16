@@ -95,7 +95,7 @@ export async function getMyBookings(req: Request, res: Response): Promise<void> 
 // ═══════════════════════════════════════════════════════════════════════════
 export async function getBookingDetail(req: Request, res: Response): Promise<void> {
   const userId = req.user!.userId;
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
 
   const booking = await prisma.booking.findUnique({
     where: { id },
@@ -139,7 +139,7 @@ export async function getBookingDetail(req: Request, res: Response): Promise<voi
 // ═══════════════════════════════════════════════════════════════════════════
 export async function confirmBookingHandler(req: Request, res: Response): Promise<void> {
   const userId = req.user!.userId;
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
 
   const result = await confirmBookingById(id, userId);
 
@@ -166,7 +166,7 @@ export async function confirmBookingHandler(req: Request, res: Response): Promis
 // ═══════════════════════════════════════════════════════════════════════════
 export async function cancelBookingHandler(req: Request, res: Response): Promise<void> {
   const userId = req.user!.userId;
-  const { id } = req.params;
+  const { id } = req.params as { id: string };
 
   const result = await cancelBookingById(id, userId);
 

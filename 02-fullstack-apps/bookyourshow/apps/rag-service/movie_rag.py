@@ -83,6 +83,7 @@ class MovieVectorStore:
         self.persist_dir = persist_dir
         self.index = None
         self.metadata = []  # list of {"text": ..., "title": ...}
+        self.bm25 = None
 
         from sentence_transformers import SentenceTransformer
         self.model = SentenceTransformer(model_name)
@@ -106,10 +107,16 @@ class MovieVectorStore:
         self.index.add(embeddings)
         self.metadata = metadata
 
+        from rank_bm25 import BM25Okapi
+        tokenized_corpus = [t.lower().split() for t in texts]
+        self.bm25 = BM25Okapi(tokenized_corpus)
+
         # Persist
         faiss.write_index(self.index, os.path.join(self.persist_dir, "faiss.index"))
         with open(os.path.join(self.persist_dir, "metadata.pkl"), "wb") as f:
             pickle.dump(self.metadata, f)
+        with open(os.path.join(self.persist_dir, "bm25.pkl"), "wb") as f:
+            pickle.dump(self.bm25, f)
 
         print(f"[INFO] FAISS index built: {self.index.ntotal} vectors")
         return len(texts)
@@ -118,24 +125,61 @@ class MovieVectorStore:
         import faiss
         idx_path = os.path.join(self.persist_dir, "faiss.index")
         meta_path = os.path.join(self.persist_dir, "metadata.pkl")
-        if os.path.exists(idx_path) and os.path.exists(meta_path):
+        bm25_path = os.path.join(self.persist_dir, "bm25.pkl")
+        if os.path.exists(idx_path) and os.path.exists(meta_path) and os.path.exists(bm25_path):
             self.index = faiss.load_index(idx_path)
             with open(meta_path, "rb") as f:
                 self.metadata = pickle.load(f)
-            print(f"[INFO] Loaded FAISS index: {self.index.ntotal} vectors")
+            with open(bm25_path, "rb") as f:
+                self.bm25 = pickle.load(f)
+            print(f"[INFO] Loaded FAISS index: {self.index.ntotal} vectors & BM25")
         else:
             print("[WARN] No saved index found — rebuild needed")
 
     def query(self, text: str, top_k: int = 5, threshold: float = 0.25) -> list[dict]:
-        if self.index is None or self.index.ntotal == 0:
+        if self.index is None or self.index.ntotal == 0 or self.bm25 is None:
             return []
+        
+        # FAISS search
         query_vec = self.model.encode([text], normalize_embeddings=True).astype("float32")
-        scores, indices = self.index.search(query_vec, min(top_k, self.index.ntotal))
+        scores, indices = self.index.search(query_vec, min(top_k * 2, self.index.ntotal))
+        
+        faiss_ranks = {}
+        for rank, (score, idx) in enumerate(zip(scores[0], indices[0])):
+            if idx >= 0:
+                faiss_ranks[idx] = rank
+
+        # BM25 search
+        tokenized_query = text.lower().split()
+        bm25_scores = self.bm25.get_scores(tokenized_query)
+        bm25_top_indices = np.argsort(bm25_scores)[::-1][:top_k * 2]
+        
+        bm25_ranks = {}
+        for rank, idx in enumerate(bm25_top_indices):
+            if bm25_scores[idx] > 0:
+                bm25_ranks[idx] = rank
+
+        # RRF (Reciprocal Rank Fusion)
+        k = 60
+        rrf_scores = {}
+        all_indices = set(faiss_ranks.keys()).union(set(bm25_ranks.keys()))
+        
+        for idx in all_indices:
+            score = 0.0
+            if idx in faiss_ranks:
+                score += 1.0 / (k + faiss_ranks[idx])
+            if idx in bm25_ranks:
+                score += 1.0 / (k + bm25_ranks[idx])
+            rrf_scores[idx] = score
+
+        # Sort and return top_k
+        sorted_indices = sorted(rrf_scores.keys(), key=lambda x: rrf_scores[x], reverse=True)[:top_k]
+        
         results = []
-        for score, idx in zip(scores[0], indices[0]):
-            if idx >= 0 and score >= threshold:
-                results.append({**self.metadata[idx], "score": float(score)})
+        for idx in sorted_indices:
+            results.append({**self.metadata[idx], "score": float(rrf_scores[idx])})
         return results
+
 
 
 # ── Main MovieRAG class ────────────────────────────────────────────────── #
@@ -185,12 +229,14 @@ class MovieRAG:
         print(f"[INFO] Fetched {len(movies)} movies from MongoDB")
         return self.vectorstore.build_from_movies(movies)
 
-    def stream_response(self, query: str, history: list[tuple] = []) -> Generator[str, None, None]:
-        """Retrieve relevant movies, build prompt, stream Groq response token by token."""
+    async def astream_response(self, query: str, history: list[tuple] = []):
+        """Retrieve relevant movies, build prompt, stream Groq response token by token asynchronously."""
         from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 
-        # 1. Retrieve relevant movie chunks
-        results = self.vectorstore.query(query, top_k=5)
+        # 1. Retrieve relevant movie chunks (run synchronous FAISS query in executor)
+        import asyncio
+        loop = asyncio.get_event_loop()
+        results = await loop.run_in_executor(None, self.vectorstore.query, query, 5)
 
         # 2. Build context
         if results:
@@ -217,16 +263,19 @@ class MovieRAG:
                 messages.append(AIMessage(content=content))
         messages.append(HumanMessage(content=human_content))
 
-        # 4. Stream tokens
-        for chunk in self.llm.stream(messages):
+        # 4. Stream tokens asynchronously
+        async for chunk in self.llm.astream(messages):
             token = chunk.content
             if token:
                 yield token
 
 
 if __name__ == "__main__":
-    rag = MovieRAG()
-    print("\n--- Test Query ---")
-    for t in rag.stream_response("What action movies are playing now?"):
-        print(t, end="", flush=True)
-    print()
+    import asyncio
+    async def main():
+        rag = MovieRAG()
+        print("\n--- Test Query ---")
+        async for t in rag.astream_response("What action movies are playing now?"):
+            print(t, end="", flush=True)
+        print()
+    asyncio.run(main())

@@ -7,6 +7,7 @@ import {
   releaseSeatLock,
 } from './seat-lock.service.js';
 import { emitBookingConfirmed, emitBookingCancelled } from '../events/producers.js';
+import { sendBookingConfirmationEmail, sendBookingCancellationEmail } from './email-notification.service.js';
 import type { CreateBookingInput } from '../schemas/booking.schemas.js';
 import crypto from 'crypto';
 
@@ -198,14 +199,32 @@ export async function confirmBookingById(
 
   logger.info(`Booking confirmed: ${bookingId}`);
 
-  // Fetch user email for the notification event
+  // Fetch user name + email for notifications
   const user = await prisma.user.findUnique({
     where: { id: userId },
-    select: { email: true },
+    select: { email: true, name: true },
   });
 
-  // Emit Kafka event (fire-and-forget)
+  // Fire-and-forget: Kafka event + direct email (both non-blocking)
   emitBookingConfirmed({ ...updated, userEmail: user?.email ?? '' });
+
+  // Direct email notification (works even when Kafka/Java are down)
+  if (user?.email) {
+    const seats = (updated.seats as Array<{ id: string; tier: string; price: number }>);
+    sendBookingConfirmationEmail({
+      userName: user.name || 'Guest',
+      userEmail: user.email,
+      bookingId: updated.id,
+      movieTitle: updated.movieTitle,
+      showDate: updated.showtime.showDate,
+      showTime: updated.showtime.showTime,
+      theaterName: updated.showtime.screen.theater.name,
+      theaterCity: updated.showtime.screen.theater.city,
+      screenName: updated.showtime.screen.name,
+      seats,
+      totalAmount: Number(updated.totalAmount),
+    }).catch(err => logger.error('Failed to queue confirmation email:', err));
+  }
 
   return { success: true, booking: updated };
 }
@@ -271,14 +290,24 @@ export async function cancelBookingById(
 
   logger.info(`Booking cancelled: ${bookingId} — ${seatIds.length} seats released`);
 
-  // Fetch user email for the notification event
-  const user = await prisma.user.findUnique({
+  // Fetch user name + email for notifications
+  const cancelUser = await prisma.user.findUnique({
     where: { id: userId },
-    select: { email: true },
+    select: { email: true, name: true },
   });
 
-  // Emit Kafka event (fire-and-forget)
-  emitBookingCancelled({ ...updated, userEmail: user?.email ?? '' });
+  // Fire-and-forget: Kafka event + direct email
+  emitBookingCancelled({ ...updated, userEmail: cancelUser?.email ?? '' });
+
+  if (cancelUser?.email) {
+    sendBookingCancellationEmail({
+      userName: cancelUser.name || 'Guest',
+      userEmail: cancelUser.email,
+      bookingId: updated.id,
+      movieTitle: updated.movieTitle,
+      totalAmount: Number(updated.totalAmount),
+    }).catch(err => logger.error('Failed to queue cancellation email:', err));
+  }
 
   return { success: true, booking: updated };
 }

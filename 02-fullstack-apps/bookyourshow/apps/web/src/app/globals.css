@@ -69,11 +69,7 @@ body {
 }
 
 /* ── Smooth Scroll ───────────────────────────────────────────────────────── */
-@media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
-}
+/* Handled via data-scroll-behavior="smooth" on <html> (Next.js 16 compatible) */
 
 /* ── Glass Effect Utility ────────────────────────────────────────────────── */
 .glass {
@@ -97,4 +93,9 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Hide reCAPTCHA badge to prevent overlap with chatbot */
+.grecaptcha-badge {
+  visibility: hidden !important;
 }

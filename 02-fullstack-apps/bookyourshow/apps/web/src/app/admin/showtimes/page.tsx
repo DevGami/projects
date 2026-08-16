@@ -41,7 +41,7 @@ export default function AdminShowtimesPage() {
   }
 
   async function fetchMovies() {
-    const res = await api.get<{ movies: Movie[] }>("/movies/now-showing?limit=200");
+    const res = await api.get<{ movies: Movie[] }>("/movies/now-showing?limit=50");
     setMovies(res.data?.movies || []);
   }
 

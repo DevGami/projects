@@ -40,14 +40,28 @@ export default function ShowtimesPage() {
   const [showtimes, setShowtimes] = useState<Showtime[]>([]);
   const [movieTitle, setMovieTitle] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  // Generate next 7 days
-  const dates = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    return d.toISOString().split("T")[0];
-  });
 
-  const [selectedDate, setSelectedDate] = useState<string>(dates[0]);
+  // Compute IST date strings (UTC+5:30) — avoids wrong date after 6:30 PM IST
+  const getISTDateStr = (offsetDays = 0) => {
+    const now = new Date();
+    const istMs = now.getTime() + (5.5 * 60 * 60 * 1000); // shift to IST
+    const d = new Date(istMs + offsetDays * 86400000);
+    const yyyy = d.getUTCFullYear();
+    const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const dd = String(d.getUTCDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  // Derive available dates from actual showtimes
+  const dates = [...new Set(showtimes.map((st) => st.showDate.split("T")[0]))]
+    .sort()
+    .filter(Boolean) as string[];
+
+  // If no dates loaded yet, show a placeholder with today (IST)
+  const todayStr = getISTDateStr(0);
+  const displayDates = dates.length > 0 ? dates : [todayStr];
+
+  const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
     // Get movie info for tmdbId
@@ -64,7 +78,16 @@ export default function ShowtimesPage() {
           movieTmdbId: movie.tmdbId,
           city,
         });
-        setShowtimes(stRes.data?.showtimes || []);
+        const fetchedShowtimes = stRes.data?.showtimes || [];
+        setShowtimes(fetchedShowtimes);
+
+        // Auto-select the first available date
+        if (fetchedShowtimes.length > 0) {
+          const firstDate = fetchedShowtimes
+            .map((st) => st.showDate.split("T")[0])
+            .sort()[0];
+          if (firstDate) setSelectedDate(firstDate);
+        }
       } catch (err) {
         console.error("Failed to fetch showtimes:", err);
       } finally {
@@ -127,14 +150,17 @@ export default function ShowtimesPage() {
 
         {/* ── Date Selector ──────────────────────────────────── */}
         <div className="flex overflow-x-auto pb-4 gap-2 no-scrollbar">
-          {dates.map((dateStr) => {
-            const dateObj = new Date(dateStr);
+          {displayDates.map((dateStr) => {
+            const dateObj = new Date(dateStr + "T00:00:00");
             const isSelected = selectedDate === dateStr;
             const dayName = dateObj.toLocaleDateString("en-US", { weekday: "short" });
             const dayNum = dateObj.getDate();
             const month = dateObj.toLocaleDateString("en-US", { month: "short" });
-            const isToday = dateStr === dates[0];
-            const isTomorrow = dateStr === dates[1];
+            // Use IST-aware date strings for accurate TODAY/TOM labels
+            const todayIST = getISTDateStr(0);
+            const tomorrowIST = getISTDateStr(1);
+            const isToday = dateStr === todayIST;
+            const isTomorrow = dateStr === tomorrowIST;
 
             let displayDayName = dayName;
             if (isToday) displayDayName = "TODAY";

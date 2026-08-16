@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // ── Seat Layout Tier ────────────────────────────────────────────────────────
 const seatLayoutTierSchema = z.object({
-  tier: z.enum(['Silver', 'Gold', 'VIP']),
+  tier: z.enum(['Classic', 'Prime', 'Prime Plus', 'Recliner']),
   rows: z.array(z.number().int().min(0)).min(1),
   price: z.number().positive(),
 });

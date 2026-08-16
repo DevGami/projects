@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Film, Calendar, Clock, MapPin, ChevronRight } from "lucide-react";
+import { Film, Calendar, Clock, MapPin, ChevronRight, AlertCircle, RefreshCw } from "lucide-react";
 import { api } from "@/lib/api";
 import { useAuthStore } from "@/stores/auth.store";
 import { Badge } from "@/components/ui";
@@ -34,6 +34,7 @@ export default function BookingsPage() {
   const { isAuthenticated, isHydrated } = useAuthStore();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isHydrated && !isAuthenticated) {
@@ -45,11 +46,12 @@ export default function BookingsPage() {
   useEffect(() => {
     if (!isAuthenticated) return;
     async function fetchBookings() {
+      setError(null);
       try {
         const res = await api.get<{ bookings: Booking[] }>("/bookings");
         setBookings(res.data?.bookings || []);
       } catch (err) {
-        console.error("Failed to fetch bookings:", err);
+        setError("Failed to load bookings. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -71,6 +73,17 @@ export default function BookingsPage() {
             {[1, 2, 3].map((i) => (
               <Skeleton key={i} className="h-32 w-full" />
             ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-20">
+            <AlertCircle className="h-10 w-10 text-red-400 mx-auto mb-4" />
+            <p className="text-lg text-slate-300 mb-1">{error}</p>
+            <button
+              onClick={() => { setIsLoading(true); setError(null); setBookings([]); }}
+              className="mt-4 flex items-center gap-2 mx-auto px-4 py-2 rounded-xl bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 text-sm font-medium transition"
+            >
+              <RefreshCw className="h-4 w-4" /> Retry
+            </button>
           </div>
         ) : bookings.length === 0 ? (
           <div className="text-center py-20">
@@ -118,6 +131,7 @@ export default function BookingsPage() {
                           {new Date(booking.showtime.showDate).toLocaleDateString("en-IN", {
                             day: "numeric",
                             month: "short",
+                            timeZone: "Asia/Kolkata",
                           })}
                         </span>
                         <span className="flex items-center gap-1">
@@ -148,7 +162,18 @@ export default function BookingsPage() {
                       <p className="text-[10px] text-slate-600 uppercase mt-0.5">
                         {booking.id}
                       </p>
-                      <ChevronRight className="h-4 w-4 text-slate-600 ml-auto mt-2 group-hover:text-brand-400 transition" />
+                      
+                      {booking.status === "PENDING" && (
+                        <div className="mt-3">
+                          <span className="inline-flex items-center justify-center text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-500 text-white group-hover:bg-brand-400 transition">
+                            Pay Now
+                          </span>
+                        </div>
+                      )}
+
+                      {booking.status !== "PENDING" && (
+                        <ChevronRight className="h-4 w-4 text-slate-600 ml-auto mt-2 group-hover:text-brand-400 transition" />
+                      )}
                     </div>
                   </div>
                 </div>

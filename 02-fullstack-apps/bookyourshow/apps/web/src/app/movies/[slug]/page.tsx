@@ -101,6 +101,7 @@ export default function MovieDetailPage() {
                 fill
                 className="object-cover"
                 sizes="224px"
+                onError={(e) => { (e.target as HTMLImageElement).src = '/poster-placeholder.svg'; }}
               />
             </div>
           </div>
@@ -207,10 +208,11 @@ export default function MovieDetailPage() {
                         fill
                         className="object-cover"
                         sizes="80px"
+                        onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-lg font-bold text-slate-500">
-                        {member.name.charAt(0)}
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-brand-600/30 via-surface-700 to-accent-600/30 text-sm font-bold text-brand-300">
+                        {member.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                       </div>
                     )}
                   </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Mail, ShieldCheck, RefreshCw, Film } from "lucide-react";
@@ -10,7 +10,7 @@ import { useAuthStore } from "@/stores/auth.store";
 import { Button } from "@/components/ui/Button";
 
 // ═══════════════════════════════════════════════════════════════════════════
-export default function VerifyEmailPage() {
+function VerifyEmailPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const email = searchParams.get("email") || "";
@@ -224,5 +224,13 @@ export default function VerifyEmailPage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[calc(100vh-4rem)] flex items-center justify-center" />}>
+      <VerifyEmailPageInner />
+    </Suspense>
   );
 }

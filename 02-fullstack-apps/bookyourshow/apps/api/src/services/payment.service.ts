@@ -6,6 +6,8 @@ import { logger } from '../middleware/logger.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { confirmBookingById, cancelBookingById } from './booking.service.js';
 import { emitPaymentVerified, emitPaymentRefunded } from '../events/producers.js';
+import { sendBookingCancellationEmail } from './email-notification.service.js';
+import { redis } from '../config/redis.js';
 import type { VerifyPaymentInput } from '../schemas/payment.schemas.js';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -59,7 +61,33 @@ export async function createPaymentOrder(bookingId: string, userId: string) {
     );
   }
 
-  // 3. Check if a payment order already exists for this booking
+  // 3. Verify seat hold is still active in Redis (M4 fix)
+  // The hold TTL is 5 minutes. If expired, seats may have been taken.
+  const seatIds = (booking.seats as Array<{ id: string }>).map((s) => s.id);
+  const holdKey = `bys:seats:hold:${booking.showtimeId}:${userId}`;
+  const heldSeats = await redis.smembers(holdKey);
+  const heldSet = new Set(heldSeats);
+  const expiredSeats = seatIds.filter((s) => !heldSet.has(s));
+
+  if (expiredSeats.length > 0) {
+    // Auto-cancel the stale booking to clean up
+    await prisma.booking.update({
+      where: { id: bookingId },
+      data: {
+        status: 'CANCELLED',
+        cancelledAt: new Date(),
+        cancellationReason: 'Seat hold expired before payment',
+      },
+    });
+    throw new AppError(
+      'Your seat hold has expired. Please select seats again.',
+      410, // 410 Gone
+      'SEAT_HOLD_EXPIRED'
+    );
+  }
+
+  // 4. Check if a payment order already exists for this booking
+
   const existingPayment = await prisma.payment.findUnique({
     where: { bookingId },
   });
@@ -198,7 +226,7 @@ export async function refundPayment(paymentId: string, userId: string) {
   // 1. Find the payment
   const payment = await prisma.payment.findUnique({
     where: { id: paymentId },
-    include: { booking: true },
+    include: { booking: { include: { user: true, showtime: true } } },
   });
 
   if (!payment) {
@@ -246,6 +274,18 @@ export async function refundPayment(paymentId: string, userId: string) {
   }
 
   logger.info(`Refund ${refund.id} processed for payment ${paymentId}, booking ${payment.bookingId} cancelled`);
+
+  // Send cancellation email (fire-and-forget — non-blocking)
+  sendBookingCancellationEmail({
+    userName: payment.booking.user.name || 'Guest',
+    userEmail: payment.booking.user.email,
+    bookingId: payment.bookingId,
+    movieTitle: payment.booking.showtime.movieTitle,
+    totalAmount: Number(payment.amount),
+    refundId: refund.id,
+  }).catch((err) =>
+    logger.warn(`Failed to send cancellation email for booking ${payment.bookingId}:`, err)
+  );
 
   // Emit Kafka event (fire-and-forget)
   emitPaymentRefunded({
