@@ -86,21 +86,27 @@ app.use((_req, res, next) => {
 });
 
 // Build allowed CORS origins based on environment
-const CORS_ORIGINS = process.env.NODE_ENV === 'production'
-  ? [env.FRONTEND_URL].filter(Boolean) // production: only the deployed frontend
-  : [env.FRONTEND_URL, 'http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:3000'];
-
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
-    if (CORS_ORIGINS.includes(origin)) return callback(null, true);
+    
+    // Check exact matches
+    if (origin === env.FRONTEND_URL || origin === 'http://localhost:3000' || origin === 'http://127.0.0.1:3000') {
+      return callback(null, true);
+    }
+
+    // Allow any Vercel deployment domain (*.vercel.app)
+    if (/^https:\/\/[a-z0-9-]+(\.vercel\.app)$/i.test(origin)) {
+      return callback(null, true);
+    }
+
     logger.warn(`CORS blocked origin: ${origin}`);
     callback(new Error(`CORS: origin ${origin} not allowed`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-recaptcha-token', 'X-Requested-With'],
 }));
 
 
