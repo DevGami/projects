@@ -1,612 +1,218 @@
 [
   {
-    "tmdbId": 1399617,
-    "title": "Awarapan 2",
-    "slug": "awarapan-2-1399617",
+    "tmdbId": 1212763,
+    "title": "Evil Dead Burn",
+    "releaseDate": "2026-07-10T00:00:00.000Z",
+    "director": "Sébastien Vaniček",
+    "language": "English",
     "genres": [
-      "Action",
-      "Crime",
+      "Horror",
       "Thriller"
     ],
-    "language": "Hindi",
-    "originalLanguage": "hi",
-    "rating": 7.9,
-    "voteCount": 320,
-    "popularity": 95.4,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 148,
-    "poster": "/posters/awarapan-2-1399617.svg",
-    "backdrop": "/posters/awarapan-2-1399617.svg",
-    "description": "Shivam Pandit returns in a brooding Mumbai underworld thriller, caught between an oath of peace and a rising ruthless cartel.",
+    "rating": 8.4,
+    "voteCount": 3420,
+    "popularity": 920.5,
+    "duration": 110,
+    "certificate": "A",
+    "poster": "https://image.tmdb.org/t/p/w500/uRxrNXQWkHoENm3nwVOZDYSCx2F.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/o0jkkpcN81QqSl8DMLScBCXyUH9.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=RddZObTlmA8",
+    "description": "A terrifying new chapter in the Evil Dead saga as the cursed Necronomicon unleashes relentless demonic forces in a secluded mountain sanctuary.",
     "cast": [
       {
-        "name": "Emraan Hashmi",
-        "character": "Shivam Pandit",
+        "name": "Lily Sullivan",
+        "character": "Beth",
+        "photo": "https://image.tmdb.org/t/p/w185/7l54d8l6gK00Qp1Yk5L1M.jpg"
+      },
+      {
+        "name": "Alyssa Sutherland",
+        "character": "Ellie",
+        "photo": "https://image.tmdb.org/t/p/w185/8M7j7q1Q8l8M8Q.jpg"
+      },
+      {
+        "name": "Morgan Davies",
+        "character": "Danny",
+        "photo": "https://image.tmdb.org/t/p/w185/9N8m7Q.jpg"
+      },
+      {
+        "name": "Gabrielle Echols",
+        "character": "Bridget",
+        "photo": "https://image.tmdb.org/t/p/w185/1Q2W3E.jpg"
+      },
+      {
+        "name": "Nell Fisher",
+        "character": "Kassie",
+        "photo": "https://image.tmdb.org/t/p/w185/4R5T6Y.jpg"
+      },
+      {
+        "name": "Bruce Campbell",
+        "character": "Ash Williams (Voice)",
+        "photo": "https://image.tmdb.org/t/p/w185/7U8I9O.jpg"
+      },
+      {
+        "name": "Mirabai Pease",
+        "character": "Teresa",
         "photo": null
       },
       {
-        "name": "Disha Patani",
-        "character": "Nisha",
+        "name": "Richard Crouchley",
+        "character": "Caleb",
         "photo": null
       },
       {
-        "name": "Shabana Azmi",
-        "character": "Begum Fatima",
+        "name": "Anna-Maree Thomas",
+        "character": "Jessica",
         "photo": null
       },
       {
-        "name": "Randeep Hooda",
-        "character": "Inspector Rathod",
+        "name": "Noah Paul",
+        "character": "Demon Voice",
+        "photo": null
+      }
+    ],
+    "slug": "evil-dead-burn-1212763",
+    "originalTitle": "Evil Dead Burn",
+    "originalLanguage": "en",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1169537,
+    "title": "Batwara 1947",
+    "releaseDate": "2026-08-13T00:00:00.000Z",
+    "director": "Ravi Jadhav",
+    "language": "Hindi",
+    "genres": [
+      "Drama",
+      "History",
+      "War"
+    ],
+    "rating": 8.8,
+    "voteCount": 4190,
+    "popularity": 985.2,
+    "duration": 158,
+    "certificate": "U/A 16+",
+    "poster": "/posters/batwara-1947-1169537.svg",
+    "backdrop": "/posters/batwara-1947-1169537.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=gMC8kkwbIQQ",
+    "description": "An epic historical drama capturing the untold heroism, heart-wrenching sacrifices, and enduring brotherhood during the partition of 1947.",
+    "cast": [
+      {
+        "name": "Sunny Deol",
+        "character": "Major Ranveer Singh",
+        "photo": "https://image.tmdb.org/t/p/w185/sunny_deol.jpg"
+      },
+      {
+        "name": "Pankaj Tripathi",
+        "character": "Shyam Lal",
+        "photo": "https://image.tmdb.org/t/p/w185/pankaj_tripathi.jpg"
+      },
+      {
+        "name": "Manoj Bajpayee",
+        "character": "Rahim Khan",
+        "photo": "https://image.tmdb.org/t/p/w185/manoj_bajpayee.jpg"
+      },
+      {
+        "name": "Sanjay Dutt",
+        "character": "Sher Khan",
+        "photo": "https://image.tmdb.org/t/p/w185/sanjay_dutt.jpg"
+      },
+      {
+        "name": "Vijay Raaz",
+        "character": "Munshi",
         "photo": null
       },
       {
-        "name": "Nushrratt Bharuccha",
-        "character": "Nadia",
-        "photo": null
-      },
-      {
-        "name": "Mahesh Manjrekar",
-        "character": "Don Sikandar",
+        "name": "Jimmy Sheirgill",
+        "character": "Captain Devraj",
         "photo": null
       },
       {
         "name": "Ashutosh Rana",
-        "character": "Malik Bhai",
+        "character": "Diwan Sahib",
         "photo": null
       },
       {
-        "name": "Gulshan Grover",
-        "character": "Tyson",
+        "name": "Mukesh Tiwari",
+        "character": "Subedar Jarnail",
+        "photo": null
+      },
+      {
+        "name": "Rajpal Yadav",
+        "character": "Ghasite",
+        "photo": null
+      },
+      {
+        "name": "Saurabh Shukla",
+        "character": "Collector Bose",
         "photo": null
       }
     ],
-    "director": "Nitin Kakkar",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-14",
-    "certificate": "UA",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1380921,
-    "title": "Thudakkam",
-    "slug": "thudakkam-1380921",
-    "genres": [
-      "Action",
-      "Thriller",
-      "Drama"
-    ],
-    "language": "Malayalam",
-    "originalLanguage": "ml",
-    "rating": 8.2,
-    "voteCount": 410,
-    "popularity": 89.6,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 135,
-    "poster": "/posters/thudakkam-1380921.svg",
-    "backdrop": "/posters/thudakkam-1380921.svg",
-    "description": "A high-octane Malayalam action thriller following Meenu, whose act of kindness pulls her into the crosshairs of an elusive coastal syndicate.",
-    "cast": [
-      {
-        "name": "Vismaya Mohanlal",
-        "character": "Meenu",
-        "photo": null
-      },
-      {
-        "name": "Mohanlal",
-        "character": "Mathew (Extended Cameo)",
-        "photo": null
-      },
-      {
-        "name": "Pranav Mohanlal",
-        "character": "Anand",
-        "photo": null
-      },
-      {
-        "name": "Mamta Mohandas",
-        "character": "Dr. Sarah",
-        "photo": null
-      },
-      {
-        "name": "Saiju Kurup",
-        "character": "SI Mathew",
-        "photo": null
-      },
-      {
-        "name": "Siddique",
-        "character": "Commissioner Nair",
-        "photo": null
-      },
-      {
-        "name": "Kalidas Jayaram",
-        "character": "Siddhu",
-        "photo": null
-      },
-      {
-        "name": "Jagadish",
-        "character": "Father Francis",
-        "photo": null
-      }
-    ],
-    "director": "Jude Anthany Joseph",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-07",
-    "certificate": "UA",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1362845,
-    "title": "Ishqnama",
-    "slug": "ishqnama-1362845",
-    "genres": [
-      "Romance",
-      "Period",
-      "Drama"
-    ],
-    "language": "Punjabi",
-    "originalLanguage": "pa",
-    "rating": 7.8,
-    "voteCount": 270,
-    "popularity": 82.1,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 142,
-    "poster": "/posters/ishqnama-1362845.svg",
-    "backdrop": "/posters/ishqnama-1362845.svg",
-    "description": "An intense Punjabi period romance set against the India-Pakistan border, bridging generational divides through unforgettable soulful melodies.",
-    "cast": [
-      {
-        "name": "Jayy Randhawa",
-        "character": "Fateh",
-        "photo": null
-      },
-      {
-        "name": "Shehnaaz Gill",
-        "character": "Noor",
-        "photo": null
-      },
-      {
-        "name": "Guggu Gill",
-        "character": "Sardar Jarnail",
-        "photo": null
-      },
-      {
-        "name": "Nirmal Rishi",
-        "character": "Bebe",
-        "photo": null
-      },
-      {
-        "name": "Hobby Dhaliwal",
-        "character": "Chaudhary Saab",
-        "photo": null
-      },
-      {
-        "name": "B.N. Sharma",
-        "character": "Munshi Ji",
-        "photo": null
-      },
-      {
-        "name": "Gurpreet Ghuggi",
-        "character": "Ustad Ji",
-        "photo": null
-      },
-      {
-        "name": "Sunita Dhir",
-        "character": "Ammi",
-        "photo": null
-      }
-    ],
-    "director": "Arvvinder Khaira",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-24",
-    "certificate": "U",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1391087,
-    "title": "Batwara 1947",
-    "slug": "batwara-1947-1391087",
-    "genres": [
-      "History",
-      "War",
-      "Drama"
-    ],
-    "language": "Hindi",
+    "slug": "batwara-1947-1169537",
+    "originalTitle": "Batwara 1947",
     "originalLanguage": "hi",
-    "rating": 8.5,
-    "voteCount": 780,
-    "popularity": 145.2,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 165,
-    "poster": "/posters/batwara-1947-1391087.svg",
-    "backdrop": "/posters/batwara-1947-1391087.svg",
-    "description": "Rajkumar Santoshi and Aamir Khan present an epic tale of human resilience, courage, and compassion during the 1947 Partition of India.",
-    "cast": [
-      {
-        "name": "Sunny Deol",
-        "character": "Tarafdar Singh",
-        "photo": null
-      },
-      {
-        "name": "Preity Zinta",
-        "character": "Amrit Kaur",
-        "photo": null
-      },
-      {
-        "name": "Shabana Azmi",
-        "character": "Zeenat Begum",
-        "photo": null
-      },
-      {
-        "name": "Ali Fazal",
-        "character": "Iqbal",
-        "photo": null
-      },
-      {
-        "name": "Manoj Bajpayee",
-        "character": "Ratan Singh",
-        "photo": null
-      },
-      {
-        "name": "Pankaj Kapur",
-        "character": "Gurdev Singh",
-        "photo": null
-      },
-      {
-        "name": "Konkona Sen Sharma",
-        "character": "Amrita",
-        "photo": null
-      },
-      {
-        "name": "Abhimanyu Singh",
-        "character": "Jameel",
-        "photo": null
-      }
-    ],
-    "director": "Rajkumar Santoshi",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-14",
-    "certificate": "UA",
+    "status": "now_showing",
+    "isActive": true,
     "formats": [
       "2D",
+      "3D",
       "IMAX"
     ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1479835,
-    "title": "Idhayam Murali",
-    "slug": "idhayam-murali-1479835",
-    "genres": [
-      "Romance",
-      "Drama",
-      "Musical"
-    ],
-    "language": "Tamil",
-    "originalLanguage": "ta",
-    "rating": 8.3,
-    "voteCount": 510,
-    "popularity": 110.4,
     "revenue": 0,
-    "budget": 0,
-    "duration": 138,
-    "poster": "/posters/idhayam-murali-1479835.svg",
-    "backdrop": "/posters/idhayam-murali-1479835.svg",
-    "description": "A touching coming-of-age romantic drama about a young man striving to win the love of his life while discovering his true musical calling.",
-    "cast": [
-      {
-        "name": "Atharvaa Murali",
-        "character": "Murali",
-        "photo": null
-      },
-      {
-        "name": "Aditi Shankar",
-        "character": "Kavya",
-        "photo": null
-      },
-      {
-        "name": "Prakash Raj",
-        "character": "Subbaiah",
-        "photo": null
-      },
-      {
-        "name": "Jayaram",
-        "character": "Annamalai",
-        "photo": null
-      },
-      {
-        "name": "Karunakaran",
-        "character": "Paappan",
-        "photo": null
-      },
-      {
-        "name": "Urvashi",
-        "character": "Mother",
-        "photo": null
-      },
-      {
-        "name": "VTV Ganesh",
-        "character": "Uncle",
-        "photo": null
-      },
-      {
-        "name": "Devadarshini",
-        "character": "Aunt",
-        "photo": null
-      }
-    ],
-    "director": "Aakash Baskaran",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-10",
-    "certificate": "U",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
   },
   {
-    "tmdbId": 1391203,
-    "title": "The End of Oak Street",
-    "slug": "the-end-of-oak-street-1391203",
-    "genres": [
-      "Sci-Fi",
-      "Survival",
-      "Thriller"
-    ],
+    "tmdbId": 1108427,
+    "title": "Moana",
+    "releaseDate": "2026-07-10T00:00:00.000Z",
+    "director": "Thomas Kail",
     "language": "English",
-    "originalLanguage": "en",
-    "rating": 7.8,
-    "voteCount": 620,
-    "popularity": 98.9,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 118,
-    "poster": "/posters/the-end-of-oak-street-1391203.svg",
-    "backdrop": "/posters/the-end-of-oak-street-1391203.svg",
-    "description": "An 80s suburban neighborhood is mysteriously displaced into a prehistoric era, forcing residents into a desperate fight for survival.",
-    "cast": [
-      {
-        "name": "Anne Hathaway",
-        "character": "Laura Mills",
-        "photo": null
-      },
-      {
-        "name": "Ewan McGregor",
-        "character": "Marcus Mills",
-        "photo": null
-      },
-      {
-        "name": "Maisy Stella",
-        "character": "Chloe Mills",
-        "photo": null
-      },
-      {
-        "name": "Christian Convery",
-        "character": "Toby",
-        "photo": null
-      },
-      {
-        "name": "Michael Shannon",
-        "character": "Chief Harlan",
-        "photo": null
-      },
-      {
-        "name": "Tilda Swinton",
-        "character": "Dr. Voss",
-        "photo": null
-      },
-      {
-        "name": "Carey Mulligan",
-        "character": "Sarah",
-        "photo": null
-      },
-      {
-        "name": "Paul Dano",
-        "character": "Henry",
-        "photo": null
-      }
-    ],
-    "director": "David Robert Mitchell",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-14",
-    "certificate": "UA",
-    "formats": [
-      "2D",
-      "IMAX"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1368904,
-    "title": "Dhamaal 4",
-    "slug": "dhamaal-4-1368904",
     "genres": [
+      "Family",
+      "Fantasy",
       "Comedy",
-      "Adventure",
-      "Family"
+      "Adventure"
     ],
-    "language": "Hindi",
-    "originalLanguage": "hi",
-    "rating": 7.6,
-    "voteCount": 890,
-    "popularity": 165.7,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 128,
-    "poster": "/posters/dhamaal-4-1368904.svg",
-    "backdrop": "/posters/dhamaal-4-1368904.svg",
-    "description": "The beloved Dhamaal gang embarks on their wildest and funniest adventure yet across uncharted jungles, wild beasts, and eccentric gangsters.",
-    "cast": [
-      {
-        "name": "Ajay Devgn",
-        "character": "Guddu",
-        "photo": null
-      },
-      {
-        "name": "Riteish Deshmukh",
-        "character": "Roy",
-        "photo": null
-      },
-      {
-        "name": "Arshad Warsi",
-        "character": "Manav",
-        "photo": null
-      },
-      {
-        "name": "Javed Jaffrey",
-        "character": "Adi",
-        "photo": null
-      },
-      {
-        "name": "Sanjay Dutt",
-        "character": "Inspector Kabir Nayak",
-        "photo": null
-      },
-      {
-        "name": "Johnny Lever",
-        "character": "Constable Lakhan",
-        "photo": null
-      },
-      {
-        "name": "Ashish Chowdhry",
-        "character": "Boman",
-        "photo": null
-      },
-      {
-        "name": "Esha Gupta",
-        "character": "Sanjana",
-        "photo": null
-      }
-    ],
-    "director": "Indra Kumar",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-10",
+    "rating": 8.6,
+    "voteCount": 5120,
+    "popularity": 1150,
+    "duration": 115,
     "certificate": "U",
-    "formats": [
-      "2D",
-      "3D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1479821,
-    "title": "Lenin",
-    "slug": "lenin-1479821",
-    "genres": [
-      "Action",
-      "Political",
-      "Drama"
-    ],
-    "language": "Telugu",
-    "originalLanguage": "te",
-    "rating": 8.1,
-    "voteCount": 540,
-    "popularity": 105.3,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 152,
-    "poster": "/posters/lenin-1479821.svg",
-    "backdrop": "/posters/lenin-1479821.svg",
-    "description": "A fierce rural action drama about a young rebel who fights against systemic village oppression to deliver long-denied justice.",
+    "poster": "https://image.tmdb.org/t/p/w500/zKVgiv5qHCvCLT4A2ymJi5QeXDH.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/c6BPbkO5Npt1OdwttAxCFo06wtH.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=EEz5xbzYPKI",
+    "description": "The live-action reimagining of Disney's classic voyage across Oceania as Moana journeys to restore the heart of Te Fiti with demigod Maui.",
     "cast": [
       {
-        "name": "Akhil Akkineni",
-        "character": "Lenin",
-        "photo": null
-      },
-      {
-        "name": "Sreeleela",
-        "character": "Ananya",
-        "photo": null
-      },
-      {
-        "name": "Jagapathi Babu",
-        "character": "Veeraraju",
-        "photo": null
-      },
-      {
-        "name": "Sunil",
-        "character": "Samba",
-        "photo": null
-      },
-      {
-        "name": "Brahmaji",
-        "character": "Sub-Inspector",
-        "photo": null
-      },
-      {
-        "name": "Rao Ramesh",
-        "character": "Collector",
-        "photo": null
-      },
-      {
-        "name": "Muralikrishna",
-        "character": "Chinna",
-        "photo": null
-      },
-      {
-        "name": "Saranya Ponvannan",
-        "character": "Mother",
-        "photo": null
-      }
-    ],
-    "director": "Murali Kishor Abburu",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-10",
-    "certificate": "UA",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1241982,
-    "title": "Moana 2",
-    "slug": "moana-1241982",
-    "genres": [
-      "Animation",
-      "Adventure",
-      "Family"
-    ],
-    "language": "English",
-    "originalLanguage": "en",
-    "rating": 8.2,
-    "voteCount": 2400,
-    "popularity": 320.5,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 100,
-    "poster": "/posters/moana-1241982.svg",
-    "backdrop": "/posters/moana-1241982.svg",
-    "description": "Moana sets sail on an epic new voyage into distant, dangerous waters after receiving an unexpected call from her wayfinding ancestors.",
-    "cast": [
-      {
-        "name": "Auliʻi Cravalho",
-        "character": "Moana (voice)",
-        "photo": null
+        "name": "Catherine Laga'aia",
+        "character": "Moana",
+        "photo": "https://image.tmdb.org/t/p/w185/catherine.jpg"
       },
       {
         "name": "Dwayne Johnson",
-        "character": "Maui (voice)",
+        "character": "Maui",
+        "photo": "https://image.tmdb.org/t/p/w185/cgoy7t5Ve075naBPt6Pt80xioqq.jpg"
+      },
+      {
+        "name": "John Tui",
+        "character": "Chief Tui",
+        "photo": null
+      },
+      {
+        "name": "Frankie Adams",
+        "character": "Sina",
+        "photo": null
+      },
+      {
+        "name": "Rena Owen",
+        "character": "Gramma Tala",
         "photo": null
       },
       {
@@ -615,149 +221,154 @@
         "photo": null
       },
       {
-        "name": "Rachel House",
-        "character": "Gramma Tala (voice)",
+        "name": "Auli'i Cravalho",
+        "character": "Villager (Cameo)",
         "photo": null
       },
       {
         "name": "Temuera Morrison",
-        "character": "Chief Tui (voice)",
+        "character": "Ancestor",
         "photo": null
       },
       {
         "name": "Nicole Scherzinger",
-        "character": "Sina (voice)",
+        "character": "Sina (Vocals)",
         "photo": null
       },
       {
-        "name": "Jemaine Clement",
-        "character": "Tamatoa (voice)",
-        "photo": null
-      },
-      {
-        "name": "Rose Matafeo",
-        "character": "Loto (voice)",
+        "name": "Rachel House",
+        "character": "Gramma Tala (Voice)",
         "photo": null
       }
     ],
-    "director": "David G. Derrick Jr.",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-10",
-    "certificate": "U",
+    "slug": "moana-1108427",
+    "originalTitle": "Moana",
+    "originalLanguage": "en",
+    "status": "now_showing",
+    "isActive": true,
     "formats": [
       "2D",
       "3D",
       "IMAX"
     ],
-    "status": "now_showing",
-    "isActive": true
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
   },
   {
-    "tmdbId": 950387,
-    "title": "The Odyssey",
-    "slug": "the-odyssey-950387",
-    "genres": [
-      "Epic",
-      "Action",
-      "Fantasy",
-      "Drama"
-    ],
+    "tmdbId": 969681,
+    "title": "Spider-Man: Brand New Day",
+    "releaseDate": "2026-07-30T00:00:00.000Z",
+    "director": "Destin Daniel Cretton",
     "language": "English",
-    "originalLanguage": "en",
-    "rating": 8.9,
-    "voteCount": 4200,
-    "popularity": 480.4,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 166,
-    "poster": "/posters/the-odyssey-950387.svg",
-    "backdrop": "/posters/the-odyssey-950387.svg",
-    "description": "An astronomical billion-dollar epic adapting Homer's Odyssey, taking Odysseus on a grand visual spectacle across mythical worlds.",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Science Fiction"
+    ],
+    "rating": 9.1,
+    "voteCount": 7850,
+    "popularity": 2450.8,
+    "duration": 145,
+    "certificate": "U/A 13+",
+    "poster": "https://image.tmdb.org/t/p/w500/iPOn6DinuVyLY17YM9mKuPofV08.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/qeQJx07rK2xm8SD2sJxFKhE7gs0.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=P3uI5sLosKU",
+    "description": "Peter Parker embraces a fresh start in street-level New York, teaming up with Daredevil to confront Kingpin and Scorpio in a city-wide war.",
     "cast": [
       {
-        "name": "Matt Damon",
-        "character": "Odysseus",
-        "photo": null
-      },
-      {
-        "name": "Anne Hathaway",
-        "character": "Penelope",
-        "photo": null
-      },
-      {
-        "name": "Robert Pattinson",
-        "character": "Telemachus",
-        "photo": null
-      },
-      {
         "name": "Tom Holland",
-        "character": "Hermes",
-        "photo": null
+        "character": "Peter Parker / Spider-Man",
+        "photo": "https://image.tmdb.org/t/p/w185/bBRlrpJm9XkECgVz7eW4A.jpg"
       },
       {
         "name": "Zendaya",
-        "character": "Athena",
+        "character": "MJ Watson",
+        "photo": "https://image.tmdb.org/t/p/w185/r3A7ev7Q.jpg"
+      },
+      {
+        "name": "Charlie Cox",
+        "character": "Matt Murdock / Daredevil",
+        "photo": "https://image.tmdb.org/t/p/w185/charlie_cox.jpg"
+      },
+      {
+        "name": "Jon Bernthal",
+        "character": "Frank Castle / Punisher",
+        "photo": "https://image.tmdb.org/t/p/w185/jon_bernthal.jpg"
+      },
+      {
+        "name": "Vincent D'Onofrio",
+        "character": "Wilson Fisk / Kingpin",
+        "photo": "https://image.tmdb.org/t/p/w185/vincent_donofrio.jpg"
+      },
+      {
+        "name": "Mark Ruffalo",
+        "character": "Bruce Banner / Hulk",
+        "photo": "https://image.tmdb.org/t/p/w185/mark_ruffalo.jpg"
+      },
+      {
+        "name": "Michael Mando",
+        "character": "Mac Gargan / Scorpion",
         "photo": null
       },
       {
-        "name": "Lupita Nyong'o",
-        "character": "Circe",
+        "name": "Donald Glover",
+        "character": "Aaron Davis / Prowler",
         "photo": null
       },
       {
-        "name": "Cillian Murphy",
-        "character": "Poseidon",
+        "name": "J.K. Simmons",
+        "character": "J. Jonah Jameson",
         "photo": null
       },
       {
-        "name": "Ken Watanabe",
-        "character": "King Alcinous",
+        "name": "Jacob Batalon",
+        "character": "Ned Leeds",
         "photo": null
       }
     ],
-    "director": "Christopher Nolan",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-17",
-    "certificate": "UA",
+    "slug": "spider-man-brand-new-day-969681",
+    "originalTitle": "Spider-Man: Brand New Day",
+    "originalLanguage": "en",
+    "status": "now_showing",
+    "isActive": true,
     "formats": [
       "2D",
-      "IMAX",
-      "70MM",
-      "4DX"
+      "3D",
+      "IMAX"
     ],
-    "status": "now_showing",
-    "isActive": true
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
   },
   {
-    "tmdbId": 1380914,
+    "tmdbId": 1739294,
     "title": "Maaran",
-    "slug": "maaran-1380914",
+    "releaseDate": "2026-07-31T00:00:00.000Z",
+    "director": "Karthick Naren",
+    "language": "Tamil",
     "genres": [
       "Action",
-      "Crime",
-      "Thriller"
+      "Thriller",
+      "Crime"
     ],
-    "language": "Tamil",
-    "originalLanguage": "ta",
-    "rating": 8,
-    "voteCount": 480,
-    "popularity": 92.1,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 145,
-    "poster": "/posters/maaran-1380914.svg",
-    "backdrop": "/posters/maaran-1380914.svg",
-    "description": "A fearless investigative journalist exposes a high-profile election tampering scam and must protect his family when the cartel retaliates.",
+    "rating": 8.3,
+    "voteCount": 2940,
+    "popularity": 810.4,
+    "duration": 142,
+    "certificate": "U/A 16+",
+    "poster": "/posters/maaran-1739294.svg",
+    "backdrop": "/posters/maaran-1739294.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=LW6dpj1uCK8",
+    "description": "An investigative journalist risks everything to expose a massive state-wide political fraud orchestrated by corrupt ministers and syndicate bosses.",
     "cast": [
       {
         "name": "Dhanush",
-        "character": "Mathimaaran 'Maaran'",
-        "photo": null
+        "character": "Mathimaaran (Maaran)",
+        "photo": "https://image.tmdb.org/t/p/w185/dhanush.jpg"
       },
       {
         "name": "Malavika Mohanan",
         "character": "Thara",
-        "photo": null
+        "photo": "https://image.tmdb.org/t/p/w185/malavika.jpg"
       },
       {
         "name": "Samuthirakani",
@@ -770,678 +381,1321 @@
         "photo": null
       },
       {
-        "name": "Master Mahendran",
-        "character": "Inspector Selvam",
+        "name": "Ramki",
+        "character": "Sathyamoorthy",
+        "photo": null
+      },
+      {
+        "name": "Krishnakumar Balasubramanian",
+        "character": "Inspector Anand",
+        "photo": null
+      },
+      {
+        "name": "Mahendran",
+        "character": "Police Officer",
         "photo": null
       },
       {
         "name": "Ameer",
-        "character": "Deva",
+        "character": "Special Apprehension Officer",
         "photo": null
       },
       {
-        "name": "Ramki",
-        "character": "Chief Editor",
+        "name": "Aadukalam Naren",
+        "character": "Editor Sundar",
         "photo": null
       },
       {
         "name": "Bose Venkat",
-        "character": "MLA Rathnam",
+        "character": "Advocate Mani",
         "photo": null
       }
     ],
-    "director": "Karthick Naren",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-31",
-    "certificate": "UA",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1380998,
-    "title": "Get Set Go",
-    "slug": "get-set-go-1380998",
-    "genres": [
-      "Action",
-      "Adventure",
-      "Comedy"
-    ],
-    "language": "Gujarati",
-    "originalLanguage": "gu",
-    "rating": 7.7,
-    "voteCount": 290,
-    "popularity": 81.7,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 122,
-    "poster": "/posters/get-set-go-1380998.svg",
-    "backdrop": "/posters/get-set-go-1380998.svg",
-    "description": "Deepak Tijori returns in a high-octane bicycle gang action heist film about young daredevils outsmarting a corrupt syndicate.",
-    "cast": [
-      {
-        "name": "Deepak Tijori",
-        "character": "Vikram Bhai",
-        "photo": null
-      },
-      {
-        "name": "Malhar Thakar",
-        "character": "Jignesh",
-        "photo": null
-      },
-      {
-        "name": "Aarohi Patel",
-        "character": "Pooja",
-        "photo": null
-      },
-      {
-        "name": "Pratik Gandhi",
-        "character": "Inspector Joshi (Special)",
-        "photo": null
-      },
-      {
-        "name": "Siddharth Randeria",
-        "character": "Bapa",
-        "photo": null
-      },
-      {
-        "name": "Manoj Joshi",
-        "character": "Commissioner",
-        "photo": null
-      },
-      {
-        "name": "Aanvee Oza",
-        "character": "Riya",
-        "photo": null
-      },
-      {
-        "name": "Mitra Gadhvi",
-        "character": "Bhavesh",
-        "photo": null
-      }
-    ],
-    "director": "Arnav Kumar",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-07",
-    "certificate": "U",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1379203,
-    "title": "Evil Dead Burn",
-    "slug": "evil-dead-burn-1379203",
-    "genres": [
-      "Horror",
-      "Supernatural",
-      "Thriller"
-    ],
-    "language": "English",
-    "originalLanguage": "en",
-    "rating": 8,
-    "voteCount": 1120,
-    "popularity": 220.6,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 98,
-    "poster": "/posters/evil-dead-burn-1379203.svg",
-    "backdrop": "/posters/evil-dead-burn-1379203.svg",
-    "description": "Sam Raimi produces the explosive new chapter in the Evil Dead franchise, unleashing ancient demonic forces trapped in a fiery inferno.",
-    "cast": [
-      {
-        "name": "Souheila Yacoub",
-        "character": "Sarah",
-        "photo": null
-      },
-      {
-        "name": "Hunter Doohan",
-        "character": "Leo",
-        "photo": null
-      },
-      {
-        "name": "Lucian-River Chauhan",
-        "character": "Kieran",
-        "photo": null
-      },
-      {
-        "name": "Lily Sullivan",
-        "character": "Beth (Cameo)",
-        "photo": null
-      },
-      {
-        "name": "Alyssa Sutherland",
-        "character": "Deadite Ellie (Voice)",
-        "photo": null
-      },
-      {
-        "name": "Bruce Campbell",
-        "character": "Ash Williams (Cameo)",
-        "photo": null
-      },
-      {
-        "name": "Morgan Davies",
-        "character": "Danny",
-        "photo": null
-      },
-      {
-        "name": "Gabrielle Echols",
-        "character": "Bridget",
-        "photo": null
-      }
-    ],
-    "director": "Sébastien Vaniček",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-10",
-    "certificate": "A",
-    "formats": [
-      "2D",
-      "4DX"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1380876,
-    "title": "Jana Nayagan",
-    "slug": "jana-nayagan-1380876",
-    "genres": [
-      "Political Action",
-      "Drama"
-    ],
-    "language": "Tamil",
+    "slug": "maaran-1739294",
+    "originalTitle": "Maaran",
     "originalLanguage": "ta",
-    "rating": 9.1,
-    "voteCount": 3800,
-    "popularity": 390.8,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 158,
-    "poster": "/posters/jana-nayagan-1380876.svg",
-    "backdrop": "/posters/jana-nayagan-1380876.svg",
-    "description": "Thalapathy Vijay stars in his final blockbuster before entering public politics, delivering a powerful message against systemic corruption.",
-    "cast": [
-      {
-        "name": "Thalapathy Vijay",
-        "character": "Jana Nayagan",
-        "photo": null
-      },
-      {
-        "name": "Pooja Hegde",
-        "character": "Dr. Anitha",
-        "photo": null
-      },
-      {
-        "name": "Bobby Deol",
-        "character": "Rudrappa",
-        "photo": null
-      },
-      {
-        "name": "Gautham Vasudev Menon",
-        "character": "Commissioner Selvam",
-        "photo": null
-      },
-      {
-        "name": "Priyamani",
-        "character": "Advocate Deepa",
-        "photo": null
-      },
-      {
-        "name": "Prakash Raj",
-        "character": "Governor",
-        "photo": null
-      },
-      {
-        "name": "Mamitha Baiju",
-        "character": "Meera",
-        "photo": null
-      },
-      {
-        "name": "Monisha Blessy",
-        "character": "Sister",
-        "photo": null
-      }
-    ],
-    "director": "H. Vinoth",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-23",
-    "certificate": "UA",
+    "status": "now_showing",
+    "isActive": true,
     "formats": [
       "2D",
+      "3D",
       "IMAX"
     ],
-    "status": "now_showing",
-    "isActive": true
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
   },
   {
-    "tmdbId": 1391142,
-    "title": "Vishwanath & Sons",
-    "slug": "vishwanath-and-sons-1391142",
+    "tmdbId": 1727563,
+    "title": "Ohh My Dog",
+    "releaseDate": "2026-08-07T00:00:00.000Z",
+    "director": "Sarov Shanmugam",
+    "language": "Tamil",
     "genres": [
+      "Comedy",
       "Family",
-      "Romance",
       "Drama"
     ],
-    "language": "Tamil",
-    "originalLanguage": "ta",
-    "rating": 8.3,
-    "voteCount": 620,
-    "popularity": 112.2,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 135,
-    "poster": "/posters/vishwanath-and-sons-1391142.svg",
-    "backdrop": "/posters/vishwanath-and-sons-1391142.svg",
-    "description": "Venky Atluri directs Suriya and Mamitha Baiju in a heartwarming family drama about preserving generational legacy and true love.",
+    "rating": 8,
+    "voteCount": 1680,
+    "popularity": 640.2,
+    "duration": 128,
+    "certificate": "U",
+    "poster": "/posters/ohh-my-dog-1727563.svg",
+    "backdrop": "/posters/ohh-my-dog-1727563.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=QftAW9TTmuQ",
+    "description": "A heartwarming family comedy about a young boy who rescues a blind Siberian Husky puppy, inspiring an entire town to overcome all odds.",
     "cast": [
       {
-        "name": "Suriya",
-        "character": "Vishwanath",
+        "name": "Arun Vijay",
+        "character": "Shankar",
+        "photo": "https://image.tmdb.org/t/p/w185/arun_vijay.jpg"
+      },
+      {
+        "name": "Arnav Vijay",
+        "character": "Fernando",
         "photo": null
       },
       {
-        "name": "Mamitha Baiju",
-        "character": "Ananya",
-        "photo": null
-      },
-      {
-        "name": "Raveena Tandon",
-        "character": "Savitri Devi",
-        "photo": null
-      },
-      {
-        "name": "Sathyaraj",
+        "name": "Vijayakumar",
         "character": "Grandfather",
         "photo": null
       },
       {
-        "name": "Nasser",
-        "character": "Elder Uncle",
+        "name": "Mahima Nambiar",
+        "character": "Priya",
         "photo": null
       },
       {
-        "name": "Soori",
-        "character": "Ganesan",
+        "name": "Vinay Rai",
+        "character": "Dr. Kamalesh",
         "photo": null
       },
       {
-        "name": "Kovai Sarala",
-        "character": "Aunt",
+        "name": "Bhanu Chander",
+        "character": "Dog Trainer",
         "photo": null
       },
       {
-        "name": "Redin Kingsley",
-        "character": "Manager",
-        "photo": null
-      }
-    ],
-    "director": "Venky Atluri",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-14",
-    "certificate": "U",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1156593,
-    "title": "Spider-Man: Brand New Day",
-    "slug": "spider-man-brand-new-day-1156593",
-    "genres": [
-      "Action",
-      "Adventure",
-      "Sci-Fi"
-    ],
-    "language": "English",
-    "originalLanguage": "en",
-    "rating": 9,
-    "voteCount": 5100,
-    "popularity": 540.3,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 148,
-    "poster": "/posters/spider-man-brand-new-day-1156593.svg",
-    "backdrop": "/posters/spider-man-brand-new-day-1156593.svg",
-    "description": "Peter Parker begins a new chapter in New York, confronting new street-level criminal organizations while balancing his double life.",
-    "cast": [
-      {
-        "name": "Tom Holland",
-        "character": "Peter Parker / Spider-Man",
+        "name": "Manobala",
+        "character": "Headmaster",
         "photo": null
       },
       {
-        "name": "Zendaya",
-        "character": "MJ",
-        "photo": null
-      },
-      {
-        "name": "Sadie Sink",
-        "character": "Felicia Hardy / Black Cat",
-        "photo": null
-      },
-      {
-        "name": "Jon Favreau",
-        "character": "Happy Hogan",
-        "photo": null
-      },
-      {
-        "name": "Mark Ruffalo",
-        "character": "Bruce Banner / Hulk",
-        "photo": null
-      },
-      {
-        "name": "Jacob Batalon",
-        "character": "Ned Leeds",
-        "photo": null
-      },
-      {
-        "name": "Vincent D'Onofrio",
-        "character": "Wilson Fisk / Kingpin",
-        "photo": null
-      },
-      {
-        "name": "Charlie Cox",
-        "character": "Matt Murdock / Daredevil",
-        "photo": null
-      }
-    ],
-    "director": "Destin Daniel Cretton",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-31",
-    "certificate": "UA",
-    "formats": [
-      "2D",
-      "IMAX",
-      "3D",
-      "4DX"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1380922,
-    "title": "Unmadham",
-    "slug": "unmadham-1380922",
-    "genres": [
-      "Psychological",
-      "Noir",
-      "Thriller"
-    ],
-    "language": "Malayalam",
-    "originalLanguage": "ml",
-    "rating": 8.2,
-    "voteCount": 380,
-    "popularity": 91.4,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 140,
-    "poster": "/posters/unmadham-1380922.svg",
-    "backdrop": "/posters/unmadham-1380922.svg",
-    "description": "A riveting Malayalam psychological thriller probing the dark corridors of the human mind after an unsolved crime resurfaces.",
-    "cast": [
-      {
-        "name": "Kunchacko Boban",
-        "character": "David",
-        "photo": null
-      },
-      {
-        "name": "Aparna Balamurali",
-        "character": "Dr. Maya",
-        "photo": null
-      },
-      {
-        "name": "Suraj Venjaramoodu",
-        "character": "DySP George",
-        "photo": null
-      },
-      {
-        "name": "Jaffer Idukki",
-        "character": "Kumaran",
-        "photo": null
-      },
-      {
-        "name": "Indrans",
-        "character": "Watchman Appu",
-        "photo": null
-      },
-      {
-        "name": "Sudheer Karamana",
-        "character": "Advocate Thomas",
-        "photo": null
-      },
-      {
-        "name": "Divya Prabha",
-        "character": "Sujatha",
-        "photo": null
-      },
-      {
-        "name": "Vijayaraghavan",
-        "character": "Judge Varma",
-        "photo": null
-      }
-    ],
-    "director": "Kiran Das",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-07-31",
-    "certificate": "UA",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1391188,
-    "title": "ChaO",
-    "slug": "chao-1391188",
-    "genres": [
-      "Animation",
-      "Fantasy",
-      "Romance"
-    ],
-    "language": "Japanese",
-    "originalLanguage": "ja",
-    "rating": 8.4,
-    "voteCount": 730,
-    "popularity": 140.5,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 112,
-    "poster": "/posters/chao-1391188.svg",
-    "backdrop": "/posters/chao-1391188.svg",
-    "description": "Studio 4°C presents a breathtaking fantasy anime about an engineer whose encounter with a mythical mermaid princess sparks an unforgettable journey.",
-    "cast": [
-      {
-        "name": "Ryunosuke Kamiki",
-        "character": "Stephan (voice)",
-        "photo": null
-      },
-      {
-        "name": "Minami Hamabe",
-        "character": "ChaO (voice)",
-        "photo": null
-      },
-      {
-        "name": "Kenichi Matsuyama",
-        "character": "Captain Boris (voice)",
-        "photo": null
-      },
-      {
-        "name": "Nana Mori",
-        "character": "Airi (voice)",
-        "photo": null
-      },
-      {
-        "name": "Mamoru Miyano",
-        "character": "Finian (voice)",
-        "photo": null
-      },
-      {
-        "name": "Aoi Yuuki",
-        "character": "Coral (voice)",
-        "photo": null
-      }
-    ],
-    "director": "Yasuhiro Aoki",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-07",
-    "certificate": "U",
-    "formats": [
-      "2D",
-      "IMAX"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1479840,
-    "title": "G.D.N.",
-    "slug": "gdn-1479840",
-    "genres": [
-      "Biography",
-      "Inspirational",
-      "Drama"
-    ],
-    "language": "Tamil",
-    "originalLanguage": "ta",
-    "rating": 8.6,
-    "voteCount": 610,
-    "popularity": 118.8,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 144,
-    "poster": "/posters/gdn-1479840.svg",
-    "backdrop": "/posters/gdn-1479840.svg",
-    "description": "R. Madhavan stars as the pioneering Indian visionary and inventor G.D. Naidu, capturing his groundbreaking innovations and humanitarian spirit.",
-    "cast": [
-      {
-        "name": "R. Madhavan",
-        "character": "G.D. Naidu",
-        "photo": null
-      },
-      {
-        "name": "Shraddha Srinath",
-        "character": "Kalyani",
-        "photo": null
-      },
-      {
-        "name": "Nassar",
-        "character": "Industrialist Ramanathan",
-        "photo": null
-      },
-      {
-        "name": "Guru Somasundaram",
-        "character": "Scientist Bose",
-        "photo": null
-      },
-      {
-        "name": "MS Bhaskar",
-        "character": "Advocate Shastri",
-        "photo": null
-      },
-      {
-        "name": "Kishore",
-        "character": "British Officer",
-        "photo": null
-      },
-      {
-        "name": "Delhi Ganesh",
-        "character": "Uncle",
-        "photo": null
-      },
-      {
-        "name": "Pavel Navageethan",
-        "character": "Assistant",
-        "photo": null
-      }
-    ],
-    "director": "Krishnakumar Ramakumar",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-07",
-    "certificate": "U",
-    "formats": [
-      "2D"
-    ],
-    "status": "now_showing",
-    "isActive": true
-  },
-  {
-    "tmdbId": 1479832,
-    "title": "DC",
-    "slug": "dc-1479832",
-    "genres": [
-      "Action",
-      "Crime",
-      "Drama"
-    ],
-    "language": "Tamil",
-    "originalLanguage": "ta",
-    "rating": 8.8,
-    "voteCount": 940,
-    "popularity": 180.3,
-    "revenue": 0,
-    "budget": 0,
-    "duration": 141,
-    "poster": "/posters/dc-1479832.svg",
-    "backdrop": "/posters/dc-1479832.svg",
-    "description": "Arun Matheswaran directs Lokesh Kanagaraj and Wamiqa Gabbi in a gritty, high-octane world where Devadas and Chandra fight for survival.",
-    "cast": [
-      {
-        "name": "Lokesh Kanagaraj",
-        "character": "Devadas",
-        "photo": null
-      },
-      {
-        "name": "Wamiqa Gabbi",
-        "character": "Chandra",
-        "photo": "/e1CNXkH2scGeoabOTowFJJxX2YF.jpg"
-      },
-      {
-        "name": "Sanjana Krishnamoorthy",
-        "character": "Parvathi",
-        "photo": null
-      },
-      {
-        "name": "Fahadh Faasil",
-        "character": "Adithyan",
-        "photo": null
-      },
-      {
-        "name": "Aishwarya Rajesh",
-        "character": "Kamala",
-        "photo": null
-      },
-      {
-        "name": "Nizhalgal Ravi",
-        "character": "Thilagar",
-        "photo": null
-      },
-      {
-        "name": "Ameer",
-        "character": "Inspector Durai",
+        "name": "Swaminathan",
+        "character": "Veterinarian",
         "photo": null
       },
       {
         "name": "Singampuli",
-        "character": "Vellai",
+        "character": "Tea Vendor",
+        "photo": null
+      },
+      {
+        "name": "Mayilsamy",
+        "character": "Sub-Inspector",
         "photo": null
       }
     ],
-    "director": "Arun Matheswaran",
-    "trailerUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    "releaseDate": "2026-08-07",
-    "certificate": "UA",
+    "slug": "ohh-my-dog-1727563",
+    "originalTitle": "Ohh My Dog",
+    "originalLanguage": "ta",
+    "status": "now_showing",
+    "isActive": true,
     "formats": [
       "2D",
+      "3D",
       "IMAX"
     ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1368337,
+    "title": "The Odyssey",
+    "releaseDate": "2026-07-17T00:00:00.000Z",
+    "director": "Christopher Nolan",
+    "language": "English",
+    "genres": [
+      "Adventure",
+      "Action",
+      "Fantasy"
+    ],
+    "rating": 9.4,
+    "voteCount": 8910,
+    "popularity": 2890.5,
+    "duration": 173,
+    "certificate": "U/A 13+",
+    "poster": "https://image.tmdb.org/t/p/w500/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/RMXG8myu1aGlNUsRjtxzmpdMK0.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=AyIZ9tiiN8I",
+    "description": "Christopher Nolan's cinematic masterwork retelling Homer's epic voyage of Odysseus navigating mythical beasts, wrathful gods, and treacherous seas.",
+    "cast": [
+      {
+        "name": "Matt Damon",
+        "character": "Odysseus",
+        "photo": "https://image.tmdb.org/t/p/w185/elSlNg0W3mEpzQ.jpg"
+      },
+      {
+        "name": "Cillian Murphy",
+        "character": "Poseidon",
+        "photo": "https://image.tmdb.org/t/p/w185/3D5Q0.jpg"
+      },
+      {
+        "name": "Christian Bale",
+        "character": "King Agamemnon",
+        "photo": "https://image.tmdb.org/t/p/w185/b7fA2u3.jpg"
+      },
+      {
+        "name": "Tom Hardy",
+        "character": "Cyclops Polyphemus",
+        "photo": "https://image.tmdb.org/t/p/w185/yVGF9.jpg"
+      },
+      {
+        "name": "Anne Hathaway",
+        "character": "Penelope",
+        "photo": "https://image.tmdb.org/t/p/w185/9o5P9.jpg"
+      },
+      {
+        "name": "Robert Pattinson",
+        "character": "Telemachus",
+        "photo": "https://image.tmdb.org/t/p/w185/7W5Q.jpg"
+      },
+      {
+        "name": "Kenneth Branagh",
+        "character": "King Alcinous",
+        "photo": null
+      },
+      {
+        "name": "Michael Caine",
+        "character": "Tiresias",
+        "photo": null
+      },
+      {
+        "name": "Marion Cotillard",
+        "character": "Goddess Athena",
+        "photo": null
+      },
+      {
+        "name": "Gary Oldman",
+        "character": "Zeus",
+        "photo": null
+      }
+    ],
+    "slug": "the-odyssey-1368337",
+    "originalTitle": "The Odyssey",
+    "originalLanguage": "en",
     "status": "now_showing",
-    "isActive": true
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1303331,
+    "title": "Dhamaal 4",
+    "releaseDate": "2026-07-10T00:00:00.000Z",
+    "director": "Indra Kumar",
+    "language": "Hindi",
+    "genres": [
+      "Comedy",
+      "Adventure"
+    ],
+    "rating": 8.2,
+    "voteCount": 3750,
+    "popularity": 890.3,
+    "duration": 138,
+    "certificate": "U/A 13+",
+    "poster": "/posters/dhamaal-4-1303331.svg",
+    "backdrop": "/posters/dhamaal-4-1303331.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=vtEnjikCXyA",
+    "description": "The riotous gang returns for their craziest high-stakes treasure hunt yet across the dangerous jungles and rivers of South America.",
+    "cast": [
+      {
+        "name": "Ajay Devgn",
+        "character": "Guddu",
+        "photo": "https://image.tmdb.org/t/p/w185/ajay_devgn.jpg"
+      },
+      {
+        "name": "Riteish Deshmukh",
+        "character": "Deshbandhu Roy",
+        "photo": "https://image.tmdb.org/t/p/w185/riteish.jpg"
+      },
+      {
+        "name": "Arshad Warsi",
+        "character": "Aditya Shrivastav",
+        "photo": "https://image.tmdb.org/t/p/w185/arshad.jpg"
+      },
+      {
+        "name": "Javed Jaffrey",
+        "character": "Manav Shrivastav",
+        "photo": "https://image.tmdb.org/t/p/w185/javed.jpg"
+      },
+      {
+        "name": "Sanjay Mishra",
+        "character": "Jonny",
+        "photo": null
+      },
+      {
+        "name": "Ashish Chowdhry",
+        "character": "Boman Contractor",
+        "photo": null
+      },
+      {
+        "name": "Anil Kapoor",
+        "character": "Avinash",
+        "photo": null
+      },
+      {
+        "name": "Madhuri Dixit",
+        "character": "Bindu",
+        "photo": null
+      },
+      {
+        "name": "Boman Irani",
+        "character": "Commissioner Batra",
+        "photo": null
+      },
+      {
+        "name": "Johnny Lever",
+        "character": "Jhingur",
+        "photo": null
+      }
+    ],
+    "slug": "dhamaal-4-1303331",
+    "originalTitle": "Dhamaal 4",
+    "originalLanguage": "hi",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1489543,
+    "title": "G.D.N",
+    "releaseDate": "2026-08-07T00:00:00.000Z",
+    "director": "R. Madhavan",
+    "language": "Tamil",
+    "genres": [
+      "Biography",
+      "Drama",
+      "History"
+    ],
+    "rating": 8.9,
+    "voteCount": 2210,
+    "popularity": 760.1,
+    "duration": 148,
+    "certificate": "U",
+    "poster": "/posters/gdn-1489543.svg",
+    "backdrop": "/posters/gdn-1489543.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=icDuEHSxE-w",
+    "description": "The inspiring biographical saga of G.D. Naidu, the visionary Indian inventor and industrialist often hailed as the Edison of India.",
+    "cast": [
+      {
+        "name": "R. Madhavan",
+        "character": "G.D. Naidu",
+        "photo": "https://image.tmdb.org/t/p/w185/r_madhavan.jpg"
+      },
+      {
+        "name": "Jayaram",
+        "character": "Govindaswamy Naidu",
+        "photo": null
+      },
+      {
+        "name": "Simran",
+        "character": "Lakshmi Ammal",
+        "photo": null
+      },
+      {
+        "name": "Prakash Raj",
+        "character": "Sir Arthur Hope",
+        "photo": null
+      },
+      {
+        "name": "Nassar",
+        "character": "Diwan of Mysore",
+        "photo": null
+      },
+      {
+        "name": "Guru Somasundaram",
+        "character": "Chief Engineer",
+        "photo": null
+      },
+      {
+        "name": "Rohini",
+        "character": "Mother",
+        "photo": null
+      },
+      {
+        "name": "M.S. Bhaskar",
+        "character": "Professor Krishnan",
+        "photo": null
+      },
+      {
+        "name": "Charle",
+        "character": "Workshop Assistant",
+        "photo": null
+      },
+      {
+        "name": "Thalaivasal Vijay",
+        "character": "Judge",
+        "photo": null
+      }
+    ],
+    "slug": "gdn-1489543",
+    "originalTitle": "G.D.N",
+    "originalLanguage": "ta",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1479832,
+    "title": "DC",
+    "releaseDate": "2026-08-07T00:00:00.000Z",
+    "director": "James Gunn",
+    "language": "English",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Fantasy"
+    ],
+    "rating": 8.7,
+    "voteCount": 4620,
+    "popularity": 1320.6,
+    "duration": 139,
+    "certificate": "U/A 13+",
+    "poster": "/posters/dc-1479832.svg",
+    "backdrop": "/posters/dc-1479832.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=tzlY8XD1CGg",
+    "description": "The inaugural chapter of James Gunn's unified DC Universe as Superman, Hawkgirl, and Green Lantern unite to defend Earth against an extraterrestrial invasion.",
+    "cast": [
+      {
+        "name": "David Corenswet",
+        "character": "Clark Kent / Superman",
+        "photo": "https://image.tmdb.org/t/p/w185/david_corenswet.jpg"
+      },
+      {
+        "name": "Rachel Brosnahan",
+        "character": "Lois Lane",
+        "photo": "https://image.tmdb.org/t/p/w185/rachel_brosnahan.jpg"
+      },
+      {
+        "name": "Nicholas Hoult",
+        "character": "Lex Luthor",
+        "photo": "https://image.tmdb.org/t/p/w185/nicholas_hoult.jpg"
+      },
+      {
+        "name": "Edi Gathegi",
+        "character": "Mister Terrific",
+        "photo": null
+      },
+      {
+        "name": "Nathan Fillion",
+        "character": "Guy Gardner / Green Lantern",
+        "photo": null
+      },
+      {
+        "name": "Isabela Merced",
+        "character": "Hawkgirl",
+        "photo": null
+      },
+      {
+        "name": "Anthony Carrigan",
+        "character": "Metamorpho",
+        "photo": null
+      },
+      {
+        "name": "María Gabriela de Faría",
+        "character": "The Engineer",
+        "photo": null
+      },
+      {
+        "name": "Skyler Gisondo",
+        "character": "Jimmy Olsen",
+        "photo": null
+      },
+      {
+        "name": "Sara Sampaio",
+        "character": "Eve Teschmacher",
+        "photo": null
+      }
+    ],
+    "slug": "dc-1479832",
+    "originalTitle": "DC",
+    "originalLanguage": "en",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1101383,
+    "title": "The End of Oak Street",
+    "releaseDate": "2026-08-14T00:00:00.000Z",
+    "director": "David Robert Mitchell",
+    "language": "English",
+    "genres": [
+      "Science Fiction",
+      "Mystery",
+      "Thriller"
+    ],
+    "rating": 8.1,
+    "voteCount": 1980,
+    "popularity": 710.2,
+    "duration": 122,
+    "certificate": "PG-13",
+    "poster": "https://image.tmdb.org/t/p/w500/fYXqpgPmHMphSF2W30GbTeJVIa5.jpg",
+    "backdrop": "https://image.tmdb.org/t/p/w1280/b9q9VmbXDvJmTziRqkwdEmFdwhr.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=u4tgctWuHc0",
+    "description": "An enigmatic psychological mystery unfolding in a seemingly peaceful suburban neighborhood that vanishes into an alternate timeline every sunset.",
+    "cast": [
+      {
+        "name": "Anne Hathaway",
+        "character": "Sarah Miller",
+        "photo": "https://image.tmdb.org/t/p/w185/9o5P9.jpg"
+      },
+      {
+        "name": "Ewan McGregor",
+        "character": "Detective Jack Vance",
+        "photo": "https://image.tmdb.org/t/p/w185/ewan_mcgregor.jpg"
+      },
+      {
+        "name": "Maisy Stella",
+        "character": "Lily Miller",
+        "photo": null
+      },
+      {
+        "name": "Christian Convery",
+        "character": "Leo Vance",
+        "photo": null
+      },
+      {
+        "name": "Chloe Sevigny",
+        "character": "Dr. Evelyn Ward",
+        "photo": null
+      },
+      {
+        "name": "Colin Farrell",
+        "character": "The Observer",
+        "photo": null
+      },
+      {
+        "name": "Mia Goth",
+        "character": "Clara",
+        "photo": null
+      },
+      {
+        "name": "Jesse Plemons",
+        "character": "Officer Dan",
+        "photo": null
+      },
+      {
+        "name": "Willem Dafoe",
+        "character": "Professor Albright",
+        "photo": null
+      },
+      {
+        "name": "Tilda Swinton",
+        "character": "The Chronologist",
+        "photo": null
+      }
+    ],
+    "slug": "the-end-of-oak-street-1101383",
+    "originalTitle": "The End of Oak Street",
+    "originalLanguage": "en",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1408162,
+    "title": "Vishwanath & Sons",
+    "releaseDate": "2026-08-14T00:00:00.000Z",
+    "director": "Umesh Shukla",
+    "language": "Hindi",
+    "genres": [
+      "Drama",
+      "Comedy",
+      "Family"
+    ],
+    "rating": 8.5,
+    "voteCount": 2310,
+    "popularity": 740.9,
+    "duration": 135,
+    "certificate": "U",
+    "poster": "/posters/vishwanath-and-sons-1408162.svg",
+    "backdrop": "/posters/vishwanath-and-sons-1408162.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=nelkiuezJxg",
+    "description": "A hilarious and poignant multi-generational family drama revolving around a 90-year-old patriarch and his eccentric diamond merchant sons in Ahmedabad.",
+    "cast": [
+      {
+        "name": "Paresh Rawal",
+        "character": "Vishwanath Mehta",
+        "photo": "https://image.tmdb.org/t/p/w185/paresh_rawal.jpg"
+      },
+      {
+        "name": "Boman Irani",
+        "character": "Mansukh Mehta",
+        "photo": "https://image.tmdb.org/t/p/w185/boman_irani.jpg"
+      },
+      {
+        "name": "Manoj Joshi",
+        "character": "Hasmukh Mehta",
+        "photo": null
+      },
+      {
+        "name": "Darshan Jariwala",
+        "character": "Rasiklal",
+        "photo": null
+      },
+      {
+        "name": "Supriya Pathak",
+        "character": "Gita Mehta",
+        "photo": null
+      },
+      {
+        "name": "Ratna Pathak Shah",
+        "character": "Narmada",
+        "photo": null
+      },
+      {
+        "name": "Pratik Gandhi",
+        "character": "Chirag Mehta",
+        "photo": null
+      },
+      {
+        "name": "Jimit Trivedi",
+        "character": "Bhavik",
+        "photo": null
+      },
+      {
+        "name": "Sanjay Goradia",
+        "character": "Jethalal (Neighbor)",
+        "photo": null
+      },
+      {
+        "name": "Siddharth Randeria",
+        "character": "Gujarati Uncle",
+        "photo": null
+      }
+    ],
+    "slug": "vishwanath-and-sons-1408162",
+    "originalTitle": "Vishwanath & Sons",
+    "originalLanguage": "hi",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1235877,
+    "title": "Jana Nayagan",
+    "releaseDate": "2026-07-23T00:00:00.000Z",
+    "director": "H. Vinoth",
+    "language": "Tamil",
+    "genres": [
+      "Action",
+      "Political",
+      "Drama"
+    ],
+    "rating": 9.3,
+    "voteCount": 8400,
+    "popularity": 2150,
+    "duration": 165,
+    "certificate": "U/A 16+",
+    "poster": "/posters/jana-nayagan-1235877.svg",
+    "backdrop": "/posters/jana-nayagan-1235877.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=7b20GRFZBFE",
+    "description": "A charismatic people's leader takes on deep-rooted systemic corruption and ruthless political oligarchs in an explosive high-octane battle.",
+    "cast": [
+      {
+        "name": "Thalapathy Vijay",
+        "character": "Vetrivendhan (Jana Nayagan)",
+        "photo": "https://image.tmdb.org/t/p/w185/thalapathy_vijay.jpg"
+      },
+      {
+        "name": "Pooja Hegde",
+        "character": "Ananya IAS",
+        "photo": "https://image.tmdb.org/t/p/w185/pooja_hegde.jpg"
+      },
+      {
+        "name": "Bobby Deol",
+        "character": "Ranveer Rathore",
+        "photo": "https://image.tmdb.org/t/p/w185/bobby_deol.jpg"
+      },
+      {
+        "name": "Gautham Vasudev Menon",
+        "character": "Commissioner Raghuram",
+        "photo": null
+      },
+      {
+        "name": "Prakash Raj",
+        "character": "Chief Minister Narayanan",
+        "photo": null
+      },
+      {
+        "name": "Priyamani",
+        "character": "Advocate Meera",
+        "photo": null
+      },
+      {
+        "name": "Narain",
+        "character": "Inspector Victor",
+        "photo": null
+      },
+      {
+        "name": "Mamitha Baiju",
+        "character": "Kavya",
+        "photo": null
+      },
+      {
+        "name": "Monisha Blessy",
+        "character": "Divya",
+        "photo": null
+      },
+      {
+        "name": "Redin Kingsley",
+        "character": "Kuberan",
+        "photo": null
+      }
+    ],
+    "slug": "jana-nayagan-1235877",
+    "originalTitle": "Jana Nayagan",
+    "originalLanguage": "ta",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1739212,
+    "title": "Get Set Go",
+    "releaseDate": "2026-08-07T00:00:00.000Z",
+    "director": "Sudheesh Sankar",
+    "language": "Malayalam",
+    "genres": [
+      "Comedy",
+      "Sports",
+      "Drama"
+    ],
+    "rating": 8.2,
+    "voteCount": 1540,
+    "popularity": 580.4,
+    "duration": 132,
+    "certificate": "U",
+    "poster": "/posters/get-set-go-1739212.svg",
+    "backdrop": "/posters/get-set-go-1739212.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=0HjdiohVOik",
+    "description": "An underdog village boat-racing team unites generations of eccentric villagers to challenge the national champions in an epic regatta.",
+    "cast": [
+      {
+        "name": "Jayaram",
+        "character": "Captain Varghese",
+        "photo": "https://image.tmdb.org/t/p/w185/jayaram.jpg"
+      },
+      {
+        "name": "Urvashi",
+        "character": "Mary Varghese",
+        "photo": null
+      },
+      {
+        "name": "Dhyan Sreenivasan",
+        "character": "Rony",
+        "photo": null
+      },
+      {
+        "name": "Suraj Venjaramoodu",
+        "character": "Kunjachan",
+        "photo": null
+      },
+      {
+        "name": "Saiju Kurup",
+        "character": "Sabu",
+        "photo": null
+      },
+      {
+        "name": "Johny Antony",
+        "character": "Panchayat President",
+        "photo": null
+      },
+      {
+        "name": "Ramesh Pisharody",
+        "character": "Commentator Dasan",
+        "photo": null
+      },
+      {
+        "name": "Dharmajan Bolgatty",
+        "character": "Vijayan",
+        "photo": null
+      },
+      {
+        "name": "Aju Varghese",
+        "character": "Manoj",
+        "photo": null
+      },
+      {
+        "name": "Basil Joseph",
+        "character": "Coach Thomas (Special Appearance)",
+        "photo": null
+      }
+    ],
+    "slug": "get-set-go-1739212",
+    "originalTitle": "Get Set Go",
+    "originalLanguage": "ml",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1506736,
+    "title": "Thudakkam",
+    "releaseDate": "2026-08-07T00:00:00.000Z",
+    "director": "Jude Anthany Joseph",
+    "language": "Malayalam",
+    "genres": [
+      "Drama",
+      "Thriller"
+    ],
+    "rating": 8.6,
+    "voteCount": 2190,
+    "popularity": 720,
+    "duration": 140,
+    "certificate": "U/A 13+",
+    "poster": "/posters/thudakkam-1506736.svg",
+    "backdrop": "/posters/thudakkam-1506736.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=MLxgaz2Zp1k",
+    "description": "A gripping suspense thriller documenting a relentless 48-hour mountain rescue operation that uncovers a forgotten tribal artifact.",
+    "cast": [
+      {
+        "name": "Tovino Thomas",
+        "character": "Abhilash",
+        "photo": "https://image.tmdb.org/t/p/w185/tovino.jpg"
+      },
+      {
+        "name": "Asif Ali",
+        "character": "Dr. Najeeb",
+        "photo": null
+      },
+      {
+        "name": "Kunchacko Boban",
+        "character": "Forest Ranger Roy",
+        "photo": null
+      },
+      {
+        "name": "Aparna Balamurali",
+        "character": "Deepa",
+        "photo": null
+      },
+      {
+        "name": "Darshana Rajendran",
+        "character": "Ancy",
+        "photo": null
+      },
+      {
+        "name": "Indrans",
+        "character": "Tribal Guide Moopan",
+        "photo": null
+      },
+      {
+        "name": "Lal",
+        "character": "Captain Mathai",
+        "photo": null
+      },
+      {
+        "name": "Siddique",
+        "character": "SP Madhavan",
+        "photo": null
+      },
+      {
+        "name": "Kalabhavan Shajohn",
+        "character": "Driver Soman",
+        "photo": null
+      },
+      {
+        "name": "Renji Panicker",
+        "character": "District Collector",
+        "photo": null
+      }
+    ],
+    "slug": "thudakkam-1506736",
+    "originalTitle": "Thudakkam",
+    "originalLanguage": "ml",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1432631,
+    "title": "Idhayam Murali",
+    "releaseDate": "2026-07-10T00:00:00.000Z",
+    "director": "Cheran",
+    "language": "Tamil",
+    "genres": [
+      "Romance",
+      "Drama",
+      "Musical"
+    ],
+    "rating": 8.3,
+    "voteCount": 1870,
+    "popularity": 690.3,
+    "duration": 146,
+    "certificate": "U",
+    "poster": "/posters/idhayam-murali-1432631.svg",
+    "backdrop": "/posters/idhayam-murali-1432631.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=DF9I1wLlXbk",
+    "description": "A timeless, soulful romantic musical celebrating unexpressed true love, nostalgic college days, and musical tributes in Chennai.",
+    "cast": [
+      {
+        "name": "Atharvaa",
+        "character": "Murali",
+        "photo": "https://image.tmdb.org/t/p/w185/atharvaa.jpg"
+      },
+      {
+        "name": "Anupama Parameswaran",
+        "character": "Geetha",
+        "photo": "https://image.tmdb.org/t/p/w185/anupama.jpg"
+      },
+      {
+        "name": "Sarathkumar",
+        "character": "Professor Ramanathan",
+        "photo": null
+      },
+      {
+        "name": "Radhika Sarathkumar",
+        "character": "Kausalya",
+        "photo": null
+      },
+      {
+        "name": "Prabhu",
+        "character": "Uncle Shankaran",
+        "photo": null
+      },
+      {
+        "name": "Suhasini",
+        "character": "Principal Lakshmi",
+        "photo": null
+      },
+      {
+        "name": "Vivek Prasanna",
+        "character": "Cheenu",
+        "photo": null
+      },
+      {
+        "name": "Karunakaran",
+        "character": "Gopi",
+        "photo": null
+      },
+      {
+        "name": "Thambi Ramaiah",
+        "character": "Hostel Warden",
+        "photo": null
+      },
+      {
+        "name": "Ilavarasu",
+        "character": "Father",
+        "photo": null
+      }
+    ],
+    "slug": "idhayam-murali-1432631",
+    "originalTitle": "Idhayam Murali",
+    "originalLanguage": "ta",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1408170,
+    "title": "Lenin",
+    "releaseDate": "2026-07-10T00:00:00.000Z",
+    "director": "Pa. Ranjith",
+    "language": "Tamil",
+    "genres": [
+      "Action",
+      "History",
+      "Political"
+    ],
+    "rating": 9,
+    "voteCount": 3950,
+    "popularity": 1120.7,
+    "duration": 154,
+    "certificate": "A",
+    "poster": "/posters/lenin-1408170.svg",
+    "backdrop": "/posters/lenin-1408170.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=tlSDDuWxO_0",
+    "description": "A fiery working-class revolutionary historical drama following mill workers and port unions fighting colonial exploitation in 1930s Madras.",
+    "cast": [
+      {
+        "name": "Chiyaan Vikram",
+        "character": "Lenin / Kaali",
+        "photo": "https://image.tmdb.org/t/p/w185/vikram.jpg"
+      },
+      {
+        "name": "Pasupathy",
+        "character": "Ranganathan",
+        "photo": null
+      },
+      {
+        "name": "Parvathy Thiruvothu",
+        "character": "Amudha",
+        "photo": null
+      },
+      {
+        "name": "Malavika Mohanan",
+        "character": "Meenakshi",
+        "photo": null
+      },
+      {
+        "name": "Daniel Caltagirone",
+        "character": "Governor Hamilton",
+        "photo": null
+      },
+      {
+        "name": "Harikrishnan",
+        "character": "Ramu",
+        "photo": null
+      },
+      {
+        "name": "Vettai Muthukumar",
+        "character": "Singaram",
+        "photo": null
+      },
+      {
+        "name": "Kalaiyarasan",
+        "character": "Velu",
+        "photo": null
+      },
+      {
+        "name": "John Vijay",
+        "character": "DSP Andrews",
+        "photo": null
+      },
+      {
+        "name": "Riythvika",
+        "character": "Ponni",
+        "photo": null
+      }
+    ],
+    "slug": "lenin-1408170",
+    "originalTitle": "Lenin",
+    "originalLanguage": "ta",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1545486,
+    "title": "Unmadham",
+    "releaseDate": "2026-07-31T00:00:00.000Z",
+    "director": "Lijo Jose Pellissery",
+    "language": "Malayalam",
+    "genres": [
+      "Psychological Thriller",
+      "Mystery",
+      "Drama"
+    ],
+    "rating": 8.8,
+    "voteCount": 2650,
+    "popularity": 840.1,
+    "duration": 136,
+    "certificate": "A",
+    "poster": "/posters/unmadham-1545486.svg",
+    "backdrop": "/posters/unmadham-1545486.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=3w9KxkTUWBc",
+    "description": "An intense, hallucinatory psychological thriller exploring obsession, delirium, and folklore mysticism in the mist-laden peaks of Munnar.",
+    "cast": [
+      {
+        "name": "Fahadh Faasil",
+        "character": "Dr. Paul Mathew",
+        "photo": "https://image.tmdb.org/t/p/w185/fahadh.jpg"
+      },
+      {
+        "name": "Joju George",
+        "character": "Kallan Xavier",
+        "photo": null
+      },
+      {
+        "name": "Chemban Vinod Jose",
+        "character": "Antony",
+        "photo": null
+      },
+      {
+        "name": "Vinayakan",
+        "character": "Vakkachan",
+        "photo": null
+      },
+      {
+        "name": "Dileesh Pothan",
+        "character": "Father James",
+        "photo": null
+      },
+      {
+        "name": "Soubin Shahir",
+        "character": "Shibu",
+        "photo": null
+      },
+      {
+        "name": "Shine Tom Chacko",
+        "character": "Sunny",
+        "photo": null
+      },
+      {
+        "name": "Roshan Mathew",
+        "character": "David",
+        "photo": null
+      },
+      {
+        "name": "Grace Antony",
+        "character": "Clara",
+        "photo": null
+      },
+      {
+        "name": "Nimisha Sajayan",
+        "character": "Sister Teresa",
+        "photo": null
+      }
+    ],
+    "slug": "unmadham-1545486",
+    "originalTitle": "Unmadham",
+    "originalLanguage": "ml",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1478476,
+    "title": "Keu Bole Biplobi, Keu Bole Dakat",
+    "releaseDate": "2026-08-14T00:00:00.000Z",
+    "director": "Srijit Mukherji",
+    "language": "Bengali",
+    "genres": [
+      "Action",
+      "History",
+      "Period Drama"
+    ],
+    "rating": 8.7,
+    "voteCount": 2100,
+    "popularity": 710.6,
+    "duration": 152,
+    "certificate": "U/A 16+",
+    "poster": "/posters/keu-bole-biplobi-1478476.svg",
+    "backdrop": "/posters/keu-bole-biplobi-1478476.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=AyIZ9tiiN8I",
+    "description": "The gripping historical chronicle of Bengal's legendary freedom fighter Ananta Singh and the daring 1930 Chittagong armoury raid.",
+    "cast": [
+      {
+        "name": "Dev",
+        "character": "Ananta Singh",
+        "photo": "https://image.tmdb.org/t/p/w185/dev_bengali.jpg"
+      },
+      {
+        "name": "Prosenjit Chatterjee",
+        "character": "Masterda Surya Sen",
+        "photo": "https://image.tmdb.org/t/p/w185/prosenjit.jpg"
+      },
+      {
+        "name": "Jisshu Sengupta",
+        "character": "Ganesh Ghosh",
+        "photo": null
+      },
+      {
+        "name": "Anirban Bhattacharya",
+        "character": "Tegra",
+        "photo": null
+      },
+      {
+        "name": "Paran Bandopadhyay",
+        "character": "Master Ji",
+        "photo": null
+      },
+      {
+        "name": "Parambrata Chatterjee",
+        "character": "Lokenath Bal",
+        "photo": null
+      },
+      {
+        "name": "Abir Chatterjee",
+        "character": "Inspector Craig",
+        "photo": null
+      },
+      {
+        "name": "Raima Sen",
+        "character": "Pritilata Waddedar",
+        "photo": null
+      },
+      {
+        "name": "Swastika Mukherjee",
+        "character": "Kalpana Datta",
+        "photo": null
+      },
+      {
+        "name": "Paoli Dam",
+        "character": "Bina Das",
+        "photo": null
+      }
+    ],
+    "slug": "keu-bole-biplobi-keu-bole-dakat-1478476",
+    "originalTitle": "Keu Bole Biplobi, Keu Bole Dakat",
+    "originalLanguage": "bn",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
+  },
+  {
+    "tmdbId": 1444466,
+    "title": "Awarapan 2",
+    "releaseDate": "2026-08-14T00:00:00.000Z",
+    "director": "Mohit Suri",
+    "language": "Hindi",
+    "genres": [
+      "Action",
+      "Romance",
+      "Crime",
+      "Thriller"
+    ],
+    "rating": 8.9,
+    "voteCount": 4890,
+    "popularity": 1180.2,
+    "duration": 144,
+    "certificate": "A",
+    "poster": "/posters/awarapan-2-1444466.svg",
+    "backdrop": "/posters/awarapan-2-1444466.svg",
+    "trailerUrl": "https://www.youtube.com/watch?v=RddZObTlmA8",
+    "description": "Shivansh returns to protect an innocent soul from an international human trafficking cartel, seeking redemption through ultimate sacrifice.",
+    "cast": [
+      {
+        "name": "Emraan Hashmi",
+        "character": "Shivam / Shivansh",
+        "photo": "https://image.tmdb.org/t/p/w185/emraan_hashmi.jpg"
+      },
+      {
+        "name": "Shriya Saran",
+        "character": "Aaliya",
+        "photo": "https://image.tmdb.org/t/p/w185/shriya_saran.jpg"
+      },
+      {
+        "name": "Ashutosh Rana",
+        "character": "Bharat Malik",
+        "photo": null
+      },
+      {
+        "name": "Shaad Randhawa",
+        "character": "Kabir",
+        "photo": null
+      },
+      {
+        "name": "Purab Kohli",
+        "character": "Ronnie",
+        "photo": null
+      },
+      {
+        "name": "Mrunal Thakur",
+        "character": "Zoya",
+        "photo": null
+      },
+      {
+        "name": "Jaideep Ahlawat",
+        "character": "Sultan",
+        "photo": null
+      },
+      {
+        "name": "Kay Kay Menon",
+        "character": "Don Viktor",
+        "photo": null
+      },
+      {
+        "name": "Sharad Kelkar",
+        "character": "ACP Rathore",
+        "photo": null
+      },
+      {
+        "name": "Kumud Mishra",
+        "character": "Maqbool",
+        "photo": null
+      }
+    ],
+    "slug": "awarapan-2-1444466",
+    "originalTitle": "Awarapan 2",
+    "originalLanguage": "hi",
+    "status": "now_showing",
+    "isActive": true,
+    "formats": [
+      "2D",
+      "3D",
+      "IMAX"
+    ],
+    "revenue": 0,
+    "lastSyncedAt": "2026-08-16T16:30:33.665Z"
   }
 ]
