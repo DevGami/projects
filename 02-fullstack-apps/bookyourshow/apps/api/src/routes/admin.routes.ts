@@ -14,6 +14,7 @@ import {
   createShowtime,
   deleteShowtime,
   getAllBookings,
+  resyncShowtimes,
 } from '../controllers/admin.controller.js';
 
 const router = Router();
@@ -38,10 +39,11 @@ router.post('/theaters', createTheater);
 router.patch('/theaters/:id', updateTheater);
 router.delete('/theaters/:id', deleteTheater);
 
-// ── Showtimes ─────────────────────────────────────────────────
+// ── Showtimes ──────────────────────────────────────────────────
 router.get('/showtimes', getShowtimes);
 router.post('/showtimes', createShowtime);
 router.delete('/showtimes/:id', deleteShowtime);
+router.post('/showtimes/resync', resyncShowtimes);
 
 // ── Bookings ──────────────────────────────────────────────────
 router.get('/bookings', getAllBookings);

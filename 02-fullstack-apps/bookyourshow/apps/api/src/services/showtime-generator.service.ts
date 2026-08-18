@@ -162,8 +162,15 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
         );
 
         try {
-          await prisma.showtime.create({
-            data: {
+          await prisma.showtime.upsert({
+            where: {
+              screenId_showDate_showTime: {
+                screenId: screen.id,
+                showDate: dateObj,
+                showTime: slot.time,
+              },
+            },
+            create: {
               movieTmdbId: movie.tmdbId,
               movieTitle: movie.title,
               screenId: screen.id,
@@ -172,13 +179,15 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
               priceMultiplier: slot.priceMultiplier,
               bookedSeats: preBookedSeats,
             },
+            update: {
+              movieTmdbId: movie.tmdbId,
+              movieTitle: movie.title,
+              priceMultiplier: slot.priceMultiplier,
+            },
           });
           totalCreated++;
         } catch (err: any) {
-          // Skip duplicate (unique constraint on screenId + showDate + showTime)
-          if (err?.code !== 'P2002') {
-            logger.warn(`Failed to create showtime: ${err.message}`);
-          }
+          logger.warn(`Failed to upsert showtime: ${err.message}`);
         }
       }
     }
@@ -202,23 +211,25 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Determine which dates should currently have showtimes
-// Based on the release schedule:
-//   - Sunday 12PM → Mon, Tue, Wed
-//   - Wednesday 6PM → Thu, Fri
-//   - Friday 6PM → Sat, Sun
+//
+// Real cinema release schedule (IST):
+//   Sunday 12PM    → Mon, Tue, Wed become bookable
+//   Wednesday 6PM  → Thu, Fri become bookable
+//   Friday 6PM     → Sat, Sun become bookable
+//
+// For our deployed app we always show the next 7 days from today so users
+// can always browse and book. The cron controls WHEN new slots are generated
+// (simulating real cinema booking windows opening), but catch-up on startup
+// ensures the full window is always populated.
 // ═══════════════════════════════════════════════════════════════════════════
 export function getVisibleDates(): string[] {
-  // Always compute in IST (UTC+5:30) — server may be in any timezone
+  // Always compute in IST (UTC+5:30)
   const IST_OFFSET_MS = 5.5 * 60 * 60 * 1000;
   const nowUTC = new Date();
   const nowIST = new Date(nowUTC.getTime() + IST_OFFSET_MS);
 
-  // Today in IST (midnight)
   const todayIST = new Date(nowIST);
   todayIST.setUTCHours(0, 0, 0, 0);
-  // dayOfWeek not used directly here — getVisibleDates uses futureDow per iteration
-  const hourIST = nowIST.getUTCHours();
-  const minuteIST = nowIST.getUTCMinutes();
 
   const formatDate = (d: Date): string => {
     const yyyy = d.getUTCFullYear();
@@ -227,83 +238,88 @@ export function getVisibleDates(): string[] {
     return `${yyyy}-${mm}-${dd}`;
   };
 
+  // Always include today + next 6 days = 7 days total visible window
   const dates: string[] = [];
-
-  // Always include today (current date in IST)
-  dates.push(formatDate(todayIST));
-
-  // Walk forward 7 days; add each date if its "release time" has passed
-  for (let offset = 1; offset <= 7; offset++) {
-    const futureIST = new Date(todayIST);
-    futureIST.setUTCDate(todayIST.getUTCDate() + offset);
-    const futureDow = futureIST.getUTCDay();
-
-    // Determine the IST hour:minute when this date becomes visible
-    let releaseHour: number;
-    let releaseMinute = 0;
-    let releaseDayOffset: number; // days before futureIST when it releases
-
-    if (futureDow >= 1 && futureDow <= 3) {
-      // Mon(1)/Tue(2)/Wed(3) → released on Sunday 12:00 PM IST
-      releaseDayOffset = futureDow;   // go back 'futureDow' days to get Sunday
-      releaseHour = 12;
-    } else if (futureDow === 4 || futureDow === 5) {
-      // Thu(4)/Fri(5) → released on Wednesday 6:00 PM IST
-      releaseDayOffset = futureDow - 3; // go back to Wednesday
-      releaseHour = 18;
-    } else {
-      // Sat(6)/Sun(0) → released on Friday 6:00 PM IST
-      releaseDayOffset = futureDow === 6 ? 1 : 2; // go back to Friday
-      releaseHour = 18;
-    }
-
-    // Build the release date in IST (midnight)
-    const releaseIST = new Date(todayIST);
-    releaseIST.setUTCDate(todayIST.getUTCDate() + offset - releaseDayOffset);
-
-    // Comparison uses releaseHour / releaseMinute directly below
-    if (releaseIST.getTime() < todayIST.getTime()) {
-      // Release day is before today — already released
-      dates.push(formatDate(futureIST));
-    } else if (releaseIST.getTime() === todayIST.getTime()) {
-      // Release day IS today — check if release hour:minute has passed
-      if (hourIST > releaseHour || (hourIST === releaseHour && minuteIST >= releaseMinute)) {
-        dates.push(formatDate(futureIST));
-      }
-    }
-    // else: release day is in the future — don't include yet
+  for (let offset = 0; offset <= 6; offset++) {
+    const d = new Date(todayIST);
+    d.setUTCDate(todayIST.getUTCDate() + offset);
+    dates.push(formatDate(d));
   }
 
   return dates;
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Catch-up: ensure showtimes exist for all currently visible dates
-// Called on server startup
+// Catch-up: ensure showtimes for all visible dates use CURRENT movies
+// Called on server startup — also cleans stale/wrong movie showtimes
 // ═══════════════════════════════════════════════════════════════════════════
 export async function catchUpShowtimes(): Promise<void> {
   const visibleDates = getVisibleDates();
+  logger.info(`📅 Catch-up checking ${visibleDates.length} visible dates: ${visibleDates.join(', ')}`);
 
-  // Check which dates already have showtimes
-  const existingDates = await prisma.showtime.groupBy({
-    by: ['showDate'],
-    where: {
-      showDate: { in: visibleDates.map(d => new Date(d)) },
-      status: 'ACTIVE',
-    },
-  });
+  // Get current valid movie tmdbIds from MongoDB
+  const currentMovies = await Movie.find({ status: 'now_showing', isActive: true })
+    .select('tmdbId')
+    .lean();
+  const validTmdbIds = new Set(currentMovies.map(m => m.tmdbId));
 
-  const existingDateStrings = new Set(
-    existingDates.map(d => d.showDate.toISOString().split('T')[0])
-  );
-
-  const missingDates = visibleDates.filter(d => !existingDateStrings.has(d));
-
-  if (missingDates.length === 0) {
-    logger.info('✅ All visible dates already have showtimes');
+  if (validTmdbIds.size === 0) {
+    logger.warn('⚠️ No active movies in MongoDB — skipping catch-up');
     return;
   }
 
-  logger.info(`🔄 Catch-up: generating showtimes for ${missingDates.length} missing dates: ${missingDates.join(', ')}`);
-  await generateShowtimesForDates(missingDates);
+  logger.info(`🎬 ${validTmdbIds.size} valid movies in MongoDB`);
+
+  // For each visible date, check if it has valid showtimes
+  const datesToRegenerate: string[] = [];
+
+  for (const dateStr of visibleDates) {
+    const dateObj = new Date(dateStr);
+
+    // Count showtimes for this date
+    const totalCount = await prisma.showtime.count({
+      where: { showDate: dateObj, status: 'ACTIVE' },
+    });
+
+    if (totalCount === 0) {
+      datesToRegenerate.push(dateStr);
+      continue;
+    }
+
+    // Check if any showtimes reference movies NOT in our current list
+    const staleCount = await prisma.showtime.count({
+      where: {
+        showDate: dateObj,
+        status: 'ACTIVE',
+        movieTmdbId: { notIn: Array.from(validTmdbIds) },
+        // Only delete if not booked by anyone
+        bookings: { none: {} },
+      },
+    });
+
+    if (staleCount > 0) {
+      logger.info(`🗑️ ${dateStr}: found ${staleCount} stale showtimes — cleaning & regenerating`);
+      // Delete stale showtimes (unbooked only)
+      await prisma.showtime.deleteMany({
+        where: {
+          showDate: dateObj,
+          status: 'ACTIVE',
+          movieTmdbId: { notIn: Array.from(validTmdbIds) },
+          bookings: { none: {} },
+        },
+      });
+      datesToRegenerate.push(dateStr);
+    } else {
+      logger.info(`✅ ${dateStr}: ${totalCount} valid showtimes — OK`);
+    }
+  }
+
+  if (datesToRegenerate.length === 0) {
+    logger.info('✅ All visible dates have valid showtimes for current movies');
+    return;
+  }
+
+  logger.info(`🔄 Regenerating showtimes for ${datesToRegenerate.length} dates: ${datesToRegenerate.join(', ')}`);
+  await generateShowtimesForDates(datesToRegenerate);
 }
+

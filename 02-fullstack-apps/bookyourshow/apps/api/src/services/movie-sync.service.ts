@@ -14,6 +14,15 @@ import {
   languageName,
   tmdbImageUrl,
 } from './tmdb.client.js';
+// Lazy import to avoid circular dep — catchUpShowtimes imported here
+let _catchUpShowtimes: (() => Promise<void>) | null = null;
+async function triggerShowtimeCatchUp(): Promise<void> {
+  if (!_catchUpShowtimes) {
+    const mod = await import('./showtime-generator.service.js');
+    _catchUpShowtimes = mod.catchUpShowtimes;
+  }
+  await _catchUpShowtimes();
+}
 
 // ═══════════════════════════════════════════════════════════════════════════
 // Sync Status Tracking
@@ -229,6 +238,11 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
     // Trigger RAG Service Rebuild (Fire-and-forget)
     triggerRagRebuild();
 
+    // Trigger showtime catch-up in background to refresh stale showtimes
+    triggerShowtimeCatchUp().catch(err =>
+      logger.error('Post-sync showtime catch-up failed:', err)
+    );
+
     return status;
   } catch (error) {
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -310,6 +324,11 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
       
       // Trigger RAG Service Rebuild (Fire-and-forget)
       triggerRagRebuild();
+
+      // Trigger showtime catch-up in background to refresh stale showtimes
+      triggerShowtimeCatchUp().catch(err =>
+        logger.error('Post-mock-sync showtime catch-up failed:', err)
+      );
       
       return successStatus;
     }
@@ -337,7 +356,15 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
 // Uses SCAN instead of KEYS to avoid blocking the Redis event loop (H3 fix)
 // ═══════════════════════════════════════════════════════════════════════════
 async function invalidateMovieCaches(): Promise<void> {
-  const patterns = ['bys:movies:list:*', 'bys:movies:now-showing:*', 'bys:movies:detail:*', 'bys:movies:genres'];
+  const patterns = [
+    'bys:movies:list:*',
+    'bys:movies:now-showing:*',
+    'bys:movies:detail:*',
+    'bys:movies:genres',
+    // Also clear showtime caches — they embed movie titles and must refresh when movies change
+    'bys:showtimes:list:*',
+    'bys:showtimes:detail:*',
+  ];
   let deleted = 0;
 
   for (const pattern of patterns) {
@@ -353,7 +380,7 @@ async function invalidateMovieCaches(): Promise<void> {
   }
 
   if (deleted > 0) {
-    logger.info(`🗑️ Invalidated ${deleted} movie cache keys`);
+    logger.info(`🗑️ Invalidated ${deleted} movie + showtime cache keys`);
   }
 }
 

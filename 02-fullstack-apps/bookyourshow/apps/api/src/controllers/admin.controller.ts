@@ -3,6 +3,7 @@ import { prisma } from '../config/database.js';
 import { logger } from '../middleware/logger.js';
 import { syncMoviesFromTMDB } from '../services/movie-sync.service.js';
 import { Movie } from '../models/mongo/Movie.js';
+import { catchUpShowtimes, generateShowtimesForDates, getVisibleDates } from '../services/showtime-generator.service.js';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GET /api/v1/admin/stats — Dashboard summary
@@ -371,4 +372,53 @@ export async function getAllBookings(req: Request, res: Response): Promise<void>
     success: true,
     data: { bookings, total, page, pages: Math.ceil(total / limit) },
   });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// POST /api/v1/admin/resync-showtimes
+// Cleans stale showtimes and regenerates for all visible dates with
+// current MongoDB movies. Useful for fixing stale data after a movie sync.
+// ═══════════════════════════════════════════════════════════════════════════
+export async function resyncShowtimes(_req: Request, res: Response): Promise<void> {
+  try {
+    logger.info('🔄 Manual showtime resync triggered via admin API');
+
+    // Get current valid movie tmdbIds
+    const movies = await Movie.find({ status: 'now_showing', isActive: true }).select('tmdbId').lean();
+    const validTmdbIds = movies.map(m => m.tmdbId);
+
+    if (validTmdbIds.length === 0) {
+      res.status(400).json({ success: false, error: { code: 'NO_MOVIES', message: 'No active movies in MongoDB' } });
+      return;
+    }
+
+    const visibleDates = getVisibleDates();
+    logger.info(`🗑️ Deleting stale showtimes for ${visibleDates.length} visible dates (movies not in current ${validTmdbIds.length} movie list)`);
+
+    // Delete all unbooked showtimes for visible dates that reference old movies
+    const { count: deletedCount } = await prisma.showtime.deleteMany({
+      where: {
+        showDate: { in: visibleDates.map(d => new Date(d)) },
+        movieTmdbId: { notIn: validTmdbIds },
+        bookings: { none: {} },
+      },
+    });
+
+    logger.info(`🗑️ Deleted ${deletedCount} stale showtimes`);
+
+    // Run catchup which will regenerate based on current movies
+    await catchUpShowtimes();
+
+    res.json({
+      success: true,
+      data: {
+        message: `Resync complete. Deleted ${deletedCount} stale showtimes. Regenerated for ${visibleDates.length} visible dates.`,
+        visibleDates,
+        moviesCount: validTmdbIds.length,
+      },
+    });
+  } catch (err: any) {
+    logger.error('Showtime resync failed:', err);
+    res.status(500).json({ success: false, error: { code: 'RESYNC_FAILED', message: err.message } });
+  }
 }
