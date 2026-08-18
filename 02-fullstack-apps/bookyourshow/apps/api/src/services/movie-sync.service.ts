@@ -174,11 +174,15 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
 
             allTmdbIds.add(details.id);
 
-            const isNew = Math.abs(result.createdAt.getTime() - movieData.lastSyncedAt.getTime()) < 5000;
-            if (isNew && result.createdAt.getTime() === result.updatedAt.getTime()) {
-              moviesAdded++;
-            } else {
-              moviesUpdated++;
+            // Safely check if it's a newly inserted doc (timestamps may be undefined on some upserts)
+            try {
+              const createdMs = result.createdAt?.getTime?.() ?? 0;
+              const updatedMs = result.updatedAt?.getTime?.() ?? 0;
+              const syncedMs = movieData.lastSyncedAt.getTime();
+              const isNew = Math.abs(createdMs - syncedMs) < 5000 && createdMs === updatedMs;
+              if (isNew) { moviesAdded++; } else { moviesUpdated++; }
+            } catch {
+              moviesUpdated++; // fallback: count as updated
             }
           } catch (detailError) {
             logger.warn(`Failed to fetch details for TMDB ID ${movie.id}: ${detailError}`);
