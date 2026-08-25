@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Play, Star, Clock, ChevronRight, TrendingUp } from "lucide-react";
+import { Play, Star, Clock, ChevronRight, TrendingUp, RefreshCw, AlertCircle } from "lucide-react";
 import { api } from "@/lib/api";
 import { TMDB_IMAGE } from "@/lib/constants";
 import { Badge } from "@/components/ui";
@@ -38,24 +38,29 @@ export default function HomePage() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [heroIndex, setHeroIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  async function fetchMovies() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Always fetch all 20 now-showing movies — city is used for showtime filtering, not movie listing
+      const res = await api.get<{ movies: Movie[]; total: number }>(
+        "/movies/now-showing"
+      );
+      setMovies(res.data?.movies || []);
+    } catch (err) {
+      console.error("Failed to fetch movies:", err);
+      setError("Unable to load movies. The server may be starting up — please retry.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useEffect(() => {
-    async function fetchMovies() {
-      setIsLoading(true);
-      try {
-        const res = await api.get<{ movies: Movie[]; total: number }>(
-          "/movies/now-showing",
-          { city }
-        );
-        setMovies(res.data?.movies || []);
-      } catch (err) {
-        console.error("Failed to fetch movies:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
     fetchMovies();
-  }, [city]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Auto-rotate hero every 6 seconds
   const heroMovies = movies.slice(0, 5);
@@ -204,6 +209,21 @@ export default function HomePage() {
 
         {isLoading ? (
           <MovieGridSkeleton count={10} />
+        ) : error ? (
+          <div className="flex flex-col items-center gap-4 py-16 text-center">
+            <AlertCircle className="h-10 w-10 text-red-400" />
+            <p className="text-slate-400 max-w-sm">{error}</p>
+            <button
+              onClick={fetchMovies}
+              className="inline-flex items-center gap-2 rounded-xl bg-brand-500/20 border border-brand-500/30 px-5 py-2.5 text-sm font-semibold text-brand-300 hover:bg-brand-500/30 transition"
+            >
+              <RefreshCw className="h-4 w-4" /> Retry
+            </button>
+          </div>
+        ) : movies.length === 0 ? (
+          <div className="text-center py-16">
+            <p className="text-slate-400">No movies currently showing. Check back soon!</p>
+          </div>
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
             {movies.map((movie) => (
