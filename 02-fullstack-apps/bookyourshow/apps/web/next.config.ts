@@ -1,13 +1,17 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "standalone",
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "image.tmdb.org",
         pathname: "/t/p/**",
+      },
+      {
+        // Google OAuth profile pictures
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
       },
     ],
     // Allow quality 90 used in movie backdrop images

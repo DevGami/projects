@@ -158,6 +158,8 @@ export async function listShowtimes(req: Request, res: Response): Promise<void> 
     return true;
   });
 
+  // Use filteredShowtimes.length as actual total so pagination matches reality
+  const filteredTotal = filteredShowtimes.length;
   const responseBody = {
     success: true,
     data: {
@@ -165,8 +167,8 @@ export async function listShowtimes(req: Request, res: Response): Promise<void> 
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+        total: filteredTotal,
+        totalPages: Math.ceil(filteredTotal / limit),
       },
     },
   };
