@@ -286,20 +286,18 @@ export async function catchUpShowtimes(): Promise<void> {
       continue;
     }
 
-    // Check if any showtimes reference movies NOT in our current list
+    // Check if any showtimes reference movies NOT in our current list (stale check)
     const staleCount = await prisma.showtime.count({
       where: {
         showDate: dateObj,
         status: 'ACTIVE',
         movieTmdbId: { notIn: Array.from(validTmdbIds) },
-        // Only delete if not booked by anyone
         bookings: { none: {} },
       },
     });
 
     if (staleCount > 0) {
-      logger.info(`🗑️ ${dateStr}: found ${staleCount} stale showtimes — cleaning & regenerating`);
-      // Delete stale showtimes (unbooked only)
+      logger.info(`🗑️ ${dateStr}: found ${staleCount} stale showtimes — cleaning`);
       await prisma.showtime.deleteMany({
         where: {
           showDate: dateObj,
@@ -309,8 +307,27 @@ export async function catchUpShowtimes(): Promise<void> {
         },
       });
       datesToRegenerate.push(dateStr);
+      continue;
+    }
+
+    // New check: Are all current valid movies playing on this date?
+    // Get unique movie IDs scheduled for this date
+    const scheduledMovies = await prisma.showtime.findMany({
+      where: { showDate: dateObj, status: 'ACTIVE' },
+      select: { movieTmdbId: true },
+      distinct: ['movieTmdbId'],
+    });
+    
+    const scheduledIds = new Set(scheduledMovies.map(m => m.movieTmdbId));
+    
+    // Check if any valid movie is missing
+    const missingMovies = Array.from(validTmdbIds).filter(id => !scheduledIds.has(id));
+    
+    if (missingMovies.length > 0) {
+      logger.info(`⚠️ ${dateStr}: ${missingMovies.length} active movies have NO showtimes! Regenerating.`);
+      datesToRegenerate.push(dateStr);
     } else {
-      logger.info(`✅ ${dateStr}: ${totalCount} valid showtimes — OK`);
+      logger.info(`✅ ${dateStr}: ${totalCount} valid showtimes — all movies scheduled OK`);
     }
   }
 
