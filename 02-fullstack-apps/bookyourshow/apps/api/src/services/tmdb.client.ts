@@ -1,9 +1,9 @@
-import { env } from '../config/env.js';
+﻿import { env } from '../config/env.js';
 import { logger } from '../middleware/logger.js';
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TMDB Configuration
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p';
 
 export const tmdbImageUrl = {
@@ -24,13 +24,13 @@ export const tmdbImageUrl = {
   },
 };
 
-// ── Rate Limiter (40 requests per 10 seconds) ──────────────────────────────
+// â”€â”€ Rate Limiter (40 requests per 10 seconds) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let requestCount = 0;
 let windowStart = Date.now();
 const MAX_REQUESTS = 38; // slightly under 40 for safety
 const WINDOW_MS = 10_000;
 
-const TMDB_FETCH_TIMEOUT_MS = 12_000; // 12s — fast fail if TMDB is blocked, enough for slow but working connections
+const TMDB_FETCH_TIMEOUT_MS = 12_000; // 12s â€” fast fail if TMDB is blocked, enough for slow but working connections
 
 async function rateLimitedFetch(url: string): Promise<Response> {
   const now = Date.now();
@@ -79,9 +79,9 @@ async function rateLimitedFetch(url: string): Promise<Response> {
   return response;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TMDB API Types
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 interface TmdbMovieListResult {
   id: number;
   title: string;
@@ -164,9 +164,9 @@ interface TmdbGenre {
   name: string;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // TMDB Client Functions
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 function buildUrl(path: string, params: Record<string, string> = {}): string {
   const url = new URL(`${env.TMDB_BASE_URL}${path}`);
   url.searchParams.set('api_key', env.TMDB_API_KEY || '');
@@ -199,82 +199,37 @@ export async function getNowPlaying(
 
 
 /**
- * Fetch exactly the movies that TMDB shows under "What's Popular → In Theaters".
- *
- * Strategy (mirrors TMDB's own "In Theaters" tab logic):
- *   1. Get the active theatrical date window from /movie/now_playing (TMDB returns
- *      `dates.minimum` and `dates.maximum` — the window of what counts as "in theaters").
- *   2. Fetch the top popular movies from /movie/popular (globally, sorted by popularity desc).
- *   3. Keep only movies whose release_date falls within that theatrical window.
- *   4. Return up to 20 — exactly what TMDB's "In Theaters" tab shows.
+ * Fetch the movies TMDB shows under "What's Popular -> In Theaters".
+ * Uses /movie/now_playing directly — TMDB's authoritative in-theaters list.
+ * Fetches all pages, sorts by popularity desc, returns top 20.
  */
 export async function fetchAllNowPlayingIndia(): Promise<TmdbMovieListResult[]> {
-  // ── Step 1: Get the theatrical date window from now_playing ───────────────
-  let minDate = '';
-  let maxDate = '';
-  try {
-    const windowData = await getNowPlaying(1, '', 'en');
-    minDate = windowData.dates?.minimum ?? '';
-    maxDate = windowData.dates?.maximum ?? '';
-    logger.debug(`Theatrical window: ${minDate} to ${maxDate}`);
-  } catch (err) {
-    logger.warn(`Could not fetch TMDB theatrical window: ${err}. Using 60-day fallback.`);
-    const today = new Date();
-    const sixtyDaysAgo = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
-    minDate = sixtyDaysAgo.toISOString().split('T')[0];
-    maxDate = today.toISOString().split('T')[0];
-  }
-
-  // ── Step 2: Fetch popular movies (sorted by popularity desc) ─────────────
-  // Fetch 3 pages (60 results) to ensure enough candidates after date filtering.
   const seenIds = new Set<number>();
-  const popular: TmdbMovieListResult[] = [];
+  const nowPlaying: TmdbMovieListResult[] = [];
 
-  for (let page = 1; page <= 3; page++) {
+  // Fetch up to 5 pages of now_playing — TMDB's authoritative "in theaters" list
+  for (let page = 1; page <= 5; page++) {
     try {
-      const url = buildUrl('/movie/popular', { page: String(page), language: 'en' });
-      const res = await rateLimitedFetch(url);
-      if (!res.ok) { logger.warn(`/movie/popular page ${page} returned ${res.status}`); break; }
-      const data = await res.json() as TmdbNowPlayingResponse;
+      const data = await getNowPlaying(page, '', 'en');
       for (const m of data.results) {
-        if (!seenIds.has(m.id)) { seenIds.add(m.id); popular.push(m); }
+        if (!seenIds.has(m.id)) { seenIds.add(m.id); nowPlaying.push(m); }
       }
       if (data.total_pages <= page) break;
     } catch (err) {
-      logger.warn(`/movie/popular page ${page} failed: ${err}`);
-      break;
-    }
-  }
-
-  // ── Step 3: Filter to only movies within the theatrical window ────────────
-  const inTheaters = popular.filter(m => {
-    if (!m.release_date) return false;
-    return m.release_date >= minDate && m.release_date <= maxDate;
-  });
-
-  logger.debug(`${inTheaters.length} of ${popular.length} popular movies are within the theatrical window`);
-
-  // ── Step 4: Fallback if filtering yields too few results ──────────────────
-  // Edge case: popular list and now_playing window don't overlap well.
-  if (inTheaters.length <= 5) {
-    logger.warn(`Only ${inTheaters.length} filtered results — falling back to now_playing directly`);
-    try {
-      const p1 = await getNowPlaying(1, '', 'en');
-      const fallback = [...p1.results];
-      try { const p2 = await getNowPlaying(2, '', 'en'); fallback.push(...p2.results); } catch { /* ignore */ }
-      for (const m of fallback) {
-        if (!seenIds.has(m.id)) { seenIds.add(m.id); inTheaters.push(m); }
+      logger.warn(`/movie/now_playing page ${page} failed: ${err}`);
+      if (page === 1) {
+        // Page 1 fail means TMDB is blocked — throw to trigger mock fallback in sync service
+        throw new Error(`fetch failed: TMDB now_playing page 1 failed: ${err}`);
       }
-    } catch (err) {
-      logger.warn(`Fallback now_playing also failed: ${err}`);
+      break; // partial results are fine for pages > 1
     }
   }
 
-  // Sort by popularity desc (already ordered, but re-sort after potential merge)
-  inTheaters.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+  // Sort by popularity desc — matches TMDB's "Popular" ordering
+  nowPlaying.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
 
-  logger.info(`fetchAllNowPlayingIndia: returning ${inTheaters.length} in-theater movies (TMDB "What's Popular In Theaters" logic)`);
-  return inTheaters;
+  logger.info(`fetchAllNowPlayingIndia: ${nowPlaying.length} now-playing movies, top 20 by popularity will be used`);
+  return nowPlaying; // movie-sync.service.ts slices to top 20
 }
 
 
@@ -322,9 +277,9 @@ export function clearGenreCache(): void {
   cachedGenres = null;
 }
 
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 // Helper Extractors (used by sync service)
-// ═══════════════════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 /**
  * Extract top N cast members
@@ -336,7 +291,7 @@ export function extractCast(details: TmdbMovieDetailsResponse, limit = 15) {
     .map(c => ({
       name: c.name,
       character: c.character || undefined,
-      photo: c.profile_path || null,  // store path only — frontend adds base URL via TMDB_IMAGE.profile()
+      photo: c.profile_path || null,  // store path only â€” frontend adds base URL via TMDB_IMAGE.profile()
     }));
 }
 
