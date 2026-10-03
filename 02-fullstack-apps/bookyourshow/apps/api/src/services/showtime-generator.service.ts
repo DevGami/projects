@@ -154,8 +154,10 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
         );
         if (compatibleMovies.length === 0) continue;
 
-        // This screen plays ONE movie all day (realistic)
-        const movie = compatibleMovies[globalMovieIdx % compatibleMovies.length]!;
+        // This screen plays TWO alternating movies all day to ensure all movies get showtimes
+        const movieA = compatibleMovies[globalMovieIdx % compatibleMovies.length]!;
+        globalMovieIdx++;
+        const movieB = compatibleMovies[globalMovieIdx % compatibleMovies.length]!;
         globalMovieIdx++;
 
         // Smaller theaters get fewer slots on weekdays
@@ -163,7 +165,11 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
           ? slots
           : numScreens <= 2 ? slots.slice(0, 4) : slots;
 
+        let slotIdx = 0;
         for (const slot of screenSlots) {
+          const movie = slotIdx % 2 === 0 ? movieA : movieB;
+          slotIdx++;
+          
           const isEvening = slot.time.includes('PM') &&
             !slot.time.startsWith('12') &&
             parseInt(slot.time.split(':')[0]!) >= 5;
