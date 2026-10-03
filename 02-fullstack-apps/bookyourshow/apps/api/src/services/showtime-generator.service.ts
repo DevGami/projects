@@ -137,10 +137,6 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
 
       if (compatibleMovies.length === 0) continue;
 
-      // Pick a movie for this screen (rotate through compatible movies)
-      const movie = compatibleMovies[movieIndex % compatibleMovies.length]!;
-      movieIndex++;
-
       // On weekends, use all slots; on weekdays, use fewer slots for smaller theaters
       const screenSlots = isWeekend
         ? slots
@@ -149,6 +145,10 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
           : slots;
 
       for (const slot of screenSlots) {
+        // Pick a movie for this specific time slot (rotate through compatible movies)
+        const movie = compatibleMovies[movieIndex % compatibleMovies.length]!;
+        movieIndex++;
+
         const isEvening = slot.time.includes('PM') &&
           !slot.time.startsWith('12') &&
           parseInt(slot.time.split(':')[0]!) >= 5;
