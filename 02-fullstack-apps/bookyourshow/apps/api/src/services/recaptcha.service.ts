@@ -44,6 +44,10 @@ export async function verifyRecaptcha(
     return { success: false, reason: 'missing_token' };
   }
 
+  if (token.startsWith('FRONTEND_ERROR:')) {
+    return { success: false, reason: token };
+  }
+
   try {
     const res = await fetch(RECAPTCHA_VERIFY_URL, {
       method: 'POST',

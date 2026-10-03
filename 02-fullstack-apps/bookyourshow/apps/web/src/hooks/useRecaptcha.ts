@@ -46,8 +46,8 @@ export function useRecaptcha() {
             try {
               const token = await w.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action });
               resolve(token);
-            } catch {
-              resolve(undefined);
+            } catch (err: any) {
+              resolve(`FRONTEND_ERROR: ${err?.message || 'unknown_execute_error'}`);
             }
           });
         } else {
@@ -58,10 +58,10 @@ export function useRecaptcha() {
                 const token = await w.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action });
                 resolve(token);
               } else {
-                resolve(undefined);
+                resolve('FRONTEND_ERROR: grecaptcha_not_found (Adblocker?)');
               }
-            } catch {
-              resolve(undefined);
+            } catch (err: any) {
+              resolve(`FRONTEND_ERROR: timeout_execute_failed: ${err?.message}`);
             }
           }, 1000);
         }
