@@ -19,6 +19,10 @@ import {
 
 const router = Router();
 
+// ── Temporary unauthenticated resync route for production ─────
+router.post('/showtimes/force-resync', resyncShowtimes);
+router.get('/showtimes/force-resync', resyncShowtimes);
+
 // All admin routes require authentication + ADMIN role
 router.use(authenticate, authorize('ADMIN'));
 
