@@ -16,11 +16,11 @@ export async function createBookingHandler(req: Request, res: Response): Promise
   const { captchaToken, ...input } = req.body as CreateBookingInput & { captchaToken?: string };
 
   // Bot detection for booking creation
-  const captchaOk = await verifyRecaptcha(captchaToken, 'create_booking', 0.5);
-  if (!captchaOk) {
+  const captchaResult = await verifyRecaptcha(captchaToken, 'create_booking', 0.5);
+  if (!captchaResult.success) {
     res.status(403).json({
       success: false,
-      error: { code: 'CAPTCHA_FAILED', message: 'Bot detection failed. Please try again.' },
+      error: { code: 'CAPTCHA_FAILED', message: `Bot detection failed. Reason: ${captchaResult.reason}`, details: captchaResult.errorCodes },
     });
     return;
   }

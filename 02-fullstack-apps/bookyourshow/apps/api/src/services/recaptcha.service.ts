@@ -33,19 +33,15 @@ export async function verifyRecaptcha(
   token: string | undefined,
   action: string,
   minScore = 0.5,
-): Promise<boolean> {
+): Promise<{ success: boolean; reason?: string; errorCodes?: string[] }> {
   const secretKey = env.RECAPTCHA_SECRET_KEY;
 
-  // If reCAPTCHA is not configured or we are in development mode, skip verification
   if (!secretKey || env.NODE_ENV === 'development') {
-    logger.debug('reCAPTCHA verification skipped (dev mode or no key)');
-    return true;
+    return { success: true };
   }
 
-  // If reCAPTCHA IS configured but no token was sent, reject
   if (!token) {
-    logger.warn(`reCAPTCHA: missing token for action "${action}"`);
-    return false;
+    return { success: false, reason: 'missing_token' };
   }
 
   try {
@@ -61,32 +57,19 @@ export async function verifyRecaptcha(
     const data = (await res.json()) as RecaptchaResponse;
 
     if (!data.success) {
-      logger.warn(`reCAPTCHA verification failed for action "${action}": ${data['error-codes']?.join(', ')}`);
-      
-      // In a real production app, we would return false here.
-      // However, for this portfolio app, if Google rejects the token (usually due to 
-      // Vercel domain not being whitelisted in Google Console), we FAIL OPEN so 
-      // recruiters/users can still test the app.
-      return true; 
+      return { success: false, reason: 'google_rejected', errorCodes: data['error-codes'] };
     }
 
-    // Check action matches (prevents token replay across endpoints)
     if (data.action && data.action !== action) {
-      logger.warn(`reCAPTCHA action mismatch: expected "${action}", got "${data.action}"`);
-      return false;
+      return { success: false, reason: 'action_mismatch' };
     }
 
-    // Check score with a very forgiving threshold (0.1) for testing
-    if (data.score < 0.1) {
-      logger.warn(`reCAPTCHA low score for action "${action}": ${data.score} (min 0.1)`);
-      return false;
+    if (data.score < minScore) {
+      return { success: false, reason: 'score_too_low', errorCodes: [data.score.toString()] };
     }
 
-    logger.debug(`reCAPTCHA passed for action "${action}" — score ${data.score}`);
-    return true;
+    return { success: true };
   } catch (err) {
-    logger.error(`reCAPTCHA verification error: ${err}`);
-    // Fail open in case of network issues (don't block legitimate users)
-    return true;
+    return { success: true }; // network error fallback
   }
 }

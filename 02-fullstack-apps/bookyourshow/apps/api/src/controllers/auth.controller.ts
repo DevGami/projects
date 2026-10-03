@@ -41,11 +41,11 @@ export async function signup(req: Request, res: Response): Promise<void> {
   const { name, email, password, captchaToken } = req.body as SignupInput & { captchaToken?: string };
 
   // Bot detection
-  const captchaOk = await verifyRecaptcha(captchaToken, 'signup', 0.5);
-  if (!captchaOk) {
+  const captchaResult = await verifyRecaptcha(captchaToken, 'signup', 0.5);
+  if (!captchaResult.success) {
     res.status(403).json({
       success: false,
-      error: { code: 'CAPTCHA_FAILED', message: 'Bot detection failed. Please try again.' },
+      error: { code: 'CAPTCHA_FAILED', message: `Bot detection failed. Reason: ${captchaResult.reason}`, details: captchaResult.errorCodes },
     });
     return;
   }
@@ -109,11 +109,11 @@ export async function login(req: Request, res: Response): Promise<void> {
   const { email, password, captchaToken } = req.body as LoginInput & { captchaToken?: string };
 
   // Bot detection (more lenient score for login)
-  const captchaOk = await verifyRecaptcha(captchaToken, 'login', 0.3);
-  if (!captchaOk) {
+  const captchaResult = await verifyRecaptcha(captchaToken, 'login', 0.3);
+  if (!captchaResult.success) {
     res.status(403).json({
       success: false,
-      error: { code: 'CAPTCHA_FAILED', message: 'Bot detection failed. Please try again.' },
+      error: { code: 'CAPTCHA_FAILED', message: `Bot detection failed. Reason: ${captchaResult.reason}`, details: captchaResult.errorCodes },
     });
     return;
   }
@@ -364,11 +364,11 @@ export async function forgotPassword(req: Request, res: Response): Promise<void>
   const { email, captchaToken } = req.body as { email: string; captchaToken?: string };
 
   // Bot detection
-  const captchaOk = await verifyRecaptcha(captchaToken, 'forgot_password', 0.5);
-  if (!captchaOk) {
+  const captchaResult = await verifyRecaptcha(captchaToken, 'forgot_password', 0.5);
+  if (!captchaResult.success) {
     res.status(403).json({
       success: false,
-      error: { code: 'CAPTCHA_FAILED', message: 'Bot detection failed. Please try again.' },
+      error: { code: 'CAPTCHA_FAILED', message: `Bot detection failed. Reason: ${captchaResult.reason}`, details: captchaResult.errorCodes },
     });
     return;
   }
