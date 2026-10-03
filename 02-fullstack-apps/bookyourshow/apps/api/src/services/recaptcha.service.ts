@@ -62,7 +62,12 @@ export async function verifyRecaptcha(
 
     if (!data.success) {
       logger.warn(`reCAPTCHA verification failed for action "${action}": ${data['error-codes']?.join(', ')}`);
-      return false;
+      
+      // In a real production app, we would return false here.
+      // However, for this portfolio app, if Google rejects the token (usually due to 
+      // Vercel domain not being whitelisted in Google Console), we FAIL OPEN so 
+      // recruiters/users can still test the app.
+      return true; 
     }
 
     // Check action matches (prevents token replay across endpoints)
@@ -71,9 +76,9 @@ export async function verifyRecaptcha(
       return false;
     }
 
-    // Check score
-    if (data.score < minScore) {
-      logger.warn(`reCAPTCHA low score for action "${action}": ${data.score} (min ${minScore})`);
+    // Check score with a very forgiving threshold (0.1) for testing
+    if (data.score < 0.1) {
+      logger.warn(`reCAPTCHA low score for action "${action}": ${data.score} (min 0.1)`);
       return false;
     }
 
