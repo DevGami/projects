@@ -47,6 +47,8 @@ const envSchema = z.object({
 
   // Kafka (optional for M01, required for M06)
   KAFKA_BROKERS: z.string().default('localhost:9092'),
+  KAFKA_SASL_USERNAME: z.string().optional(),
+  KAFKA_SASL_PASSWORD: z.string().optional(),
 
   // reCAPTCHA v3 (optional — if not set, captcha verification is skipped)
   RECAPTCHA_SECRET_KEY: z.string().optional(),
