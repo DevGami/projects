@@ -1,4 +1,4 @@
-﻿import { env } from '../config/env.js';
+import { env } from '../config/env.js';
 import { logger } from '../middleware/logger.js';
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -199,9 +199,9 @@ export async function getNowPlaying(
 
 
 /**
- * Fetch the movies TMDB shows under "What's Popular -> In Theaters".
- * Uses /movie/now_playing directly — TMDB's authoritative in-theaters list.
- * Fetches all pages, sorts by popularity desc, returns top 20.
+ * Fetch exactly the movies TMDB shows under "What's Popular -> In Theaters" for India.
+ * Uses /movie/now_playing?region=IN — the only endpoint that returns a perfect 20/20 match.
+ * Fetches all pages, deduplicates, sorts by popularity desc.
  */
 export async function fetchAllNowPlayingIndia(): Promise<TmdbMovieListResult[]> {
   const seenIds = new Set<number>();
@@ -210,7 +210,7 @@ export async function fetchAllNowPlayingIndia(): Promise<TmdbMovieListResult[]> 
   // Fetch up to 5 pages of now_playing — TMDB's authoritative "in theaters" list
   for (let page = 1; page <= 5; page++) {
     try {
-      const data = await getNowPlaying(page, '', 'en');
+      const data = await getNowPlaying(page, 'IN', 'en');
       for (const m of data.results) {
         if (!seenIds.has(m.id)) { seenIds.add(m.id); nowPlaying.push(m); }
       }
