@@ -199,141 +199,84 @@ export async function getNowPlaying(
 
 
 /**
- * Fetch ALL movies currently playing in Indian theatres using a multi-source
- * strategy. TMDB's now_playing?region=IN misses many Indian films that aren't
- * properly tagged with an IN theatrical release. We combine four sources:
+ * Fetch exactly the movies that TMDB shows under "What's Popular → In Theaters".
  *
- *  1. now_playing (no region) — global theatrical releases
- *  2. now_playing?region=IN   — officially tagged India releases
- *  3. discover/movie?region=IN — theatrical releases in India last 90 days
- *  4. discover/movie (Indian languages) — hi/ta/te/ml recent theatrical releases
- *
- * All results are deduplicated by TMDB ID.
+ * Strategy (mirrors TMDB's own "In Theaters" tab logic):
+ *   1. Get the active theatrical date window from /movie/now_playing (TMDB returns
+ *      `dates.minimum` and `dates.maximum` — the window of what counts as "in theaters").
+ *   2. Fetch the top popular movies from /movie/popular (globally, sorted by popularity desc).
+ *   3. Keep only movies whose release_date falls within that theatrical window.
+ *   4. Return up to 20 — exactly what TMDB's "In Theaters" tab shows.
  */
 export async function fetchAllNowPlayingIndia(): Promise<TmdbMovieListResult[]> {
-  const seenIds = new Set<number>();
-  const combined: TmdbMovieListResult[] = [];
-
-  function addResults(results: TmdbMovieListResult[]) {
-    for (const m of results) {
-      if (!seenIds.has(m.id)) {
-        seenIds.add(m.id);
-        combined.push(m);
-      }
-    }
-  }
-
-  // ── Early-abort detector ─────────────────────────────────────────────────
-  // If the first two sources both fail (TMDB blocked), abort immediately
-  // instead of waiting 12s × remaining sources. This keeps startup sync fast.
-  let consecutiveSourceFailures = 0;
-  const MAX_SOURCE_FAILURES = 2; // after 2 source-level failures, assume TMDB is blocked
-
-  // ── Source 1: now_playing global (no region filter) ──────────────────────
-  // This is the most reliable source — it returns all movies in cinemas worldwide
-  // including Indian films that don't have a proper IN region tag.
+  // ── Step 1: Get the theatrical date window from now_playing ───────────────
+  let minDate = '';
+  let maxDate = '';
   try {
-    for (let page = 1; page <= 3; page++) {
-      const data = await getNowPlaying(page, '', 'en');
-      addResults(data.results);
-      if (data.total_pages <= page) break;
-    }
-    consecutiveSourceFailures = 0; // reset on success
-    logger.debug(`Source 1 (global now_playing): ${combined.length} unique so far`);
+    const windowData = await getNowPlaying(1, '', 'en');
+    minDate = windowData.dates?.minimum ?? '';
+    maxDate = windowData.dates?.maximum ?? '';
+    logger.debug(`Theatrical window: ${minDate} to ${maxDate}`);
   } catch (err) {
-    consecutiveSourceFailures++;
-    logger.warn(`⚠️ Source 1 (global now_playing) failed: ${err}`);
+    logger.warn(`Could not fetch TMDB theatrical window: ${err}. Using 60-day fallback.`);
+    const today = new Date();
+    const sixtyDaysAgo = new Date(today.getTime() - 60 * 24 * 60 * 60 * 1000);
+    minDate = sixtyDaysAgo.toISOString().split('T')[0];
+    maxDate = today.toISOString().split('T')[0];
   }
 
-  // ── Source 2: now_playing?region=IN ──────────────────────────────────────
-  // Official India theatrical list — usually Hollywood + big Bollywood releases
-  if (consecutiveSourceFailures < MAX_SOURCE_FAILURES) {
-    try {
-      for (let page = 1; page <= 3; page++) {
-        const data = await getNowPlaying(page, 'IN', 'en');
-        addResults(data.results);
-        if (data.total_pages <= page) break;
-      }
-      consecutiveSourceFailures = 0;
-      logger.debug(`Source 2 (now_playing IN): ${combined.length} unique so far`);
-    } catch (err) {
-      consecutiveSourceFailures++;
-      logger.warn(`⚠️ Source 2 (now_playing IN) failed: ${err}`);
-    }
-  } else {
-    logger.warn('⚡ TMDB appears blocked — skipping remaining sources to fall back quickly');
-  }
+  // ── Step 2: Fetch popular movies (sorted by popularity desc) ─────────────
+  // Fetch 3 pages (60 results) to ensure enough candidates after date filtering.
+  const seenIds = new Set<number>();
+  const popular: TmdbMovieListResult[] = [];
 
-  // ── Source 3: discover/movie — India theatrical, last 90 days ─────────────
-  // Finds all movies with a theatrical release in India in the past 90 days.
-  // with_release_type=3 = Theatrical release
-  if (consecutiveSourceFailures < MAX_SOURCE_FAILURES) {
+  for (let page = 1; page <= 3; page++) {
     try {
-      const today = new Date();
-      const ninetyDaysAgo = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
-      const fmt = (d: Date) => d.toISOString().split('T')[0];
-
-      for (let page = 1; page <= 5; page++) {
-        const url = buildUrl('/discover/movie', {
-          region: 'IN',
-          with_release_type: '3|2',  // 3=Theatrical, 2=Limited Theatrical
-          'release_date.gte': fmt(ninetyDaysAgo),
-          'release_date.lte': fmt(today),
-          sort_by: 'popularity.desc',
-          page: String(page),
-          language: 'en',
-        });
-        const res = await rateLimitedFetch(url);
-        if (!res.ok) break;
-        const data = await res.json() as TmdbNowPlayingResponse;
-        addResults(data.results);
-        if (data.total_pages <= page) break;
+      const url = buildUrl('/movie/popular', { page: String(page), language: 'en' });
+      const res = await rateLimitedFetch(url);
+      if (!res.ok) { logger.warn(`/movie/popular page ${page} returned ${res.status}`); break; }
+      const data = await res.json() as TmdbNowPlayingResponse;
+      for (const m of data.results) {
+        if (!seenIds.has(m.id)) { seenIds.add(m.id); popular.push(m); }
       }
-      consecutiveSourceFailures = 0;
-      logger.debug(`Source 3 (discover IN theatrical): ${combined.length} unique so far`);
+      if (data.total_pages <= page) break;
     } catch (err) {
-      consecutiveSourceFailures++;
-      logger.warn(`⚠️ Source 3 (discover IN) failed: ${err}`);
+      logger.warn(`/movie/popular page ${page} failed: ${err}`);
+      break;
     }
   }
 
-  // ── Source 4: discover/movie — Indian language films, last 90 days ────────
-  // Specifically targets Hindi, Tamil, Telugu, Malayalam, Punjabi, Kannada films
-  // regardless of region tagging — catches films the other sources miss.
-  const indianLanguages = ['hi', 'ta', 'te', 'ml', 'pa', 'kn', 'mr'];
-  if (consecutiveSourceFailures < MAX_SOURCE_FAILURES) {
-    try {
-      const today = new Date();
-      const ninetyDaysAgo = new Date(today.getTime() - 90 * 24 * 60 * 60 * 1000);
-      const fmt = (d: Date) => d.toISOString().split('T')[0];
+  // ── Step 3: Filter to only movies within the theatrical window ────────────
+  const inTheaters = popular.filter(m => {
+    if (!m.release_date) return false;
+    return m.release_date >= minDate && m.release_date <= maxDate;
+  });
 
-      for (let page = 1; page <= 3; page++) {
-        const url = buildUrl('/discover/movie', {
-          with_original_language: indianLanguages.join('|'),
-          with_release_type: '3|2',
-          'release_date.gte': fmt(ninetyDaysAgo),
-          'release_date.lte': fmt(today),
-          sort_by: 'popularity.desc',
-          page: String(page),
-          language: 'en',
-        });
-        const res = await rateLimitedFetch(url);
-        if (!res.ok) break;
-        const data = await res.json() as TmdbNowPlayingResponse;
-        addResults(data.results);
-        if (data.total_pages <= page) break;
+  logger.debug(`${inTheaters.length} of ${popular.length} popular movies are within the theatrical window`);
+
+  // ── Step 4: Fallback if filtering yields too few results ──────────────────
+  // Edge case: popular list and now_playing window don't overlap well.
+  if (inTheaters.length <= 5) {
+    logger.warn(`Only ${inTheaters.length} filtered results — falling back to now_playing directly`);
+    try {
+      const p1 = await getNowPlaying(1, '', 'en');
+      const fallback = [...p1.results];
+      try { const p2 = await getNowPlaying(2, '', 'en'); fallback.push(...p2.results); } catch { /* ignore */ }
+      for (const m of fallback) {
+        if (!seenIds.has(m.id)) { seenIds.add(m.id); inTheaters.push(m); }
       }
-      consecutiveSourceFailures = 0;
-      logger.debug(`Source 4 (discover Indian languages): ${combined.length} unique so far`);
     } catch (err) {
-      consecutiveSourceFailures++;
-      logger.warn(`⚠️ Source 4 (discover Indian languages) failed: ${err}`);
+      logger.warn(`Fallback now_playing also failed: ${err}`);
     }
   }
 
-  logger.info(`🎬 fetchAllNowPlayingIndia: ${combined.length} unique movies across all sources`);
-  return combined;
+  // Sort by popularity desc (already ordered, but re-sort after potential merge)
+  inTheaters.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+
+  logger.info(`fetchAllNowPlayingIndia: returning ${inTheaters.length} in-theater movies (TMDB "What's Popular In Theaters" logic)`);
+  return inTheaters;
 }
+
 
 
 /**
