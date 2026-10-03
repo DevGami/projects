@@ -4,6 +4,7 @@ import { logger } from '../middleware/logger.js';
 import { syncMoviesFromTMDB } from '../services/movie-sync.service.js';
 import { Movie } from '../models/mongo/Movie.js';
 import { catchUpShowtimes, generateShowtimesForDates, getVisibleDates } from '../services/showtime-generator.service.js';
+import { redis } from '../config/redis.js';
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GET /api/v1/admin/stats — Dashboard summary
@@ -379,11 +380,11 @@ export async function getAllBookings(req: Request, res: Response): Promise<void>
 // Cleans stale showtimes and regenerates for all visible dates with
 // current MongoDB movies. Useful for fixing stale data after a movie sync.
 // ═══════════════════════════════════════════════════════════════════════════
-export async function resyncShowtimes(_req: Request, res: Response): Promise<void> {
+export async function resyncShowtimes(req: Request, res: Response): Promise<void> {
   try {
-    logger.info('🔄 Manual showtime resync triggered via admin API');
+    const force = req.query['force'] === 'true';
+    logger.info(`🔄 Manual showtime resync triggered via admin API (force=${force})`);
 
-    // Get current valid movie tmdbIds
     const movies = await Movie.find({ status: 'now_showing', isActive: true }).select('tmdbId').lean();
     const validTmdbIds = movies.map(m => m.tmdbId);
 
@@ -393,26 +394,48 @@ export async function resyncShowtimes(_req: Request, res: Response): Promise<voi
     }
 
     const visibleDates = getVisibleDates();
-    logger.info(`🗑️ Deleting stale showtimes for ${visibleDates.length} visible dates (movies not in current ${validTmdbIds.length} movie list)`);
 
-    // Delete all unbooked showtimes for visible dates that reference old movies
-    const { count: deletedCount } = await prisma.showtime.deleteMany({
-      where: {
-        showDate: { in: visibleDates.map(d => new Date(d)) },
-        movieTmdbId: { notIn: validTmdbIds },
-        bookings: { none: {} },
-      },
-    });
+    let deletedCount = 0;
 
-    logger.info(`🗑️ Deleted ${deletedCount} stale showtimes`);
+    if (force) {
+      // Force mode: wipe ALL unbooked showtimes for visible dates and rebuild from scratch
+      logger.info(`💣 FORCE mode: deleting ALL unbooked showtimes for ${visibleDates.length} dates`);
+      const result = await prisma.showtime.deleteMany({
+        where: {
+          showDate: { in: visibleDates.map(d => new Date(d)) },
+          bookings: { none: {} }, // Never delete showtimes that have real bookings
+        },
+      });
+      deletedCount = result.count;
+      logger.info(`🗑️ Force-deleted ${deletedCount} showtimes`);
 
-    // Run catchup which will regenerate based on current movies
-    await catchUpShowtimes();
+      // Also invalidate Redis cache
+      const cacheKeys = await redis.keys('bys:showtimes:list:*');
+      if (cacheKeys.length > 0) {
+        await redis.del(...cacheKeys);
+        logger.info(`🗑️ Invalidated ${cacheKeys.length} Redis cache keys`);
+      }
+
+      // Generate fresh showtimes for all visible dates
+      await generateShowtimesForDates(visibleDates);
+    } else {
+      // Normal mode: only delete showtimes for movies no longer active
+      const result = await prisma.showtime.deleteMany({
+        where: {
+          showDate: { in: visibleDates.map(d => new Date(d)) },
+          movieTmdbId: { notIn: validTmdbIds },
+          bookings: { none: {} },
+        },
+      });
+      deletedCount = result.count;
+      logger.info(`🗑️ Deleted ${deletedCount} stale showtimes`);
+      await catchUpShowtimes();
+    }
 
     res.json({
       success: true,
       data: {
-        message: `Resync complete. Deleted ${deletedCount} stale showtimes. Regenerated for ${visibleDates.length} visible dates.`,
+        message: `Resync complete (force=${force}). Deleted ${deletedCount} showtimes. Regenerated for ${visibleDates.length} visible dates.`,
         visibleDates,
         moviesCount: validTmdbIds.length,
       },
