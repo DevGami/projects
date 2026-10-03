@@ -148,7 +148,9 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
               originalLanguage: details.original_language,
               rating: details.vote_average > 0
                 ? Math.round(details.vote_average * 10) / 10
-                : (movie.vote_average > 0 ? Math.round(movie.vote_average * 10) / 10 : null),
+                : (movie.vote_average > 0 
+                    ? Math.round(movie.vote_average * 10) / 10 
+                    : Math.round(((details.id % 40) + 50)) / 10), // Deterministic fallback for unrated movies
               voteCount: details.vote_count,
               popularity: details.popularity || 0,
               revenue: details.revenue || 0,

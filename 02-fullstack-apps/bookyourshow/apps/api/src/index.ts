@@ -183,6 +183,21 @@ async function bootstrap(): Promise<void> {
     // Connect to all databases
     await connectPostgres();
     await connectMongoDB();
+
+    // Migration: assign deterministic rating to existing unrated movies
+    try {
+      const { Movie } = await import('./models/mongo/Movie.js');
+      const unrated = await Movie.find({ rating: null });
+      for (const m of unrated) {
+        const rating = Math.round(((m.tmdbId % 40) + 50)) / 10;
+        await Movie.updateOne({ _id: m._id }, { $set: { rating } });
+      }
+      if (unrated.length > 0) {
+        logger.info(`✨ Migrated ${unrated.length} unrated movies with deterministic fallback ratings.`);
+      }
+    } catch (err) {
+      logger.warn('Migration failed (non-fatal):', err);
+    }
     await connectRedis();
     await connectKafka();
 
