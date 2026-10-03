@@ -146,7 +146,9 @@ export async function syncMoviesFromTMDB(): Promise<SyncStatus> {
               genres,
               language: languageName(details.original_language),
               originalLanguage: details.original_language,
-              rating: details.vote_average > 0 ? Math.round(details.vote_average * 10) / 10 : null,
+              rating: details.vote_average > 0
+                ? Math.round(details.vote_average * 10) / 10
+                : (movie.vote_average > 0 ? Math.round(movie.vote_average * 10) / 10 : null),
               voteCount: details.vote_count,
               popularity: details.popularity || 0,
               revenue: details.revenue || 0,

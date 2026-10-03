@@ -88,12 +88,20 @@ function movieSupportsFormat(movieFormats: string[], screenFormat: string): bool
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// Main Generator
+// Main Generator — Realistic Cinema Scheduling
+//
+// Real cinemas: each screen plays ONE movie all day with 3-5 showtimes.
+// A 6-screen multiplex shows 4-6 different movies.
+// Popular movies may get 2 screens at the same theater.
+//
+// Our algorithm:
+//   1. Group screens by theater
+//   2. Assign movies to screens globally (so all 20 get coverage)
+//   3. Each screen gets the full day of time slots for its ONE movie
 // ═══════════════════════════════════════════════════════════════════════════
 export async function generateShowtimesForDates(dates: string[]): Promise<number> {
   let totalCreated = 0;
 
-  // 1. Fetch all active screens with their theaters
   const screens = await prisma.screen.findMany({
     where: { isActive: true },
     include: { theater: true },
@@ -104,7 +112,6 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
     return 0;
   }
 
-  // 2. Fetch all now_showing movies from MongoDB
   const movies = await Movie.find({ status: 'now_showing', isActive: true })
     .sort({ popularity: -1 })
     .lean();
@@ -114,80 +121,85 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
     return 0;
   }
 
-  logger.info(`🎬 Generating showtimes for ${dates.length} dates across ${screens.length} screens with ${movies.length} movies`);
+  // Group screens by theater
+  const theaterScreens = new Map<string, typeof screens>();
+  for (const screen of screens) {
+    if (!theaterScreens.has(screen.theaterId)) {
+      theaterScreens.set(screen.theaterId, []);
+    }
+    theaterScreens.get(screen.theaterId)!.push(screen);
+  }
+
+  logger.info(`🎬 Generating showtimes for ${dates.length} dates across ${theaterScreens.size} theaters (${screens.length} screens) with ${movies.length} movies`);
 
   for (const dateStr of dates) {
     const dateObj = new Date(dateStr);
-    const dayOfWeek = dateObj.getDay(); // 0=Sun, 5=Fri, 6=Sat
+    const dayOfWeek = dateObj.getDay();
     const isWeekend = dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6;
     const slots = isWeekend ? WEEKEND_SLOTS : WEEKDAY_SLOTS;
 
-    // Assign movies to screens in a round-robin fashion
-    // More popular movies get IMAX/premium screens
-    let movieIndex = 0;
+    // Global movie index rotates across ALL screens in ALL theaters
+    // This ensures all 20 movies get distributed evenly
+    let globalMovieIdx = 0;
 
-    for (const screen of screens) {
-      const screenFormat = getScreenFormat(screen.name);
-      const seatLayout = screen.seatLayout as { tier: string; rows: number[]; price: number }[];
+    for (const [, theaterScreensList] of theaterScreens) {
+      const numScreens = theaterScreensList.length;
 
-      // Find movies compatible with this screen format
-      const compatibleMovies = movies.filter(m =>
-        movieSupportsFormat(m.formats || ['2D'], screenFormat)
-      );
+      for (const screen of theaterScreensList) {
+        const screenFormat = getScreenFormat(screen.name);
+        const seatLayout = screen.seatLayout as { tier: string; rows: number[]; price: number }[];
 
-      if (compatibleMovies.length === 0) continue;
-
-      // On weekends, use all slots; on weekdays, use fewer slots for smaller theaters
-      const screenSlots = isWeekend
-        ? slots
-        : screen.theater.totalScreens <= 2
-          ? slots.slice(0, 4) // Smaller theaters: 4 shows on weekdays
-          : slots;
-
-      for (const slot of screenSlots) {
-        // Pick a movie for this specific time slot (rotate through compatible movies)
-        const movie = compatibleMovies[movieIndex % compatibleMovies.length]!;
-        movieIndex++;
-
-        const isEvening = slot.time.includes('PM') &&
-          !slot.time.startsWith('12') &&
-          parseInt(slot.time.split(':')[0]!) >= 5;
-
-        const preBookedSeats = generatePreBookedSeats(
-          screen.rows,
-          screen.cols,
-          seatLayout,
-          isWeekend,
-          isEvening,
+        const compatibleMovies = movies.filter(m =>
+          movieSupportsFormat(m.formats || ['2D'], screenFormat)
         );
+        if (compatibleMovies.length === 0) continue;
 
-        try {
-          await prisma.showtime.upsert({
-            where: {
-              screenId_showDate_showTime: {
+        // This screen plays ONE movie all day (realistic)
+        const movie = compatibleMovies[globalMovieIdx % compatibleMovies.length]!;
+        globalMovieIdx++;
+
+        // Smaller theaters get fewer slots on weekdays
+        const screenSlots = isWeekend
+          ? slots
+          : numScreens <= 2 ? slots.slice(0, 4) : slots;
+
+        for (const slot of screenSlots) {
+          const isEvening = slot.time.includes('PM') &&
+            !slot.time.startsWith('12') &&
+            parseInt(slot.time.split(':')[0]!) >= 5;
+
+          const preBookedSeats = generatePreBookedSeats(
+            screen.rows, screen.cols, seatLayout, isWeekend, isEvening,
+          );
+
+          try {
+            await prisma.showtime.upsert({
+              where: {
+                screenId_showDate_showTime: {
+                  screenId: screen.id,
+                  showDate: dateObj,
+                  showTime: slot.time,
+                },
+              },
+              create: {
+                movieTmdbId: movie.tmdbId,
+                movieTitle: movie.title,
                 screenId: screen.id,
                 showDate: dateObj,
                 showTime: slot.time,
+                priceMultiplier: slot.priceMultiplier,
+                bookedSeats: preBookedSeats,
               },
-            },
-            create: {
-              movieTmdbId: movie.tmdbId,
-              movieTitle: movie.title,
-              screenId: screen.id,
-              showDate: dateObj,
-              showTime: slot.time,
-              priceMultiplier: slot.priceMultiplier,
-              bookedSeats: preBookedSeats,
-            },
-            update: {
-              movieTmdbId: movie.tmdbId,
-              movieTitle: movie.title,
-              priceMultiplier: slot.priceMultiplier,
-            },
-          });
-          totalCreated++;
-        } catch (err: any) {
-          logger.warn(`Failed to upsert showtime: ${err.message}`);
+              update: {
+                movieTmdbId: movie.tmdbId,
+                movieTitle: movie.title,
+                priceMultiplier: slot.priceMultiplier,
+              },
+            });
+            totalCreated++;
+          } catch (err: any) {
+            logger.warn(`Failed to upsert showtime: ${err.message}`);
+          }
         }
       }
     }
@@ -197,7 +209,6 @@ export async function generateShowtimesForDates(dates: string[]): Promise<number
 
   logger.info(`✅ Total showtimes created: ${totalCreated}`);
 
-  // Invalidate showtime list caches so next request gets fresh data
   if (totalCreated > 0) {
     const keys = await redis.keys('bys:showtimes:list:*');
     if (keys.length > 0) {
