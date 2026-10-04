@@ -7,7 +7,12 @@ import { useCallback, useEffect, useRef } from "react";
 // Invisible, score-based bot detection
 // ═══════════════════════════════════════════════════════════════════════════
 
-const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "";
+// NEXT_PUBLIC_ variables are baked in at build time.
+// The hardcoded value is the same as what's in .env.production — a safe,
+// public site key (not a secret).
+const RECAPTCHA_SITE_KEY =
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+  '6LfHs2stAAAAAN9YYyie9UFC8irAVHXQKjqWQ9VQ';
 
 /**
  * Load the reCAPTCHA v3 script once globally.
@@ -20,13 +25,13 @@ export function useRecaptcha() {
   const loadedRef = useRef(false);
 
   useEffect(() => {
-    if (!RECAPTCHA_SITE_KEY || loadedRef.current) return;
+    if (loadedRef.current) return;
     if (document.querySelector(`script[src*="recaptcha/api.js"]`)) {
       loadedRef.current = true;
       return;
     }
 
-    const script = document.createElement("script");
+    const script = document.createElement('script');
     script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
     script.async = true;
     script.defer = true;
