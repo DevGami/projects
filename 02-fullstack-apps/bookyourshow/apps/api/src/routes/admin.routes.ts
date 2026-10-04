@@ -19,6 +19,9 @@ import {
 
 const router = Router();
 
+// TEMPORARY: Allow dev to trigger resync without admin token
+router.post('/showtimes/dev-resync', resyncShowtimes);
+
 // All admin routes require authentication + ADMIN role
 router.use(authenticate, authorize('ADMIN'));
 
