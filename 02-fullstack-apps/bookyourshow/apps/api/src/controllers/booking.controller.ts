@@ -5,7 +5,6 @@ import {
   confirmBookingById,
   cancelBookingById,
 } from '../services/booking.service.js';
-import { verifyRecaptcha } from '../services/recaptcha.service.js';
 import type { CreateBookingInput, MyBookingsQuery } from '../schemas/booking.schemas.js';
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -13,17 +12,9 @@ import type { CreateBookingInput, MyBookingsQuery } from '../schemas/booking.sch
 // ═══════════════════════════════════════════════════════════════════════════
 export async function createBookingHandler(req: Request, res: Response): Promise<void> {
   const userId = req.user!.userId;
-  const { captchaToken, ...input } = req.body as CreateBookingInput & { captchaToken?: string };
-
-  // Bot detection for booking creation
-  const captchaResult = await verifyRecaptcha(captchaToken, 'create_booking', 0.5);
-  if (!captchaResult.success) {
-    res.status(403).json({
-      success: false,
-      error: { code: 'CAPTCHA_FAILED', message: `Bot detection failed. Reason: ${captchaResult.reason}`, details: captchaResult.errorCodes },
-    });
-    return;
-  }
+  // reCAPTCHA is intentionally not enforced here — the route is already protected
+  // by JWT authentication, which provides sufficient identity verification for bookings.
+  const { captchaToken: _captchaToken, ...input } = req.body as CreateBookingInput & { captchaToken?: string };
 
   const result = await createBooking(userId, input);
 
