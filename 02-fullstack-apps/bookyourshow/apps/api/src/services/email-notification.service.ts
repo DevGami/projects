@@ -1,4 +1,4 @@
-﻿// ===============================================================================
+// ===============================================================================
 // BookYourShow - Email Notification Service
 // Direct Nodemailer implementation (bypasses Kafka + Java notification service)
 // This ensures emails are delivered reliably even if Kafka/Java are down.
@@ -7,10 +7,10 @@
 import nodemailer from 'nodemailer';
 import { logger } from '../middleware/logger.js';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const useSmtp = !!process.env.SMTP_USER && !!process.env.SMTP_PASS;
 
 const transporter = nodemailer.createTransport(
-  isDev
+  !useSmtp
     ? {
         host: 'localhost',
         port: 1025,
